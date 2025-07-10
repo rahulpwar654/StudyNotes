@@ -1,0 +1,37 @@
+here are some Spring Boot MySQL specific annotations:
+
+@Table
+This annotation marks a class as a MySQL table.
+The annotation takes an optional name attribute that specifies the name of the table in the database.
+@Id
+This annotation marks a field as the table's ID.
+The ID field must be unique and immutable.
+@GeneratedValue
+This annotation specifies how the ID field is generated.
+The annotation takes an optional strategy attribute that specifies the generation strategy.
+@Column
+This annotation marks a field as a column in the table.
+The annotation takes an optional name attribute that specifies the name of the column in the database.
+@Transient
+This annotation marks a field as a transient property.
+Transient properties are not stored in the database.
+Here is an example of a Spring Boot MySQL annotated class:
+
+Java
+@Table(name = "users")
+public class User {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
+
+  @Column(name = "name")
+  private String name;
+
+  @Column(name = "email")
+  private String email;
+
+  @Transient
+  private Address address;
+
+}

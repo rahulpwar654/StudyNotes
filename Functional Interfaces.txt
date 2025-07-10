@@ -1,0 +1,202 @@
+Java Functional Interfaces
+
+Since Java SE 1.8 onwards, there are many interfaces that are converted into functional interfaces. 
+All these interfaces are annotated with @FunctionalInterface. These interfaces are as follows – 
+
+
+
+Runnable –> This interface only contains the run() method.
+Comparable –> This interface only contains the compareTo() method.
+ActionListener –> This interface only contains the actionPerformed() method.
+Callable –> This interface only contains the call() method.
+
+
+Java SE 8 included four main kinds of functional interfaces which can be applied in multiple situations as mentioned below:
+
+Consumer
+Predicate
+Function 
+Supplier
+
+Consumer -> Bi-Consumer
+Predicate -> Bi-Predicate
+Function -> Bi-Function, Unary Operator, Binary Operator 
+
+
+
+
+Consumer:
+The consumer interface of the functional interface is the one that accepts only one argument or a gentrified argument.
+ The consumer interface has no return value. It returns nothing. 
+
+Predicate:
+a function that accepts an argument and, in return, generates a boolean value as an answer is known as a predicate. 
+
+
+Function:
+A function is a type of functional interface in Java that receives only a single argument and returns a value after the required processing. 
+
+Supplier:
+The Supplier functional interface is also a type of functional interface that does not take any input or argument and yet returns a single output.
+
+Amidst the previous four interfaces, the first three interfaces,i.e., Consumer, Predicate, and Function, 
+likewise have additions that are provided beneath – 
+
+
+
+
+
+### **Java Stream API Functions Categorized into Consumer, Predicate, Function, and Supplier**  
+
+The **Stream API** in Java provides several methods that can be categorized into **Consumer**, **Predicate**, **Function**, and **Supplier**, based on how they process data.  
+
+---
+
+## **1) Consumer-Based Stream Functions (`void` return type)**
+These methods **consume data but do not return a result**. They are commonly used for **side-effects**, such as printing or modifying elements.
+
+### **Examples in Stream API**
+| Method | Description | Example |
+|--------|-------------|---------|
+| `forEach(Consumer<T>)` | Iterates over each element and performs an action | `stream.forEach(System.out::println);` |
+| `peek(Consumer<T>)` | Performs an action on each element **without** modifying the stream | `stream.peek(System.out::println).collect(Collectors.toList());` |
+
+### **Example Code**
+```java
+import java.util.List;
+import java.util.stream.Stream;
+
+public class ConsumerStreamExample {
+    public static void main(String[] args) {
+        List<String> names = List.of("Alice", "Bob", "Charlie");
+
+        // Using forEach (Consumer)
+        names.stream().forEach(name -> System.out.println("Name: " + name));
+        
+        // Using peek (Consumer) before collecting
+        names.stream().peek(System.out::println).forEach(n -> {});
+    }
+}
+```
+---
+
+## **2) Predicate-Based Stream Functions (`boolean` return type)**
+These methods **filter or match elements** based on conditions.
+
+### **Examples in Stream API**
+| Method | Description | Example |
+|--------|-------------|---------|
+| `filter(Predicate<T>)` | Keeps only elements that satisfy a condition | `stream.filter(x -> x > 10);` |
+| `allMatch(Predicate<T>)` | Returns `true` if **all** elements match the condition | `stream.allMatch(x -> x > 10);` |
+| `anyMatch(Predicate<T>)` | Returns `true` if **at least one** element matches | `stream.anyMatch(x -> x > 10);` |
+| `noneMatch(Predicate<T>)` | Returns `true` if **no** elements match | `stream.noneMatch(x -> x > 10);` |
+| `distinct()` | Removes duplicate elements (internally uses `equals()`) | `stream.distinct();` |
+
+### **Example Code**
+```java
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class PredicateStreamExample {
+    public static void main(String[] args) {
+        List<Integer> numbers = List.of(5, 10, 15, 20, 25, 10);
+
+        // Using filter (Predicate)
+        List<Integer> evens = numbers.stream()
+                .filter(num -> num % 2 == 0)
+                .collect(Collectors.toList());
+
+        System.out.println(evens); // Output: [10, 20, 10]
+
+        // Using distinct()
+        List<Integer> uniqueNumbers = numbers.stream().distinct().collect(Collectors.toList());
+        System.out.println(uniqueNumbers); // Output: [5, 10, 15, 20, 25]
+    }
+}
+```
+---
+
+## **3) Function-Based Stream Functions (`T -> R` transformation)**
+These methods **transform data** by applying a function to each element.
+
+### **Examples in Stream API**
+| Method | Description | Example |
+|--------|-------------|---------|
+| `map(Function<T, R>)` | Transforms each element | `stream.map(x -> x * 2);` |
+| `flatMap(Function<T, Stream<R>>)` | Flattens nested collections into a single stream | `stream.flatMap(Collection::stream);` |
+| `sorted(Comparator<T>)` | Sorts elements using a comparator | `stream.sorted(Comparator.naturalOrder());` |
+
+### **Example Code**
+```java
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class FunctionStreamExample {
+    public static void main(String[] args) {
+        List<String> words = List.of("hello", "world", "java");
+
+        // Using map (Function)
+        List<Integer> lengths = words.stream()
+                .map(String::length)
+                .collect(Collectors.toList());
+
+        System.out.println(lengths); // Output: [5, 5, 4]
+
+        // Using flatMap to flatten lists
+        List<List<Integer>> nestedLists = List.of(
+            List.of(1, 2, 3), List.of(4, 5), List.of(6, 7, 8)
+        );
+
+        List<Integer> flattened = nestedLists.stream()
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
+
+        System.out.println(flattened); // Output: [1, 2, 3, 4, 5, 6, 7, 8]
+    }
+}
+```
+---
+
+## **4) Supplier-Based Stream Functions (Lazy Evaluation)**
+These functions **do not take input but provide values when needed**. They are useful for **generating streams dynamically**.
+
+### **Examples in Stream API**
+| Method | Description | Example |
+|--------|-------------|---------|
+| `generate(Supplier<T>)` | Creates an infinite stream of generated values | `Stream.generate(Math::random);` |
+| `iterate(T seed, UnaryOperator<T>)` | Generates an infinite stream by applying a function iteratively | `Stream.iterate(0, n -> n + 2);` |
+
+### **Example Code**
+```java
+import java.util.stream.Stream;
+
+public class SupplierStreamExample {
+    public static void main(String[] args) {
+        // Using generate (Supplier)
+        Stream<Double> randomStream = Stream.generate(Math::random).limit(5);
+        randomStream.forEach(System.out::println);
+
+        // Using iterate (Supplier)
+        Stream<Integer> evenNumbers = Stream.iterate(0, n -> n + 2).limit(5);
+        evenNumbers.forEach(System.out::println);
+    }
+}
+```
+---
+
+## **Final Categorization Summary**
+| **Category** | **Stream Methods** | **Example** |
+|-------------|----------------|-----------|
+| **Consumer (`T -> void`)** | `forEach()`, `peek()` | `stream.forEach(System.out::println);` |
+| **Predicate (`T -> boolean`)** | `filter()`, `allMatch()`, `anyMatch()`, `noneMatch()`, `distinct()` | `stream.filter(x -> x > 10);` |
+| **Function (`T -> R`)** | `map()`, `flatMap()`, `sorted()` | `stream.map(x -> x * 2);` |
+| **Supplier (`() -> T`)** | `generate()`, `iterate()` | `Stream.generate(Math::random).limit(5);` |
+
+---
+
+## **Conclusion**
+- **Consumer** functions (`forEach`, `peek`) perform **actions** on stream elements.
+- **Predicate** functions (`filter`, `allMatch`) are used for **conditional checks**.
+- **Function** functions (`map`, `flatMap`) **transform** data.
+- **Supplier** functions (`generate`, `iterate`) **provide data dynamically**.
+

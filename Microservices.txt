@@ -1,0 +1,76 @@
+Microservices
+
+Types of Service Discovery
+There are two types of Service Discovery
+
+Client-Side Service Discovery
+Server-Side Service Discovery
+Point to Remember:
+
+Client-Side Service Discovery Example: Netflix Eureka, Zookeeper, Consul
+Server-Side Service Discovery Example: NGNIX, AWS ELB
+
+AWS ELB: https://aws.amazon.com/elasticloadbalancing/
+
+
+nginx [engine x] is an HTTP and reverse proxy server, a mail proxy server, and a generic TCP/UDP proxy server,
+NGNIX :https://www.nginx.com/
+
+
+Comparison: API Gateway vs. Load Balancer
+So, how do API gateways and load balancers differ? 
+The main difference between these two services is that API gateways provide secure access to backend services, 
+whereas load balancers distribute traffic between multiple servers. In short, 
+a load balancer API distributes incoming requests while an API gateway authenticates and provides access to data sources or other applications.
+
+When deciding which option is best suited for your application, you'll need to consider the following factors:
+
+Functionality - Does your application need authentication or rate-limiting? If so, an API gateway may be the better choice.
+
+Performance – How many loads will your application be expected to handle? A load balancer may be the better option 
+if you need to distribute traffic across multiple servers.
+
+Cost – API gateways are generally more expensive than load balancers, so budget is also a factor to consider.
+
+
+
+
+########################################################################
+Design Patterns
+
+CQRS:
+The command query responsibility segregation (CQRS) pattern separates the data mutation, or the command part of a system, from the query part. You can use the CQRS pattern to separate updates and queries if they have different requirements for throughput, latency, or consistency.
+
+
+
+
+
+Circuit Breaker:
+
+Why We Need Circuit Breaker Pattern?
+assume that there are 2 microservices named user and article. When the user service needs to communicate 
+with the article service, it creates a new thread and sends a request to the article service. However, 
+if there are any network issues or timeout failures from the article service, the user service will not 
+get an instant response. Also, there is no way to inform the user service about the failure so it will wait 
+for a response. As a result, the user service will send continuous requests to the article service until 
+its resources are exhausted, resulting in user service failure.
+
+
+It has three states: Closed, Open, and Half Open.
+
+
+https://www.youtube.com/watch?v=b6R4dElDtRc&ab_channel=JavaTechie
+
+https://blog.bitsrc.io/circuit-breaker-pattern-in-microservices-26bf6e5b21ff#:~:text=Understanding%20and%20implementing%20the%20circuit,%2C%20Open%2C%20and%20Half%20Open.
+https://github.com/spring-guides/gs-cloud-circuit-breaker
+
+
+
+
+Orchestration :
+
+Decision logic should be centarilized
+
+
+Chereography
+make it event driven

@@ -1,0 +1,119 @@
+Garbage Collectors
+
+#####################################################################################
+
+1)PermGen  Vs  Metaspace 
+https://www.baeldung.com/java-permgen-metaspace#:~:text=Simply%20put%2C%20Metaspace%20is%20a,region%20grows%20automatically%20by%20default.
+
+
+
+PermGen
+PermGen (Permanent Generation) is a special heap space separated from the main memory heap.
+
+The JVM keeps track of loaded class metadata in the PermGen. Additionally, the JVM stores all the static content in this memory section. 
+This includes all the static methods, primitive variables, and references to the static objects.
+
+Furthermore, it contains data about bytecode, names, and JIT information. Before Java 7, the String Pool was also part of this memory. 
+The disadvantages of the fixed pool size are listed in our write-up.
+
+
+
+3. Metaspace
+Simply put, Metaspace is a new memory space – starting from the Java 8 version; it has replaced the older PermGen memory space. 
+The most significant difference is how it handles memory allocation.
+
+Specifically, this native memory region grows automatically by default.
+
+We also have new flags to tune the memory:
+
+MetaspaceSize and MaxMetaspaceSize – we can set the Metaspace upper bounds.
+MinMetaspaceFreeRatio – is the minimum percentage of class metadata capacity free after garbage collection
+MaxMetaspaceFreeRatio – is the maximum percentage of class metadata capacity free after a garbage collection 
+to avoid a reduction in the amount of space
+Additionally, the garbage collection process also gains some benefits from this change. The garbage collector 
+now automatically triggers the cleaning of the dead classes once the class metadata usage reaches its maximum metaspace size.
+
+Therefore, with this improvement, JVM reduces the chance to get the OutOfMemory error.
+
+################################################################
+Java 7 Changes
+Few things were moved out of PermGen MemorySpace
+
+Symbols were moved to native memory
+Interned String were moved to Java Heap
+Class statics were also moved to Java Heap.
+Above changes can also be reverted back in JDK 1.7 using JVM options.
+
+Java 8 Changes
+PermGen removed and replaced with MetaSpace.
+Class and metadata moved to MetaSpace.
+MetaSpace is not contiguous with Java Heap and allocated out of Native memory. 
+This means it can use available memory from system upto max memory, until... read below
+MetaSpace size max limit can be configured using JVM options.
+G1 starts supporting concurrent unloading of Classes.
+Code Cache is introduced. It stores compiled code by JIT compilor.
+Compressed Class Space is also introduced.
+
+
+
+Java 9 Changes
+G1 is default garbage collector
+Concurrent Mark Sweep(CMS) is planned for removal.
+Some GC combinations for Young and Old Generation collections are also removed.
+
+
+
+
+
+In Java 8, the JVM (Java Virtual Machine) memory structure consists of several different areas, 
+each with a specific purpose. These memory areas are crucial for managing the execution of Java applications efficiently and safely. 
+Here's an overview of the JVM memory structure in Java 8 and how it allocates memory:
+
+1. **Heap Memory**:
+   - **Young Generation**:
+     - **Eden Space**: This is where new objects are initially allocated. It's divided into multiple regions.
+     - **Survivor Spaces (S0 and S1)**: Objects that survive one garbage collection cycle in Eden move to one of these survivor spaces.
+   - **Old Generation (Tenured Generation)**: Objects that survive multiple garbage collection cycles in the Young Generation 
+   eventually get promoted to the Old Generation.
+   - **Permanent Generation (PermGen)** (Note: In Java 8, PermGen was replaced with Metaspace): It stores class metadata, 
+   constant pool data, and interned strings.
+
+   The heap memory is where most of your application's objects are allocated. The Java Garbage Collector (GC) 
+   primarily operates within the heap memory to clean up objects that are no longer in use.
+
+2. **Method Area (Non-Heap Memory)**:
+   - This is where class metadata, static variables, and code of methods are stored. In Java 8 and later, 
+   the Method Area has been replaced by Metaspace, which is a native memory area that can dynamically expand and contract.
+
+3. **Java Virtual Machine Stacks**:
+   - Each thread running in the JVM has its own JVM stack, which is used for storing local variables, 
+   method call frames, and managing method invocations.
+
+4. **Native Method Stacks**:
+   - Similar to the JVM stacks, but used for native methods (methods written in a language other than Java, like C or C++).
+
+5. **PC Registers**:
+   - Each thread has its own program counter (PC) register, which keeps track of the current execution point.
+
+6. **Direct Memory (Native Memory)**:
+   - Memory allocated outside of the Java heap, typically used for I/O operations and interacting with native libraries.
+
+Now, let's discuss how memory allocation works in Java 8:
+
+- When a Java program starts, the JVM reserves an initial amount of memory for the heap and other memory areas.
+
+- Objects are created in the heap memory using the `new` keyword or other object creation mechanisms.
+
+- The JVM uses a garbage collector to identify and reclaim memory that is no longer reachable by the program. 
+The garbage collector works primarily in the Young Generation and occasionally promotes objects to the Old Generation.
+
+- The PermGen area, where class metadata and constants were stored in older Java versions, has been replaced by Metaspace in Java 8. 
+Metaspace dynamically allocates native memory for class metadata and can automatically resize itself as needed.
+
+- The Java stacks are used for managing method calls and local variables. Each thread has its own stack.
+
+- Direct memory is allocated using libraries like `ByteBuffer` for handling I/O operations and working with native code.
+
+It's important to note that memory management and garbage collection in Java are automated processes managed by the JVM. 
+Developers generally don't need to worry about memory allocation and deallocation, but they should be aware of 
+these memory areas and understand how their application's memory usage impacts performance and potential memory-related issues.

@@ -1,0 +1,382 @@
+Kafka
+https://www.openlogic.com/blog/kafka-partitions
+
+
+What Is a Kafka Partition?
+
+In Apache Kafka, partitions are the main method of concurrency for topics. A topic, a dedicated location for events or messages, 
+will be broken into multiple partitions among one or more Kafka brokers. 
+
+
+Kafka Broker 
+
+As a distributed system, Kafka runs in a cluster, and each container in the cluster is called a broker.
+
+
+Common Kafka Partitioning Strategies
+There are two primary partition strategies for producers that organizations can utilize, 
+and they each have their own benefits and drawbacks. We will discuss both these methods, as well as custom partitioning approaches.
+
+Round Robin Partitioning
+This partitioner class is the default partitioning method used when no message key is supplied. 
+This partitioning strategy is generally utilized when messaging order is not important, 
+and having the data evenly balanced across partitions and broker nodes is desirable. Stateless applications 
+generally work well with round robin partitions as message order is usually not needed in stateless applications. 
+If message order is required by the application, then round robin partitioning would not be a good option.
+
+Message Key Partitioning
+Also known as the Default Partitioner utilized in 2.4 and earlier, message key partitioning is used when a message key is provided. 
+The key is placed through a hashing function and all messages with the same key are placed onto the same partition, 
+preserving message order. This partitioning method is used when messaging order is important or, when messages should be grouped together. 
+Multi-tenant environments are a common use case for this type of partitioning and messages are grouped together based on a customer key. 
+Another thing to note is that this partitioning strategy can lead to partitions not being evenly distributed 
+and more active messages keys having larger partitions than other less active messages keys.
+
+Custom Partitioning
+Custom partitioning is possible, as a Kafka producer can be written to follow any number of rules-based methodologies to assign messages 
+to a particular partition. For instance, a partition can be specified in the record itself, or by utilizing the Partitioner interface 
+provide in the kafka.clients.producer package. Most enterprise use cases will not require custom partitioning, but if you do go down this route,
+ note that some changes have occurred between 2.4 and more recent versions of Kafka, such as 3.3. See KIP-794 for further information.
+ 
+ 
+ 
+ 
+ 
+ 
+Certainly, here are some key terms related to Apache Kafka:
+
+Kafka Cluster: 
+A group of Kafka brokers working together to manage and store the topics and messages. 
+A cluster can consist of multiple nodes.
+
+Kafka Broker: 
+A single Kafka server instance that stores and manages the message data. 
+A Kafka cluster can have multiple brokers.
+
+Topic: 
+A category or feed name to which messages are published by producers. 
+Topics are split into partitions for distribution across brokers.
+
+Partition: 
+A logical division of a topic's data that allows for parallelism and scalability. 
+Each partition is stored on a separate broker.
+
+Producer: 
+An entity responsible for sending messages to Kafka topics. 
+Producers publish data to topics that can be consumed by consumers.
+
+Consumer: 
+An entity that subscribes to topics and reads the messages published to them. 
+Consumers process data in parallel across partitions.
+
+Consumer Group: 
+A group of consumers that work together to consume and process messages from one or more topics. 
+Each partition can be consumed by only one consumer in a group.
+
+Offset:
+A unique identifier assigned to each message within a partition. 
+Consumers use offsets to keep track of which messages they have already read.
+
+
+Replication: 
+Kafka's data replication feature ensures that each partition's data 
+is copied across multiple brokers. 
+This provides fault tolerance and data redundancy.
+
+Leader: 
+For each partition, one broker is designated as the leader, 
+and the other brokers replicate its data. The leader handles all 
+read and write requests for that partition.
+
+Follower: 
+Brokers that replicate data for a partition, following the leader's updates. 
+They provide redundancy and allow for failover.
+
+Zookeeper: 
+While Kafka itself manages message storage and distribution, 
+ZooKeeper is used for managing and maintaining metadata and 
+configurations of Kafka brokers.
+
+Producer API: 
+A set of libraries and tools that allow applications to publish messages to Kafka topics.
+
+Consumer API: 
+A set of libraries and tools that allow applications to subscribe to 
+and consume messages from Kafka topics.
+
+Message: 
+The unit of data in Kafka, usually containing key-value pairs 
+and additional metadata, such as the topic and partition.
+
+Retention Policy: 
+A configuration that determines how long Kafka retains messages in a topic. 
+Messages can be retained based on time or size.
+
+Log Segment: 
+The unit in which data is stored on disk within a Kafka partition. 
+Each log segment has a limited size, and older segments can be 
+deleted based on the retention policy.
+
+Offsets Topic: 
+A built-in topic used by Kafka to store consumer offset information. 
+Consumers use this topic to keep track of their progress in 
+reading messages.
+
+Producer Acknowledgment: 
+A setting that determines the acknowledgment behavior a producer expects from Kafka 
+after sending a message.
+
+Message Compression: 
+Kafka supports message compression to reduce the amount of data transferred 
+between producers and brokers, as well as between brokers and consumers.
+
+
+
+
+Apache Kafka has a distributed architecture designed to handle high-throughput, fault-tolerant, and scalable data streaming. 
+It consists of several components that work together to enable efficient data ingestion, storage, and consumption. 
+Here's an overview of the Kafka architecture:
+
+1. **Producers**: Producers are responsible for sending messages to Kafka topics. 
+They can be various applications, services, or devices that generate data. 
+Producers publish messages to specific topics, and each message can have an optional key, value, and metadata.
+
+2. **Brokers**: Kafka brokers are the heart of the Kafka cluster. 
+They receive messages from producers, store them, and serve them to consumers. 
+Each broker manages one or more partitions of a topic. A partition is a log of messages stored in sequence, 
+and the messages in a partition are ordered by their offsets.
+
+3. **Topics**: Topics are logical categories to which messages are published. 
+Each topic can have one or more partitions, and each partition is stored on a separate broker. The partitioning of data allows Kafka to distribute load and scale horizontally.
+
+4. **Partitions**: Partitions are the building blocks of topics. 
+They allow Kafka to parallelize the processing of data. Messages within a partition are ordered by their offsets. 
+The partitioning scheme can be based on factors like load balancing, data distribution, or key-based distribution.
+
+5. **Consumers**: Consumers read messages from topics and process them. Consumer groups allow for parallel processing and load sharing. 
+Each partition can be consumed by only one consumer within a group to maintain order. Consumers keep track of their progress 
+using offsets, which indicate the last message they have consumed.
+
+6. **Consumer Groups**: Consumer groups consist of multiple consumers that work together to consume messages from one or more topics. 
+Each group member reads from a specific partition, and Kafka ensures that only one consumer within a group reads from a 
+partition at a time. This enables load distribution and fault tolerance.
+
+7. **ZooKeeper**: While Kafka itself handles the storage and distribution of data, ZooKeeper is used for managing metadata, 
+configuration, and coordination of Kafka brokers and consumers. As of Kafka 0.10.1.0, Kafka no longer depends on ZooKeeper 
+for basic functionality, but it may still be used for certain operations.
+
+8. **Replication**: Kafka supports data replication for fault tolerance. Each partition can have multiple replicas, 
+with one replica designated as the leader and the others as followers. The leader handles read and write operations, 
+while followers replicate the data. If a broker fails, a follower replica can be promoted to leader.
+
+9. **Offset Management**: Kafka includes an internal topic called the "__consumer_offsets" topic that stores 
+consumer offset information. This topic is used to keep track of consumer progress, ensuring that consumers can resume 
+reading from where they left off even after failures or restarts.
+
+10. **Retention Policies**: Kafka allows configuring retention policies for topics. Messages can be retained based on 
+time (e.g., keep messages for 7 days) or based on the size of data (e.g., retain only the last 1 GB of data). 
+This ensures that Kafka can manage storage requirements effectively.
+
+In summary, Kafka's architecture is designed to provide high availability, fault tolerance, and scalable data streaming. It achieves these goals through a combination of distributed storage, replication, partitioning, and consumer group management. This architecture makes Kafka suitable for real-time event processing, 
+log aggregation, data pipelines, and more.
+
+######################################################################################
+
+
+In Kafka, a consumer can determine how many messages it has read using **consumer offsets** and **lag monitoring**. Here are different ways to track the number of messages a consumer has processed:
+
+---
+
+### **1. Using Consumer Offsets**
+Kafka stores the last committed offset for each consumer group in a special internal topic: **`__consumer_offsets`**.  
+You can track how many messages have been read by comparing the **current offset** with the **starting offset**.
+
+#### **Steps to Track Messages Read by a Consumer:**
+1. **Get Current Offset:** The offset of the next message the consumer will read.
+2. **Get Beginning Offset:** The offset where the consumer started.
+3. **Calculate Messages Read:**  
+   \[
+   \text{Messages Read} = \text{Current Offset} - \text{Starting Offset}
+   \]
+
+**Example (Using Kafka Consumer API in Java):**
+```java
+import org.apache.kafka.clients.consumer.*;
+import org.apache.kafka.common.TopicPartition;
+import java.util.*;
+
+public class KafkaConsumerOffsetExample {
+    public static void main(String[] args) {
+        String topic = "my-topic";
+        String groupId = "my-group";
+
+        Properties props = new Properties();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+
+        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
+        consumer.subscribe(Collections.singletonList(topic));
+
+        // Get partitions assigned to this consumer
+        consumer.poll(0); // Poll to get the assignments
+        Set<TopicPartition> assignedPartitions = consumer.assignment();
+
+        for (TopicPartition partition : assignedPartitions) {
+            long startOffset = consumer.beginningOffsets(Collections.singleton(partition)).get(partition);
+            long currentOffset = consumer.position(partition);
+            System.out.println("Partition: " + partition.partition() + 
+                ", Messages Read: " + (currentOffset - startOffset));
+        }
+        consumer.close();
+    }
+}
+```
+🔹 **Explanation:**  
+- Fetches the **beginning offset** and **current offset** for each partition.  
+- Computes the **number of messages read** per partition.  
+
+---
+
+### **2. Using Consumer Lag (Preferred in Production)**
+A consumer can track **how many messages are left to be read** (lag), which indirectly shows how many have been processed.
+
+#### **Consumer Lag Formula:**
+\[
+\text{Lag} = \text{Latest Offset} - \text{Current Offset}
+\]
+
+- **If `Lag = 0`**, the consumer has read all messages.
+- **If `Lag > 0`**, the consumer is behind.
+
+🔹 **Monitor Lag Using Kafka CLI:**
+```sh
+kafka-consumer-groups --bootstrap-server localhost:9092 --group my-group --describe
+```
+**Example Output:**
+```
+TOPIC  PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG  CONSUMER-ID
+my-topic   0          500               550           50    consumer-1
+```
+Here, **consumer-1 has read 500 messages** but **is lagging behind by 50 messages**.
+
+---
+
+### **3. Using Prometheus & Grafana for Monitoring**
+- **Kafka Exporter**: Exposes metrics for consumer groups.
+- **Metrics to Track**:
+  - `kafka_consumergroup_current_offset`
+  - `kafka_consumergroup_lag`
+
+---
+
+### **Conclusion**
+| **Method** | **Description** | **Best For** |
+|------------|----------------|--------------|
+| **Consumer Offset API** | Tracks messages read using Kafka offsets | Debugging, custom applications |
+| **Consumer Lag (CLI/Monitoring)** | Shows pending messages to read | Production monitoring |
+| **Prometheus & Grafana** | Visual real-time tracking | Large-scale monitoring |
+
+
+
+
+######################################################################
+
+### **What is `acks=all` in Kafka?**  
+`acks=all` is a **producer configuration** setting in Kafka that ensures **high durability and reliability** by requiring that a message is acknowledged by **all in-sync replicas (ISRs)** before being considered successfully written.
+
+---
+
+## **1. Understanding `acks` Configuration in Kafka Producer**
+Kafka's `acks` setting determines **how many acknowledgments** the producer waits for **before considering a message as successfully sent**.
+
+### **Available `acks` Configurations:**
+| `acks` Value | Description | Pros | Cons |
+|-------------|------------|------|------|
+| **`acks=0`** | Producer **does not wait** for any acknowledgment. The message is sent **fire-and-forget**. | Fastest, low latency | **Data loss risk** (messages may be lost if the broker fails) |
+| **`acks=1`** | Producer waits for acknowledgment from **only the leader**. | Faster than `acks=all`, ensures leader received the message | If leader fails before replication, **data loss can occur** |
+| **`acks=all` (or `acks=-1`)** | Producer waits until **all in-sync replicas (ISRs)** acknowledge the message. | **Highest reliability**, prevents data loss | Higher latency, reduced throughput |
+
+---
+
+## **2. How `acks=all` Works**
+1. Producer sends a message to the Kafka **leader broker**.
+2. The leader writes the message to its log.
+3. The message is then **replicated** to all **in-sync replicas (ISRs)**.
+4. **Only after all ISRs confirm replication**, the leader sends an **acknowledgment** back to the producer.
+5. The producer considers the message **successfully written**.
+
+🔹 **Example Scenario** (Replication Factor = 3, ISR = 2)
+```
+Producer → Broker 1 (Leader) → Broker 2 (ISR) + Broker 3 (ISR)
+```
+- Producer sends a message with `acks=all`
+- The message is written to Broker 1 (Leader)
+- Broker 2 & Broker 3 (ISRs) **replicate the message**
+- Once all ISRs acknowledge, the producer gets confirmation
+
+---
+
+## **3. When to Use `acks=all`**
+✅ **Best for:**
+- **Critical data** (financial transactions, logs, user data)
+- **Preventing data loss** in case of broker failures
+- **Ensuring consistency** in distributed systems
+
+❌ **Avoid if:**
+- You need **low latency** and can tolerate some data loss (use `acks=1`)
+- Your system can handle potential **message loss** (`acks=0`)
+
+---
+
+## **4. Example: Setting `acks=all` in Kafka Producer**
+### **Java Kafka Producer with `acks=all`**
+```java
+Properties props = new Properties();
+props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
+props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
+
+// Enable acks=all for maximum durability
+props.put(ProducerConfig.ACKS_CONFIG, "all");
+
+KafkaProducer<String, String> producer = new KafkaProducer<>(props);
+ProducerRecord<String, String> record = new ProducerRecord<>("my-topic", "key", "value");
+
+producer.send(record, (metadata, exception) -> {
+    if (exception == null) {
+        System.out.println("Message sent successfully to " + metadata.topic());
+    } else {
+        exception.printStackTrace();
+    }
+});
+
+producer.close();
+```
+
+---
+
+## **5. Key Considerations with `acks=all`**
+🔹 **Set `min.insync.replicas=2`**  
+   - Ensures at least **2 replicas are in sync** before an acknowledgment is sent.  
+   - Prevents writing data when only **one replica is available** (avoiding silent data loss).  
+
+🔹 **Enabling Idempotence (`enable.idempotence=true`)**  
+   - Guarantees **exactly-once message delivery** when combined with `acks=all`.  
+
+🔹 **Impact on Performance**  
+   - `acks=all` **increases reliability** but can **reduce throughput** due to waiting for ISRs.  
+   - Use **batching (`linger.ms`, `batch.size`)** to improve performance.
+
+---
+
+### **🔹 Summary**
+| `acks` Value | Reliability | Performance |
+|-------------|-------------|-------------|
+| `acks=0` | **Low** (messages may be lost) | **Fastest** |
+| `acks=1` | **Moderate** (leader confirms, but replicas might fail) | **Faster** |
+| `acks=all` | **Highest** (all in-sync replicas confirm) | **Slower, but safest** |
+
+
+###########################################################################

@@ -1,0 +1,36 @@
+here are some Spring Boot MongoDB specific annotations:
+
+@Document
+This annotation marks a class as a MongoDB document.
+The annotation takes an optional collection attribute that specifies the name of the collection in the database where the document will be stored.
+@Id
+This annotation marks a field as the document's ID.
+The ID field must be unique and immutable.
+@Field
+This annotation marks a field as a property of the document.
+The annotation takes an optional name attribute that specifies the name of the property in the database.
+@DBRef
+This annotation marks a field as a reference to another document.
+The annotation takes an optional db and collection attributes that specify the database and collection where the referenced document is stored.
+@Transient
+This annotation marks a field as a transient property.
+Transient properties are not stored in the database.
+Here is an example of a Spring Boot MongoDB annotated class:
+
+Java
+@Document(collection = "users")
+public class User {
+
+  @Id
+  private String id;
+
+  @Field(name = "name")
+  private String name;
+
+  @Field(name = "email")
+  private String email;
+
+  @DBRef
+  private Address address;
+
+}

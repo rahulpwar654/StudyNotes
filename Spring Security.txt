@@ -1,0 +1,33 @@
+Spring Security
+
+https://medium.com/@haytambenayed/how-does-spring-security-work-internally-525d359d7af
+
+
+Image:
+https://miro.medium.com/v2/resize:fit:1400/format:webp/1*66qT-P8eO7psafi_t5jfcA.jpeg
+
+
+
+SecurityFilterChain : Spring Security maintains a filter chain internally where each of the filters is invoked in a specific order. Each filter will try to process the request and retrieve authentication information from it. For example, we have the UsernamePasswordAuthenticationFilter which is used in case of a POST request with username and password parameters (typically with a login page).
+the ordering of the filters is important as there are dependencies between them. You can read here if you want to know more about filters and ordering. Or, you can directly navigate to the FilterComparator class to see the implementation details.
+
+AuthenticationManager : This is an interface whose implementation (ProviderManager) has a list of configured AuthenticationProviders that are used for authenticating user requests.
+
+AuthenticationProvider : An AuthenticationProvider is an abstraction for fetching user information from a specific repository (like a database, LDAP, custom third party source, etc.). It uses the fetched user information to validate the supplied credentials. (e.g: DaoAuthenticationProvider, LdapAuthenticationProvider, OpenIDAuthenticationProvider …)
+When talking about AuthenticationProvider, we usually come across the UserDetailsService. There is often a confusion between both, although they have different roles. AuthenticationProvider authenticates(compares) the request credentials against system credentials. UserDetailsService is purely a DAO for user data and performs no other function other than to supply that data that match with user provided Username. It does not tell the application whether authentication is successful or failed.
+
+
+
+
+
+#####Authentication Flow#####
+Now that we know the fundamental elements of Spring Security’s architecture, let’s describe the execution of the authentication flow :
+
+When an incoming request reaches our system, Spring Security starts by choosing the right security filter to 
+process that request (Is the request a POST containing username and password elements? => UsernamePasswordAuthenticationFilter is chosen. 
+Is the request having a header “Authorization : Basic base64encoded(username:password)”? => BasicAuthenticationFilter is chosen… and 
+so the chaining goes on). When a filter had successfully retrieved Authentication informations from the request, 
+the AuthenticationManager is invoked to authenticate the request. via its implementation, the AuthenticationManager goes through 
+each of the provided AuthenticationProvider(s) and try to authenticate the user based on the passed Authentication Object. 
+when the Authentication is successful, and a matching user is found, an Authentication Object containing the 
+user Authorities (which will be used to manage the user access to the system’s resources) is returned and set into the SecurityContext.

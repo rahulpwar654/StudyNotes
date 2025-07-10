@@ -1,0 +1,51 @@
+Single Responsibility Principle (SRP)
+Open-Close Principle (OCP)
+Liskov Substitution Principle (LSP)
+Interface Segregation Principle (ISP)
+Dependency Inversion Principle (DIP)
+
+
+
+The SOLID principles are five design principles in object-oriented programming (OOP). They are:
+
+Single responsibility principle (SRP):
+ A class should have only one responsibility. This means that a class should only be responsible for one thing,
+ and should not be responsible for anything else.
+ The SRP can be applied by creating a separate class for each responsibility. 
+ For example, a class that manages user accounts should not also be responsible for managing user permissions.
+
+ 
+Open-closed principle (OCP): 
+A class should be open for extension, but closed for modification.
+ This means that a class should be able to be extended with new functionality without having to be modified.
+ The OCP can be applied by using interfaces to represent abstract concepts. For example,
+ an interface could be used to represent a database connection. This would allow different implementations of the database connection to be used without having to modify the code that uses the interface.
+
+ 
+ 
+Liskov substitution principle (LSP): 
+Derived classes should be substitutable for their base classes. 
+This means that a reference to a base class should be able to be used to refer to an object of a derived class without any loss of functionality.
+The LSP can be applied by ensuring that derived classes inherit only the methods and properties that are needed by their clients. 
+For example, a derived class that represents a car should not inherit the methods and properties for flying.
+
+
+
+Interface segregation principle (ISP):
+ Clients should not be forced to depend on interfaces that they do not use. 
+ This means that an interface should not have methods that are not needed by all of its clients.
+ The ISP can be applied by creating multiple interfaces that each represent a specific set of methods and properties.
+ For example, an interface could be created for representing a database connection that supports read operations. Another interface could be created for representing a database connection that supports write operations.
+
+ 
+Dependency inversion principle (DIP):
+ Depend upon abstractions, not concretions. This means that a class should depend on interfaces, not on specific implementations.
+The SOLID principles are important for creating well-designed and maintainable software. 
+They can help to make software easier to understand, change, and extend.
+The DIP can be applied by using abstract classes or interfaces to represent dependencies. 
+For example, a class that needs to connect to a database could depend on an abstract class or interface that represents a database connection. This would allow the class to be independent of the specific database that is being used.
+
+
+Here are some examples of how the SOLID principles can be applied:
+
+The SOLID principles are a valuable set of guidelines for object-oriented programming. By following these principles, developers can create well-designed and maintainable software.

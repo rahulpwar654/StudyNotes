@@ -1,0 +1,20 @@
+
+Sure, here are some of the most important Spring Boot annotations:
+
+@SpringBootApplication : This annotation is used to mark a class as a Spring Boot application. It is a combination of the following annotations:
+@Configuration : This annotation indicates that the class contains Spring configuration.
+@EnableAutoConfiguration : This annotation tells Spring Boot to automatically configure the application based on the dependencies that are found on the classpath.
+@ComponentScan : This annotation tells Spring Boot to scan the class for components, such as beans, services, and repositories.
+
+
+@Component : This annotation is used to mark a class as a Spring component. 
+This means that the class can be auto-detected and configured by Spring Boot.
+
+@Autowired : This annotation is used to inject dependencies into a class. 
+For example, you can use @Autowired to inject a database connection into a class.
+
+@Value : This annotation is used to inject environment variables or system properties into a class. 
+For example, you can use @Value to inject the value of the spring.datasource.url environment variable into a class.
+
+
+@RestController : This annotation is used to mark a class as a REST controller. This means that the class can be used to expose RESTful APIs.

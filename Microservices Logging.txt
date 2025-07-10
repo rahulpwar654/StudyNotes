@@ -1,0 +1,259 @@
+Logging in **Spring Boot microservices** is crucial for monitoring, debugging, and troubleshooting distributed systems. Below are the key logging techniques used in **Spring Boot microservices**:
+
+---
+
+## 1. **Use SLF4J with Logback (Default Logging)**
+Spring Boot uses **SLF4J** as an abstraction layer and **Logback** as the default logging framework.
+
+### **Example Usage:**
+```java
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api")
+public class LoggingController {
+
+    private static final Logger logger = LoggerFactory.getLogger(LoggingController.class);
+
+    @GetMapping("/log")
+    public String logExample() {
+        logger.info("This is an INFO log message.");
+        logger.warn("This is a WARN log message.");
+        logger.error("This is an ERROR log message.");
+        return "Logging example!";
+    }
+}
+```
+
+---
+
+## 2. **Configure Logging Levels in `application.properties`**
+You can configure logging levels for different packages in `application.properties`:
+
+```properties
+# Set logging levels
+logging.level.root=INFO
+logging.level.com.example.myservice=DEBUG
+logging.level.org.springframework.web=WARN
+```
+
+Alternatively, in `application.yml`:
+
+```yaml
+logging:
+  level:
+    root: INFO
+    com.example.myservice: DEBUG
+    org.springframework.web: WARN
+```
+
+---
+
+## 3. **Log to a File**
+By default, logs are written to the console. To log into a file, configure:
+
+```properties
+logging.file.name=logs/microservice.log
+logging.file.path=logs
+```
+
+Or in `application.yml`:
+
+```yaml
+logging:
+  file:
+    name: logs/microservice.log
+```
+
+---
+
+## 4. **Use Logback for Advanced Logging Configuration**
+Modify `src/main/resources/logback-spring.xml` for more advanced configurations:
+
+```xml
+<configuration>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/microservice.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/microservice-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>
+```
+
+---
+
+## 5. **Distributed Logging with ELK Stack (Elasticsearch, Logstash, Kibana)**
+For microservices architecture, use **ELK Stack** to centralize and analyze logs.
+
+### **Steps to integrate ELK:**
+1. Send logs to **Logstash** using **Filebeat**.
+2. Store logs in **Elasticsearch**.
+3. Visualize logs using **Kibana**.
+
+To log in JSON format for ELK, modify `logback-spring.xml`:
+
+```xml
+<appender name="JSON" class="ch.qos.logback.core.FileAppender">
+    <file>logs/microservice.json</file>
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+</appender>
+
+<root level="INFO">
+    <appender-ref ref="JSON" />
+</root>
+```
+
+Add dependency for Logstash:
+```xml
+<dependency>
+    <groupId>net.logstash.logback</groupId>
+    <artifactId>logstash-logback-encoder</artifactId>
+    <version>7.3</version>
+</dependency>
+```
+
+---
+
+## 6. **Centralized Logging with Zipkin (For Distributed Tracing)**
+For tracing logs across multiple microservices, use **Zipkin**.
+
+### **Steps to integrate Zipkin:**
+1. Add the dependency:
+   ```xml
+   <dependency>
+       <groupId>org.springframework.cloud</groupId>
+       <artifactId>spring-cloud-starter-zipkin</artifactId>
+   </dependency>
+   ```
+2. Configure `application.properties`:
+   ```properties
+   spring.zipkin.base-url=http://localhost:9411
+   management.tracing.sampling.probability=1.0
+   ```
+
+---
+
+## 7. **Structured Logging with MDC (Mapped Diagnostic Context)**
+MDC allows adding context (e.g., user ID, request ID) to logs for tracking.
+
+### **Example:**
+```java
+import org.slf4j.MDC;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.UUID;
+
+public class MDCLoggingFilter extends OncePerRequestFilter {
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, ServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        try {
+            MDC.put("requestId", UUID.randomUUID().toString());
+            filterChain.doFilter(request, response);
+        } finally {
+            MDC.clear();
+        }
+    }
+}
+```
+Then in logs:
+```xml
+<pattern>%d{yyyy-MM-dd HH:mm:ss} [%X{requestId}] %-5level %logger{36} - %msg%n</pattern>
+```
+
+---
+
+## 8. **Use Sleuth for Tracing Logs Across Microservices**
+Spring Cloud **Sleuth** adds trace and span IDs to logs.
+
+### **Steps to integrate Sleuth:**
+1. Add dependency:
+   ```xml
+   <dependency>
+       <groupId>org.springframework.cloud</groupId>
+       <artifactId>spring-cloud-starter-sleuth</artifactId>
+   </dependency>
+   ```
+2. Configure `application.properties`:
+   ```properties
+   spring.sleuth.enabled=true
+   spring.sleuth.sampler.probability=1.0
+   ```
+
+Now logs will include:
+```
+2025-03-20 12:34:56.789 [main] INFO [traceId=1234abc, spanId=5678def] com.example.Service - Processing request
+```
+
+---
+
+## 9. **Enable Actuator Logging**
+Spring Boot **Actuator** provides logging endpoints for monitoring.
+
+### **Add Actuator dependency:**
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+```
+
+### **Enable log level changes at runtime:**
+```properties
+management.endpoints.web.exposure.include=loggers
+```
+
+Now, you can change log levels dynamically using:
+```bash
+curl -X POST http://localhost:8080/actuator/loggers/com.example -H "Content-Type: application/json" -d '{"configuredLevel": "DEBUG"}'
+```
+
+---
+
+## 10. **Send Logs to Cloud Logging Services**
+For cloud-based microservices, send logs to:
+- **AWS CloudWatch** (for AWS deployments)
+- **Azure Monitor** (for Azure deployments)
+- **Google Cloud Logging** (for GCP)
+
+### **Example: Sending logs to AWS CloudWatch**
+1. Add AWS SDK dependency:
+   ```xml
+   <dependency>
+       <groupId>software.amazon.awssdk</groupId>
+       <artifactId>cloudwatchlogs</artifactId>
+   </dependency>
+   ```
+2. Configure `logback-spring.xml` with CloudWatch appender.
+
+---
+
+### **Conclusion**
+Spring Boot microservices require robust logging for debugging and monitoring. Use:
+- **SLF4J + Logback** for standard logging.
+- **ELK (Elasticsearch, Logstash, Kibana)** for centralized logging.
+- **Zipkin & Sleuth** for distributed tracing.
+- **MDC** for structured logging with request tracking.
+- **Cloud logging services** for scalability.
+
+#####################################################################

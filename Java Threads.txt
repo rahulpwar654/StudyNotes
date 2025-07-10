@@ -1,0 +1,92 @@
+Sure, here are some Java threading interview questions:
+
+What is a thread in Java?
+A thread is a lightweight process that can be scheduled to run independently of other threads.
+
+What are the benefits of using threads in Java?
+Threads offer a number of benefits over traditional processes, including:
+
+Increased performance: Threads can improve the performance of an application by allowing multiple tasks to be executed simultaneously.
+Improved responsiveness: Threads can improve the responsiveness of an application by allowing the user to interact with the application while other tasks are being executed.
+Improved scalability: Threads can improve the scalability of an application by allowing it to handle more requests simultaneously.
+
+
+What are the different states of a thread in Java?
+A thread can be in one of the following states:
+
+New: A new thread has been created but has not yet been started.
+Runnable: A runnable thread is ready to be executed by the operating system.
+Running: A running thread is currently being executed by the operating system.
+Waiting: A waiting thread is waiting for a specific event to occur before it can continue execution.
+Timed waiting: A timed waiting thread is waiting for a specific event to occur within a specified time period.
+Blocked: A blocked thread is waiting for a resource to become available before it can continue execution.
+Terminated: A terminated thread has finished executing.
+What are the different ways to create a thread in Java?
+There are two ways to create a thread in Java:
+
+By extending the Thread class: This is the traditional way to create a thread. When you extend the Thread class, you must override the run() method. The run() method is the entry point for the thread.
+By implementing the Runnable interface: This is a more modern way to create a thread. When you implement the Runnable interface, you must provide an implementation for the run() method. You can then create a Thread object and pass the Runnable object to the constructor.
+What are the different ways to start a thread in Java?
+There are two ways to start a thread in Java:
+
+By calling the start() method: The start() method tells the operating system to schedule the thread for execution.
+By calling the run() method directly: The run() method is the entry point for the thread. However, it is not recommended to call the run() method directly, as this will not allow the thread to be scheduled for execution by the operating system.
+What are the different ways to join a thread in Java?
+There are two ways to join a thread in Java:
+
+By calling the join() method: The join() method tells the current thread to wait until the specified thread terminates.
+By calling the join() method with a timeout: The join() method with a timeout tells the current thread to wait for the specified thread to terminate for a specified amount of time. If the specified thread does not terminate within the specified amount of time, the join() method will return.
+What are the different ways to interrupt a thread in Java?
+There are two ways to interrupt a thread in Java:
+
+By calling the interrupt() method: The interrupt() method tells the thread to stop what it is doing and to check if it has been interrupted.
+By calling the interrupt() method on the thread's object: The interrupt() method on the thread's object will also interrupt the thread.
+What are the different ways to handle thread exceptions in Java?
+There are two ways to handle thread exceptions in Java:
+
+By catching the exception in the run() method: When you catch the exception in the run() method, you can handle the exception in the usual way.
+By using the try-catch-finally block: When you use the try-catch-finally block, the exception will be caught in the catch block and the finally block will be executed regardless of whether or not the exception is caught.
+What are the different types of thread synchronization in Java?
+There are two types of thread synchronization in Java:
+
+Mutual exclusion: Mutual exclusion ensures that only one thread can access a shared resource at a time.
+Condition synchronization: Condition synchronization allows multiple threads to wait for a specific condition to be met before they can continue execution.
+What are the different ways to implement thread synchronization in Java?
+There are two ways to implement thread synchronization in Java:
+
+By using the synchronized keyword: The synchronized keyword can be used to lock a shared resource. Only the thread that has the lock can access the shared resource..
+
+
+
+CountDownLatch
+A java.util.concurrent.CountDownLatch is a concurrency construct that allows one or more threads to wait for a given set of operations to complete
+
+
+Java Future
+A Java Future, java.util.concurrent.Future, represents the result of an asynchronous computation. 
+When the asynchronous task is created, a Java Future object is returned. This Future object functions as a handle to the result of the asynchronous task. 
+Once the asynchronous task completes, the result can be accessed via the Future object returned when the task was started.
+
+
+Java Callable
+The Java Callable interface, java.util.concurrent.Callable, represents an asynchronous task which can be executed by a separate thread. 
+For instance, it is possible to submit a Callable object to a Java ExecutorService which will then execute it asynchronously
+
+
+Java ForkJoinPool
+The Java ForkJoinPool was added to Java in Java 7. The ForkJoinPool is similar to the Java ExecutorService but with one difference: 
+The Java ForkJoinPool makes it easy for tasks to split their work up into smaller tasks which are then submitted to the ForkJoinPool too. 
+Tasks can keep splitting their work into smaller subtasks for as long as it makes sense to further subdivide the task. 
+It may sound a bit abstract, so in this fork and join tutorial I will explain how the Java ForkJoinPool works, and how splitting tasks up work.
+
+Java Lock
+The Java Lock interface, java.util.concurrent.locks.Lock, represents a concurrent lock which can be used to guard against race conditions inside critical sections. 
+Thus, the Java Lock interface provides a more flexible alternative to a Java synchronized block. 
+In this Java Lock tutorial I will explain how the Lock interface works, and how to use it.
+
+
+ThreadPoolExecutor
+The java.util.concurrent.ThreadPoolExecutor is an implementation of the ExecutorService interface. 
+The ThreadPoolExecutor executes the given task (Callable or Runnable) using one of its internally pooled threads.
+
+##################################################

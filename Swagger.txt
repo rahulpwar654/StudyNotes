@@ -1,0 +1,43 @@
+
+
+
+Hiding Endpoints From Swagger
+
+
+# Paths to exclude
+springdoc.paths-to-exclude=/swagger-resources/**
+
+
+
+https://stackoverflow.com/a/65264593/3106234
+You can use the @Hidden annotation from swagger-annotations, on the top of the controller you want to hide.
+
+Or you can use properties to filter the endpoints to show, filtering by path or package:
+
+# Packages to include
+springdoc.packagesToScan=com.package1, com.package2
+or
+
+# Paths to include
+springdoc.pathsToMatch=/v1, /api/balance/**
+
+
+
+2. Hiding an Endpoint with @ApiIgnore
+
+@ApiIgnore
+@ApiOperation(value = "This method is used to get the author name.")
+@GetMapping("/getAuthor")
+public String getAuthor() {
+    return "Umang Budhwar";
+}
+
+
+
+4. Hiding All Endpoints with @ApiIgnore  (on COntroller)
+
+@ApiIgnore
+@RestController
+public class RegularRestController {
+    // regular code
+}

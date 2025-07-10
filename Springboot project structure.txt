@@ -1,0 +1,34 @@
+Sure, here is the typical Spring Boot MVC project structure:
+
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── com
+    │   │       └── <your-project-name>
+    │   │           ├── controllers
+    │   │           │   └── HelloController.java
+    │   │           ├── services
+    │   │           │   └── HelloService.java
+    │   │           └── SpringBootMvcApplication.java
+    │   └── resources
+    │       ├── application.properties
+    │       └── static
+    │           └── index.html
+    └── test
+        └── java
+            └── com
+                └── <your-project-name>
+                    └── SpringBootMvcApplicationTests.java
+The src/main/java directory contains the source code for your application. The src/main/resources directory contains the configuration files for your application. The src/test/java directory contains the test code for your application.
+
+The controllers directory contains the Spring MVC controllers for your application. The controllers are responsible for handling HTTP requests and routing them to the appropriate services.
+
+The services directory contains the Spring beans for your application. The services are responsible for performing business logic.
+
+The SpringBootMvcApplication.java file is the main Spring Boot application class. This class is responsible for bootstrapping the Spring Boot application.
+
+The application.properties file contains the configuration properties for your application. These properties can be used to configure the Spring Boot application, such as the database connection URL, the port number, and the logging level.
+
+The static directory contains the static resources for your application. These resources can be accessed by clients without going through the Spring MVC framework. For example, the index.html file is the home page for your application.
+
+The test directory contains the test code for your application. The test code can be used to test the functionality of your application.

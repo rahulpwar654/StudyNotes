@@ -1,0 +1,14 @@
+
+Sure, here are some of the most common SQL keywords used in queries:
+
+SELECT: This keyword is used to select data from a table.
+FROM: This keyword is used to specify the table from which the data should be selected.
+WHERE: This keyword is used to filter the data that is selected.
+ORDER BY: This keyword is used to sort the data that is selected.
+GROUP BY: This keyword is used to group the data that is selected.
+HAVING: This keyword is used to filter the data that is grouped.
+DISTINCT: This keyword is used to remove duplicate rows from the data that is selected.
+JOIN: This keyword is used to combine data from two or more tables.
+LIKE: This keyword is used to match data based on a pattern.
+IN: This keyword is used to match data against a list of values.
+BETWEEN: This keyword is used to match data within a range of values.

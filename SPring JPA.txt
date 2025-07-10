@@ -1,0 +1,294 @@
+SPring Jpa
+
+@Transactional(propagation = REQUIRES_NEW, rollbackFor = {Exception.class})
+
+
+The @Transactional annotation in Spring Boot is used to define the transactional behavior of a method or class
+
+
+
+what is Transaction Propagation:
+Transaction propagation, in the context of database transactions in Spring (or any other transactional system), 
+defines the behavior of a new transaction when it interacts with an existing transaction. 
+
+The choice of propagation behavior depends on the specific requirements of your application and 
+the business logic of the methods involved. For example:
+
+Use "REQUIRED" when you want the method to participate in an existing transaction if one exists, but create a new one if none exists.
+
+Use "REQUIRES_NEW" when you want the method to run in its own transaction, completely isolated from any existing transaction.
+
+Use "MANDATORY" when a method should only run within an existing transaction, and it should throw an exception if none exists.
+
+Use "SUPPORTS" when the method can run with or without a transaction.
+
+Use "NOT_SUPPORTED when a method should always run without a transaction.
+
+Use "NEVER" when a method should never run within a transaction, and it should throw an exception if one exists.
+
+
+################################################################################################################
+
+
+what is Transaction isolations::
+
+Transaction isolation is a concept in database management systems that defines how concurrent transactions interact with each other 
+when accessing and modifying data in a shared database.It ensures that the operations of one transaction do not interfere with the 
+operations of other concurrently executing transactions. 
+
+
+Read Uncommitted (Level 0): In this isolation level, transactions are not isolated from each other at all. A transaction can read 
+uncommitted changes made by other transactions, which can lead to dirty reads, non-repeatable reads, and phantom reads. 
+This is the lowest isolation level and is generally not recommended for most applications due to its lack of data consistency.
+
+Read Committed (Level 1): In this isolation level, a transaction can only read committed data. 
+It prevents dirty reads but allows non-repeatable reads and phantom reads. 
+This is the default isolation level for many database systems.
+
+Repeatable Read (Level 2): In this isolation level, a transaction sees a consistent snapshot of the data as of the start of the transaction. 
+It prevents dirty reads and non-repeatable reads but still allows phantom reads. 
+If you read a row once in a transaction, you'll see the same row if you read it again in the same transaction, 
+even if other transactions modify or insert rows.
+
+Serializable (Level 3): This is the highest isolation level. 
+It ensures full data consistency by preventing all types of anomalies: dirty reads, non-repeatable reads, and phantom reads. 
+It achieves this by locking the data that a transaction accesses until the transaction is complete, 
+which can lead to higher contention and slower performance in highly concurrent environments.
+
+
+
+
+
+
+
+################################################################################################################
+
+
+### **Spring Data JPA Annotations with Examples**  
+
+Spring Data JPA provides several annotations to simplify database interaction using **Hibernate** as the underlying **JPA (Java Persistence API) implementation**. These annotations help define **entities, relationships, and queries** in a database.
+
+---
+
+## **1) Entity and Table Mapping Annotations**
+| Annotation                    | Description                                                 | Example |
+|------------                   |-------------                                                |---------|
+| `@Entity`                     | Marks a class as a **JPA entity (table in DB)**             | `@Entity class User {}` |
+| `@Table(name = "table_name")` | Specifies the table name (if different from the class name) | `@Table(name = "users")` |
+
+### **Example**
+```java
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @Column(name = "username", nullable = false, unique = true)
+    private String username;
+
+    // Getters and setters
+}
+```
+
+---
+
+## **2) Primary Key and Column Mapping Annotations**
+| Annotation                                         | Description                                  | Example |
+|------------                                        |-------------                                 |---------|
+| `@Id`                                              | Marks a field as the **primary key**         | `@Id private Long id;` |
+| `@GeneratedValue(strategy = GenerationType.IDENTITY)`| Auto-generates **primary key values**     | `@GeneratedValue(strategy = GenerationType.IDENTITY)` |
+| `@Column(name = "column_name", nullable = false, unique = true)` | Maps a field to a **column in the database** | `@Column(name = "email", unique = true)` |
+| `@Transient`                                       | **Excludes** a field from persistence (not saved in DB) | `@Transient private int tempData;` |
+
+### **Example**
+```java
+@Entity
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "product_name", nullable = false)
+    private String name;
+
+    @Transient
+    private int tempStock;  // Not persisted in DB
+}
+```
+
+---
+
+## **3) Relationship Mapping Annotations**
+| Annotation | Description | Example |
+|------------|-------------|---------|
+| `@OneToOne` | One-to-one relationship | `@OneToOne private Address address;` |
+| `@OneToMany(mappedBy = "user")` | One-to-many relationship | `@OneToMany List<Order> orders;` |
+| `@ManyToOne` | Many-to-one relationship | `@ManyToOne private User user;` |
+| `@ManyToMany` | Many-to-many relationship | `@ManyToMany List<Role> roles;` |
+| `@JoinColumn(name = "column_name")` | Specifies foreign key column | `@JoinColumn(name = "user_id")` |
+| `@JoinTable(name = "table_name")` | Defines **join table** for many-to-many | `@JoinTable(name = "user_roles")` |
+
+### **Example: One-to-Many Relationship**
+```java
+@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Order> orders;
+}
+
+@Entity
+public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+}
+```
+
+---
+
+## **4) Query Annotations**
+| Annotation | Description | Example |
+|------------|-------------|---------|
+| `@Query("JPQL Query")` | Defines a **custom JPQL query** | `@Query("SELECT u FROM User u WHERE u.email = :email")` |
+| `@Modifying` | Used for **update and delete** queries | `@Modifying @Query("UPDATE User u SET u.status = 'ACTIVE' WHERE u.id = :id")` |
+| `@Transactional` | Ensures a method runs inside a **transaction** | `@Transactional public void updateUser()` |
+| `@NamedQuery` | Defines a **named JPQL query** inside the entity | `@NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email")` |
+
+### **Example: Custom Queries**
+```java
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+    
+    @Query("SELECT u FROM User u WHERE u.username = :username")
+    User findByUsername(@Param("username") String username);
+
+    @Modifying
+    @Query("UPDATE User u SET u.active = true WHERE u.id = :id")
+    void activateUser(@Param("id") Long id);
+}
+```
+
+---
+
+## **5) Auditing Annotations (Automatic Timestamps)**
+| Annotation | Description | Example |
+|------------|-------------|---------|
+| `@CreatedDate` | Stores the **creation timestamp** | `@CreatedDate private LocalDateTime createdAt;` |
+| `@LastModifiedDate` | Stores the **last update timestamp** | `@LastModifiedDate private LocalDateTime updatedAt;` |
+| `@CreatedBy` | Stores the **creator’s username** | `@CreatedBy private String createdBy;` |
+| `@LastModifiedBy` | Stores the **last updater’s username** | `@LastModifiedBy private String updatedBy;` |
+| `@EnableJpaAuditing` | Enables **auditing in Spring Boot** | `@EnableJpaAuditing @SpringBootApplication` |
+
+### **Example: Auto Timestamps**
+```java
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@EntityListeners(AuditingEntityListener.class)
+public class AuditEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+}
+```
+
+---
+
+## **6) Caching and Performance Annotations**
+| Annotation         | Description | Example |
+|------------        |-------------|---------|
+| `@Cacheable("cacheName")` | Caches query results | `@Cacheable("users")` |
+| `@CacheEvict("cacheName")` | Removes cache when data is updated | `@CacheEvict("users")` |
+| `@BatchSize(size = 10)` | Fetches batches of records to optimize queries | `@BatchSize(size = 10)` |
+
+### **Example: Caching a Repository**
+```java
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+    @Cacheable("users")
+    User findByUsername(String username);
+}
+```
+
+---
+
+## **Summary Table**
+| Category | Annotation | Purpose |
+|----------|------------|---------|
+| **Entity Mapping** | `@Entity`, `@Table` | Define database table |
+| **Primary Key & Column** | `@Id`, `@GeneratedValue`, `@Column`, `@Transient` | Define primary key and columns |
+| **Relationships** | `@OneToOne`, `@OneToMany`, `@ManyToOne`, `@ManyToMany`, `@JoinColumn`, `@JoinTable` | Define table relationships |
+| **Custom Queries** | `@Query`, `@Modifying`, `@Transactional`, `@NamedQuery` | Define custom JPQL/SQL queries |
+| **Auditing** | `@CreatedDate`, `@LastModifiedDate`, `@CreatedBy`, `@LastModifiedBy`, `@EnableJpaAuditing` | Track creation and modification timestamps |
+| **Performance** | `@Cacheable`, `@CacheEvict`, `@BatchSize` | Optimize performance and caching |
+
+---
+
+##############################################################
+
+Here’s a list of commonly used **Spring Data JPA** annotations along with their one-line explanations:
+
+1. **@Entity** – Marks a class as a JPA entity (table representation).  
+2. **@Table(name = "table_name")** – Specifies the table name for an entity.  
+3. **@Id** – Marks a field as the primary key.  
+4. **@GeneratedValue(strategy = GenerationType.IDENTITY)** – Configures auto-increment for primary key generation.  
+5. **@Column(name = "column_name")** – Specifies the column mapping for a field.  
+6. **@Transient** – Excludes a field from persistence.  
+7. **@Enumerated(EnumType.STRING)** – Maps an enum to a database column as a string.  
+8. **@Lob** – Marks a field as a Large Object (BLOB or CLOB).  
+9. **@Temporal(TemporalType.DATE/TIME/TIMESTAMP)** – Specifies date/time storage format.  
+10. **@Basic(fetch = FetchType.LAZY/EAGER)** – Defines fetching strategy for a field.  
+11. **@Version** – Implements optimistic locking by tracking entity version.  
+12. **@Embedded** – Embeds another entity into the current entity.  
+13. **@Embeddable** – Marks a class as embeddable inside an entity.  
+14. **@Access(AccessType.FIELD/PROPERTY)** – Specifies access type for JPA entity fields.  
+15. **@ManyToOne** – Defines a many-to-one relationship between entities.  
+16. **@OneToMany(mappedBy = "fieldName")** – Defines a one-to-many relationship with bidirectional mapping.  
+17. **@ManyToMany** – Defines a many-to-many relationship between entities.  
+18. **@JoinColumn(name = "column_name")** – Specifies the foreign key column for relationships.  
+19. **@JoinTable(name = "table_name")** – Defines a join table for many-to-many relationships.  
+20. **@MappedSuperclass** – Specifies a superclass that provides common fields to entities.  
+21. **@Inheritance(strategy = InheritanceType.SINGLE_TABLE/JOINED/TABLE_PER_CLASS)** – Defines inheritance strategies for entities.  
+22. **@DiscriminatorColumn(name = "column_name")** – Defines a column for entity type differentiation in a single table inheritance strategy.  
+23. **@Query("JPQL Query")** – Specifies a custom JPQL query in a repository method.  
+24. **@NamedQuery(name = "query_name", query = "JPQL Query")** – Declares a named JPQL query.  
+25. **@Modifying** – Used with `@Query` for update/delete operations.  
+26. **@Transactional** – Defines the transactional scope of a method or class.  
+27. **@Lock(LockModeType.PESSIMISTIC_WRITE/READ)** – Specifies a locking mode for queries.  
+28. **@Repository** – Marks an interface as a Spring Data repository.  
+29. **@EnableJpaRepositories** – Enables JPA repositories in a Spring Boot application.  
+30. **@EntityListeners(ClassName.class)** – Allows entity lifecycle event handling.  
+31. **@CreatedDate** – Automatically stores the creation timestamp.  
+32. **@LastModifiedDate** – Stores the timestamp when an entity was last updated.  
+33. **@CreatedBy** – Captures the user who created the entity.  
+34. **@LastModifiedBy** – Captures the user who last modified the entity.  
+35. **@Audited** – Enables auditing for an entity.  
+
+###########################################################################

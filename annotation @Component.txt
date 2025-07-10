@@ -1,0 +1,22 @@
+The @Component annotation is a Spring Boot annotation that is used to mark a class as a Spring component. This means that the class can be auto-detected and configured by Spring Boot.
+
+Here is an example of how to use the @Component annotation:
+
+@Component
+public class MyComponent {
+
+    public void doSomething() {
+        // Do something
+    }
+}
+In this example, the MyComponent class is marked as a Spring component using the @Component annotation. This means that Spring Boot will automatically detect the MyComponent class and configure it as a bean in the Spring application context.
+
+The @Component annotation is a generic annotation that can be used to mark any class as a Spring component. However, there are also more specific Spring Boot annotations that can be used to mark classes as different types of Spring components. For example, the @Service annotation can be used to mark a class as a service, the @Repository annotation can be used to mark a class as a repository, and the @Controller annotation can be used to mark a class as a controller.
+
+Here is a table that summarizes the different Spring Boot annotations that can be used to mark classes as different types of Spring components:
+
+Annotation	Description
+@Component	A generic annotation that can be used to mark any class as a Spring component.
+@Service	A Spring Boot annotation that can be used to mark a class as a service.
+@Repository	A Spring Boot annotation that can be used to mark a class as a repository.
+@Controller	A Spring Boot annotation that can be used to mark a class as a controller.

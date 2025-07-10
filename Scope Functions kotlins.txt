@@ -1,0 +1,83 @@
+There are five types of scope functions:
+1)let
+2)run
+3)with
+4)apply
+5)also
+
+
+1)let
+let function is often used to provide null safety calls
+a?.let {
+        // statement(s) will execute
+        // as a is not null
+        print(a)
+    }
+	
+	
+2. apply function
+
+ Company().apply {
+        // same as founder = “Sandeep Jain”
+        this.founder = "Sandeep Jain" 
+        name = "GeeksforGeeks"
+        objective = "A computer science portal for Geeks"
+    }
+
+
+3. with function
+
+fun main() {
+    val gfg = Company().apply {
+        name = "GeeksforGeeks"
+        objective = "A computer science portal for Geeks"
+        founder = "Sandeep Jain"
+    }
+  
+    // with function
+    with(gfg) {
+        // similar to println( "${this.name}" )
+        println(" $name ")
+    }
+}
+
+
+4)run
+
+// body only executes if 
+    // company is non-null
+ company?.run {     
+        print(name)  /// nothing execute
+    }
+	
+   
+    // re-initialize company
+    company = Company().apply {
+        name = "GeeksforGeeks"
+        founder = "Sandeep Jain"
+        objective = "A computer science portal for Geeks"
+    }
+    // body executes as 
+    // 'company' is non-null
+    company?.run {     
+        print(name)   // Company Name : GeeksforGeeks
+    }
+	
+	
+5. also function
+
+It is used where we have to perform additional operations when we have initialized the object members.
+
+fun main() {
+    // initialized
+    val list = mutableListOf<Int>(1, 2, 3)
+  
+    // later if we want to perform 
+    // multiple operations on this list
+    list.also {
+        it.add(4)
+        it.remove(2)
+        // more operations if needed
+    }
+    println(list)
+}

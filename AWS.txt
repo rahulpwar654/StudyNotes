@@ -1,0 +1,89 @@
+AWS
+
+
+##############################################################
+S3 Bucket
+
+Let’s create such user. Go to Services -> IAM. In the navigation pane, choose Users and then choose Add user.
+
+Then press next and ‘Create User’. If you did everything right then you should see Access key ID and Secret access key for your user. There is also ‘Download .csv’ button for downloading these keys, so please click on it in order not to loose keys.
+
+Our S3 Bucket configuration is done so let’s proceed to Spring Boot application.
+
+
+Spring Boot Part
+
+<dependency>
+   <groupId>com.amazonaws</groupId>
+   <artifactId>aws-java-sdk</artifactId>
+   <version>1.11.133</version>
+</dependency>
+
+
+
+
+Now let’s add s3 bucket properties to our application.yml file:
+
+amazonProperties:
+  endpointUrl: https://s3.us-east-2.amazonaws.com
+  accessKey: XXXXXXXXXXXXXXXXX
+  secretKey: XXXXXXXXXXXXXXXXXXXXXXXXXX
+  bucketName: your-bucket-name
+  
+  
+  
+  
+  
+  It’s time to create our RestController with two request mappings “/uploadFile” and “/deleteFile”.
+
+@RestController
+@RequestMapping("/storage/")
+public class BucketController {
+
+    private AmazonClient amazonClient;
+
+    @Autowired
+    BucketController(AmazonClient amazonClient) {
+        this.amazonClient = amazonClient;
+    }
+
+    @PostMapping("/uploadFile")
+    public String uploadFile(@RequestPart(value = "file") MultipartFile file) {
+        return this.amazonClient.uploadFile(file);
+    }
+
+    @DeleteMapping("/deleteFile")
+    public String deleteFile(@RequestPart(value = "url") String fileUrl) {
+        return this.amazonClient.deleteFileFromS3Bucket(fileUrl);
+    }
+}
+
+
+
+
+
+This code is actually broken because we don’t have AmazonClient class yet, so let’s create this class with the following fields.
+
+@Service
+public class AmazonClient {
+
+    private AmazonS3 s3client;
+
+    @Value("${amazonProperties.endpointUrl}")
+    private String endpointUrl;
+    @Value("${amazonProperties.bucketName}")
+    private String bucketName;
+    @Value("${amazonProperties.accessKey}")
+    private String accessKey;
+    @Value("${amazonProperties.secretKey}")
+    private String secretKey;
+@PostConstruct
+    private void initializeAmazon() {
+       AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
+       this.s3client = new AmazonS3Client(credentials);
+}
+}
+
+
+
+##############################################################

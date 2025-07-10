@@ -1,0 +1,689 @@
+
+Q1. What is meant by microservices?
+
+Microservices are an architectural way of software development where the application is divided into small components (service). 
+It allows the application to break into small parts which helps in solving debugging issues.
+Thus, it saves from crashing the entire system as you’ve to just focus on the small component. 
+
+
+Q.2 Spring container
+
+The Spring container is at the core of the Spring Framework. The container will create the objects, wire them together, 
+configure them, and manage their complete life cycle from creation till destruction. 
+The Spring container uses DI to manage the components that make up an application.
+
+
+
+Q.1) @RequestParam vs @QueryParam vs @PathVariable vs @PathParam
+
+Framework,          Path segment,           http query parameter
+Jersey (JAX-RS)     ,@PathParam ,            @QueryParam
+Spring RESTFul,      @PathVariable ,         @RequestParam
+example,          http://xyz.ir/{segment},   http://xyz.ir/?param{param}
+
+As shown in the table, the difference lies in where a value is read out. @PathParam reads the value from a path part of the called URI. @QueryParam is used to read the values ​​from QueryParameters of a URI call. These are after? listed in a URI.
+PathParams are location-dependent, while QueryParams are passed as a key value pair and therefore their order is irrelevant to more than one QueryParam.
+
+
+PathParams are location-dependent, while QueryParams are passed as a key value pair and therefore their order is irrelevant to more than one QueryParam.
+
+I prefer following :
+
+@PathParam
+
+When it's required parameters such as ID, productNo
+
+GET /user/details/{ID}
+GET /products/{company}/{productNo}
+@QueryParam
+
+When you need to pass optional parameters such as filters, online state and They can be null
+
+GET /user/list?country=USA&status=online
+GET /products/list?sort=ASC 
+When Used both
+
+GET /products/{company}/list?sort=ASC 
+
+###################################
+What is the difference between @RequestParam and @PathVariable annotation?
+ @RequestParam is used to capture query parameters or form parameters from the URL, while @PathVariable is used to capture values from the URL path. 
+
+
+
+
+
+
+
+
+###########################################
+
+2)Difference between StringBuffer and StringBuilder
+
+                 StringBuffer	                                    
+1)	StringBuffer is synchronized i.e. thread safe.It means two threads can't call the methods of StringBuffer simultaneously.	
+2)	StringBuffer is less efficient than StringBuilder.	
+3)	StringBuffer was introduced in Java 1.0	
+
+StringBuilder
+StringBuilder is non-synchronized i.e. not thread safe. It means two threads can call the methods of StringBuilder simultaneously.
+StringBuilder is more efficient than StringBuffer.
+StringBuilder was introduced in Java 1.5
+
+
+3)Find object in List java 8
+nstead of using a collector try using findFirst or findAny.
+
+Optional<Person> matchingObject = objects.stream().
+    filter(p -> p.email().equals("testemail")).
+    findFirst();
+This returns an Optional since the list might not contain that object.
+
+If you're sure that the list always contains that person you can call:
+
+Person person = matchingObject.get();
+Be careful though! get throws NoSuchElementException if no value is present. Therefore it is strongly advised that you first ensure that the value is present (either with isPresent or better, use ifPresent, map, orElse or any of the other alternatives found in the Optional class).
+
+If you're okay with a null reference if there is no such person, then:
+
+Person person = matchingObject.orElse(null);
+If possible, I would try to avoid going with the null reference route though. Other alternatives methods in the Optional class (ifPresent, map etc) can solve many use cases. 
+Where I have found myself using orElse(null) is only when I have existing code that was designed to accept null references in some cases.
+
+
+
+
+Java Spring Boot Microservice JD:
+Candidate should be strong in the below skill sets.
+Java :
+
+1. OOPS
+2. Collection
+3. Exception handling
+4. Java 8 features (lambda, streams, etc)
+5. Design patterns
+6. Design principles(SOLID,ACID etc)
+7. Threading
+8. Hash Collision
+9. Garbage Collection
+10. JVM Memory Structure(Senior Developer)
+
+Spring :
+
+1.IOC
+2. Dependency injection
+3. Ways to setup spring
+4. Bean lifecycle
+5. Types Of Autowiring
+
+Spring Boot : 
+
+1. Annotations
+2. Spring rest, 
+3. JPA/Hibernate, 
+4. DB connectivity for CRUD
+5. Junit with spring boot, 
+9. Actuators,
+10. Auto configuration,
+11. Profiles
+12. Fault Tolerance
+13. Distributed Tracing & Logging
+14. Global Exception Handling
+
+Others:
+
+1. Project setup and deployment details
+2. Project landscape and environment details
+3. Code quality setup(SonarQube) and cicd(Jenkins)
+4. JIRA
+5. Agile Methodology & Development Lifecycle
+6.spring security & JWT(Senior Developer)
+7.Microservice Design Patterns(Senior Developer)
+  
+  
+  
+  
+Explain  Hashmap working
+
+Explain changes in Interface in java8
+
+
+##Difference between @Controller and @RestController in Spring Boot
+
+@Controller is used to create web controllers that return views, which is further resolved by view resolver, 
+while @RestController is used to create web services that return JSON or XML data.
+
+@RestController =  @Controller  + @ResponseBody
+
+
+
+#### spring fetchtype eager vs lazy
+
+https://stackoverflow.com/a/56835641/3106234
+
+
+I want to add this note to what was said above.
+
+Suppose you are using Spring (MVC and Data) with this simple architect:
+
+Controller <-> Service <-> Repository
+
+And you want to return some data to the front-end if you are using FetchType.LAZY, you will get a LazyInitializationException 
+after you return data to the controller method since the session is closed in the Service so the JSON Mapper Object can't get the data.
+
+There are two common options to solve this problem, depending on the design, performance, and developer:
+
+The easiest one is to use FetchType.EAGER or any other Anti-patterns solutions, So that the session will still be alive 
+at the controller method, but these solutions will impact the performance.
+The best practice is to use FetchType.LAZY with a mapper (like MapStruct) to transfer data from Entity to another data object DTO 
+and then send it back to the controller, so there is no exception if the session closed.
+
+
+
+####################################################
+
+-----In java what happens if we dont override equals and  hashcode method
+
+In Java, both the `equals()` and `hashCode()` methods are used for implementing hash-based data structures, 
+like `HashSet`, `HashMap`, and `Hashtable`. They are crucial when you want to use instances of a class as keys in hash-based collections 
+or when you need to check the equality of instances.
+
+1. **`equals()` Method**:
+   The `equals()` method is used to compare the contents of two objects for equality. If you don't override this method in your class, 
+   the default implementation provided by the `Object` class is used, which performs reference equality. In other words, 
+   it checks whether the two references point to the same memory location, not whether their content is the same.
+
+   For most classes, content equality is the desired behavior. So, if you want to compare instances of your class based on their attribute values, 
+   you should override the `equals()` method and define the comparison logic based on your class's attributes.
+
+2. **`hashCode()` Method**:
+   The `hashCode()` method is used to generate a hash code, which is an integer value that represents the state of an object. 
+   Hash codes are used by hash-based data structures to distribute objects across buckets, improving the efficiency of data retrieval. 
+   If you don't override the `hashCode()` method, the default implementation provided by the `Object` 
+   which typically maps each object to a unique integer based on its memory address.
+
+   If you override the `equals()` method, you should also override the `hashCode()` method. 
+   These two methods are closely related: if two objects are equal according to the `equals()` method, 
+   they should have the same hash code according to the `hashCode()` method.
+
+In summary, not overriding these methods properly can lead to unexpected behavior when you use instances 
+of your class as keys in hash-based collections. For example:
+
+- If you use instances of your class in a `HashSet` and you haven't overridden `equals()` and `hashCode()`, 
+duplicate instances may not be removed as expected.
+- If you use instances of your class as keys in a `HashMap`, you might not be able to retrieve the associated values 
+using different instances of the same class.
+
+To ensure correct behavior when using hash-based collections, it's generally recommended to override `equals()` and `hashCode()` whenever you override one of them. Always follow the contract specified in the Java documentation for these methods.
+
+
+##################################################################################
+--Explain Hibernate Second Level Cache
+
+Hibernate second level cache uses a common cache for all the session object of a session factory. 
+It is useful if you have multiple session objects from a session factory.
+
+SessionFactory holds the second level cache data. It is global for all the session objects and not enabled by default.
+
+Different vendors have provided the implementation of Second Level Cache.
+
+EH Cache
+OS Cache
+Swarm Cache
+JBoss Cache
+
+
+##############################################
+fail safe and fail fast Itereators in java
+
+
+################################################
+
+Groupby using stream api
+
+ Map<String, Long> counted = list.stream()
+            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        System.out.println(counted);
+		
+		
+		
+	list<EMP> 
+
+list.stream().collect(Collector.groupingBy(Emp -> Emp.dept, Collector.max(Emp.salary)  )  )	
+		
+		
+		
+		Collectors.maxBy(Comparator.comparingDouble(emp -> emp.getSalary())
+		
+https://medium.com/swlh/java-collectors-and-its-20-methods-2fc422920f18		
+######################################################################	
+
+checked exceptions vs unchecked exceptions
+
+checked exceptions:
+These are the exceptions that are checked at compile time. 
+If some code within a method throws a checked exception, then the method must either handle the exception or 
+it must specify the exception using the throws keyword. In checked exceptions, there are two types: fully checked and partially checked exceptions. 
+A fully checked exception is a checked exception where all its child classes are also checked, like IOException, and InterruptedException.
+
+unchecked exceptions:
+These are the exceptions that are not checked at compile time. 
+In Java, exceptions under Error and RuntimeException classes are unchecked exceptions, everything else under throwable is checked. 
+
+
+
+##################################################################
+
+Java Overriding rules
+
+The argument list should be exactly the same as that of the overridden method.
+The return type should be the same or a subtype of the return type declared in the original overridden method in the superclass.
+The access level cannot be more restrictive than the overridden method's access level. For example: If the superclass method is declared public then the overriding method in the subclass cannot be either private or protected.
+Instance methods can be overridden only if they are inherited by the subclass.
+A method declared final cannot be overridden.
+A method declared static cannot be overridden but can be re-declared.
+If a method cannot be inherited, then it cannot be overridden.
+A subclass within the same package as the instance's superclass can override any superclass method that is not declared private or final.
+A subclass in a different package can only override the non-final methods declared public or protected.
+An overriding method can throw any uncheck exceptions, regardless of whether the overridden method throws exceptions or not. However, the overriding method should not throw checked exceptions that are new or broader than the ones declared by the overridden method. The overriding method can throw narrower or fewer exceptions than the overridden method.
+Constructors cannot be overridden.
+
+
+###################################################################
+how to prevent cloning of a singleton object:
+
+Overcome Cloning issue: To overcome this issue, override clone() method and throw an exception from clone method that is 
+CloneNotSupportedException. Now, whenever user will try to create clone of singleton object, it will throw an exception 
+and hence our class remains singleton.
+
+
+
+
+##################################################################################
+
+sql truncate vs delete
+
+The DELETE command is used to delete particular records from a table. The TRUNCATE command is used to delete the complete data from the table.
+
+##################################################################################
+
+Difference between SQL  Function and Procedure
+
+A function is used to calculate result using given inputs. A function can be called by a procedure.
+
+
+A procedure is used to perform certain task in order. A procedure cannot be called by a function.
+
+##################################################################################
+
+include refresh actuator
+https://hashnode.com/post/refresh-applicationproperties-in-spring-boot-without-restarting-tomcat-server-cl015nl7m0ae9l0nv3yfi10y3
+
+
+#########################################################################
+
+		JVM changes java 8
+https://www.linkedin.com/pulse/java-virtual-machine-changes-78-9-kunal-saxena/
+
+#############################################################################
+JSON Web Token Structure
+https://auth0.com/docs/secure/tokens/json-web-tokens/json-web-token-structure
+
+JOSE Header: contains metadata about the type of token and the cryptographic algorithms used to secure its contents.
+
+JWS payload (set of claims): contains verifiable security statements, such as the identity of the user and the permissions they are allowed.
+
+JWS signature: used to validate that the token is trustworthy and has not been tampered with. When you use a JWT, you must check its signature before storing and using it.
+
+###################################################################################
+
+Difference Between map() And flatMap() In Java Stream
+
+map() function produces one output for one input value, 
+  ArrayList<String> fruit = new ArrayList<>();
+
+   List list = fruit.stream()
+                        .map(s -> s.length())
+                        .collect(Collectors.toList());
+						
+whereas flatMap() function produces an arbitrary no of values as output(ie zero or more than zero) for each input value.
+
+ List<List<Integer> > number = new ArrayList<>();
+
+ List<Integer> flatList
+            = number.stream()
+                  .flatMap(list -> list.stream())
+                  .collect(Collectors.toList());
+				  
+				  
+###################################################################################
+
+why string is immutable in java
+
+The String is immutable in Java because of the security, synchronization and concurrency, caching, and class loading. 
+The reason of making string final is to destroy the immutability and to not allow others to extend it.
+The String pool cannot be possible if String is not immutable in Java. A lot of heap space is saved by JRE. 
+The same string variable can be referred to by more than one string variable in the pool. 
+String interning can also not be possible if the String would not be immutable.
+If we don't make the String immutable, it will pose a serious security threat to the application. 
+For example, database usernames, passwords are passed as strings to receive database connections. 
+The socket programming host and port descriptions are also passed as strings. The String is immutable, so its value cannot be changed. 
+If the String doesn't remain immutable, any hacker can cause a security issue in the application by changing the reference value.
+The String is safe for multithreading because of its immutableness. Different threads can access a single "String instance". 
+It removes the synchronization for thread safety because we make strings thread-safe implicitly.
+
+Immutability gives the security of loading the correct class by Classloader. 
+For example, suppose we have an instance where we try to load java.sql.Connection class but the changes in the referenced value to the myhacked.
+Connection class does unwanted things to our database.
+
+
+####################################################################################
+
+Autowiring in Spring
+
+Autowiring feature of spring framework enables you to inject the object dependency implicitly. 
+It internally uses setter or constructor injection.
+
+Autowiring Modes
+There are many autowiring modes:
+
+No.	Mode	Description
+1)	no	It is the default autowiring mode. It means no autowiring bydefault.
+2)	byName	The byName mode injects the object dependency according to name of the bean. 
+In such case, property name and bean name must be same. It internally calls setter method.
+3)	byType	The byType mode injects the object dependency according to type. So property name and bean name can be different. 
+It internally calls setter method.
+4)	constructor	The constructor mode injects the dependency by calling the constructor of the class. 
+It calls the constructor having large number of parameters.
+5)	autodetect	It is deprecated since Spring 3.
+
+
+####################################################################################
+
+HTTP status codes
+
+1xx informational response – the request was received, continuing process
+2xx successful – the request was successfully received, understood, and accepted
+3xx redirection – further action needs to be taken in order to complete the request
+4xx client error – the request contains bad syntax or cannot be fulfilled
+5xx server error – the server failed to fulfil an apparently valid request
+
+
+200 OK
+Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request, the response will contain an entity describing or containing the result of the action.
+201 Created
+The request has been fulfilled, resulting in the creation of a new resource.[6]
+202 Accepted
+The request has been accepted for processing, but the processing has not been completed. The request might or might not be eventually acted upon, and may be disallowed when processing occurs.
+203 Non-Authoritative Information (since HTTP/1.1)
+The server is a transforming proxy (e.g. a Web accelerator) that received a 200 OK from its origin, but is returning a modified version of the origin's response.[7][8]
+204 No Content
+The server successfully processed the request, and is not returning any content.
+205 Reset Content
+The server successfully processed the request, asks that the requester reset its document view, and is not returning any content.
+206 Partial Content
+
+
+400 Bad Request
+The server cannot or will not process the request due to an apparent client error (e.g., malformed request syntax, size too large, invalid request message framing, or deceptive request routing).
+401 Unauthorized
+Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided. The response must include a WWW-Authenticate header field containing a challenge applicable to the requested resource. See Basic access authentication and Digest access authentication. 401 semantically means "unauthorised", the user does not have valid authentication credentials for the target resource.
+Some sites incorrectly issue HTTP 401 when an IP address is banned from the website (usually the website domain) and that specific address is refused permission to access a website.[citation needed]
+402 Payment Required
+Reserved for future use. The original intention was that this code might be used as part of some form of digital cash or micropayment scheme, as proposed, for example, by GNU Taler,[14] but that has not yet happened, and this code is not widely used. Google Developers API uses this status if a particular developer has exceeded the daily limit on requests.[15] Sipgate uses this code if an account does not have sufficient funds to start a call.[16] Shopify uses this code when the store has not paid their fees and is temporarily disabled.[17] Stripe uses this code for failed payments where parameters were correct, for example blocked fraudulent payments.[18]
+403 Forbidden
+The request contained valid data and was understood by the server, but the server is refusing action. This may be due to the user not having the necessary permissions for a resource or needing an account of some sort, or attempting a prohibited action (e.g. creating a duplicate record where only one is allowed). This code is also typically used if the request provided authentication by answering the WWW-Authenticate header field challenge, but the server did not accept that authentication. The request should not be repeated.
+404 Not Found
+The requested resource could not be found but may be available in the future. Subsequent requests by the client are permissible.
+405 Method Not Allowed
+A request method is not supported for the requested resource; for example, a GET request on a form that requires data to be presented via POST, or a PUT request on a read-only resource.
+406 Not Acceptable
+The requested resource is capable of generating only content not acceptable according to the Accept headers sent in the request. See Content negotiation.
+407 Proxy Authentication Required
+The client must first authenticate itself with the proxy.
+408 Request Timeout
+The server timed out waiting for the request. According to HTTP specifications: "The client did not produce a request within the time that the server was prepared to wait. The client MAY repeat the request without modifications at any later time."
+409 Conflict
+Indicates that the request could not be processed because of conflict in the current state of the resource, such as an edit conflict between multiple simultaneous updates.
+410 Gone
+Indicates that the resource requested was previously in use but is no longer available and will not be available again. This should be used when a resource has been intentionally removed and the resource should be purged. Upon receiving a 410 status code, the client should not request the resource in the future. Clients such as search engines should remove the resource from their indices. Most use cases do not require clients and search engines to purge the resource, and a "404 Not Found" may be used instead.
+411 Length Required
+The request did not specify the length of its content, which is required by the requested resource.
+412 Precondition Failed
+The server does not meet one of the preconditions that the requester put on the request header fields.
+413 Payload Too Large
+The request is larger than the server is willing or able to process. Previously called "Request Entity Too Large" in RFC 2616.[19]
+414 URI Too Long
+
+
+500 Internal Server Error
+A generic error message, given when an unexpected condition was encountered and no more specific message is suitable.
+501 Not Implemented
+The server either does not recognize the request method, or it lacks the ability to fulfil the request. Usually this implies future availability (e.g., a new feature of a web-service API).
+502 Bad Gateway
+The server was acting as a gateway or proxy and received an invalid response from the upstream server.
+503 Service Unavailable
+The server cannot handle the request (because it is overloaded or down for maintenance). Generally, this is a temporary state.[31]
+504 Gateway Timeout
+The server was acting as a gateway or proxy and did not receive a timely response from the upstream server.
+505 HTTP Version Not Supported
+The server does not support the HTTP version used in the request.
+506 Variant Also Negotiates (RFC 2295)
+Transparent content negotiation for the request results in a circular reference.[32]
+507 Insufficient Storage (WebDAV; RFC 4918)
+The server is unable to store the representation needed to complete the request.[9]
+508 Loop Detected (WebDAV; RFC 5842)
+The server detected an infinite loop while processing the request (sent instead of 208 Already Reported).
+510 Not Extended (RFC 2774)
+Further extensions to the request are required for the server to fulfil it.[33]
+511 Network Authentication Required (RFC 6585)
+The client needs to authenticate to gain network access.
+
+
+
+####################################################################################
+
+jenkins pipelines  statuscode     P crontabs  unix  Scrum   
+
+###################################################################
+
+Here are detailed answers to the Core Java interview questions:  
+
+---
+
+### **1) Difference between ArrayList and LinkedList**  
+| Feature        | ArrayList | LinkedList |
+|---------------|-----------|------------|
+| **Implementation** | Uses a dynamic array | Uses a doubly linked list |
+| **Insertion/Deletion** | Slow for insertions/deletions in the middle (O(n)) | Fast insertions/deletions in the middle (O(1) when at a known position) |
+| **Random Access** | Fast (O(1)) | Slow (O(n)) |
+| **Memory Overhead** | Less overhead as it stores elements in a contiguous array | More overhead due to storing pointers to previous and next elements |
+
+Use **ArrayList** when you need fast random access and **LinkedList** when frequent insertions/deletions are required.  
+
+---
+
+### **2) How HashMap Works Internally in Java**  
+- `HashMap` stores key-value pairs using an **array of buckets** and the **hashing mechanism**.  
+- The **hash function** determines the index where the entry should be placed.  
+- If two keys have the **same hashcode**, they are stored in the same bucket using a **linked list** (or red-black tree in Java 8 for optimization).  
+
+---
+
+### **3) What Happens if Two Keys Have the Same Hashcode in HashMap?**  
+- They are stored in the **same bucket** using a **linked list**.  
+- Java 8 optimizes this by converting it into a **red-black tree** if the bucket size exceeds a threshold (typically 8).  
+- `equals()` method is used to check if keys are truly equal.  
+
+---
+
+### **4) Difference Between String, StringBuilder, and StringBuffer**  
+| Feature | String | StringBuilder | StringBuffer |
+|---------|--------|--------------|-------------|
+| **Mutability** | Immutable | Mutable | Mutable |
+| **Thread-Safety** | Yes | No | Yes |
+| **Performance** | Slow | Fast | Slower than StringBuilder |
+
+Use **String** when immutability is required, **StringBuilder** for better performance in a single-threaded environment, and **StringBuffer** when thread safety is needed.  
+
+---
+
+### **5) Why is String Immutable in Java?**  
+- **Security**: Prevents modification of sensitive data (e.g., passwords).  
+- **Performance**: String pooling improves memory efficiency.  
+- **Thread-Safety**: Multiple threads can share a `String` safely.  
+- **Caching Hashcode**: Strings can be used as **keys in HashMap** without changes.  
+
+---
+
+### **6) How Does Garbage Collection Work in Java?**  
+Garbage Collection (GC) automatically removes **unused objects** from memory. The main GC types in Java:  
+- **Serial GC**: Used in single-threaded environments.  
+- **Parallel GC**: Uses multiple threads for garbage collection.  
+- **G1 GC**: Designed for large heaps, divides memory into regions.  
+- **ZGC (JDK 11+)**: Low-latency GC for large applications.  
+
+---
+
+### **7) Explain Java Memory Management (Heap vs. Stack)**  
+- **Stack Memory**: Stores **method calls, local variables, and object references**.  
+- **Heap Memory**: Stores **objects** and is managed by Garbage Collector.  
+- **Method Area**: Stores class structures and static variables.  
+- **PC Register & Native Stack**: Used for JVM instructions and native method execution.  
+
+---
+
+### **8) What Are Functional Interfaces in Java?**  
+A **functional interface** has exactly **one abstract method** and can use **lambda expressions**.  
+Examples:  
+- `Runnable` (run method)  
+- `Callable` (call method)  
+- `Consumer<T>` (accept method)  
+- `Function<T,R>` (apply method)  
+
+---
+
+### **9) Difference Between Comparator and Comparable**  
+| Feature | Comparable | Comparator |
+|---------|-----------|------------|
+| **Usage** | Used to define **natural ordering** | Used for **custom ordering** |
+| **Method** | `compareTo(T o)` | `compare(T o1, T o2)` |
+| **Implemented By** | The class itself (`implements Comparable<T>`) | A separate class (`implements Comparator<T>`) |
+
+Use `Comparable` for **default sorting** and `Comparator` for **custom sorting**.  
+
+---
+
+### **10) What is Java 8 Stream API, and How Does It Work?**  
+- Introduced in **Java 8** for **functional-style processing of collections**.  
+- Supports operations like `map()`, `filter()`, `reduce()`, `sorted()`.  
+- **Lazy Execution**: Operations are only executed when the terminal operation (like `collect()`) is called.  
+- Supports **parallel processing** using `.parallelStream()`.  
+
+Example:  
+```java
+List<String> names = List.of("Alice", "Bob", "Charlie");
+List<String> filtered = names.stream().filter(n -> n.startsWith("A")).collect(Collectors.toList());
+```
+
+---
+
+### **11) How Does Concurrency Work in Java?**  
+- Uses **Threads** for parallel execution.  
+- `ExecutorService` is used to manage thread pools.  
+- `synchronized`, `volatile`, and `Lock` classes help avoid concurrency issues.  
+
+---
+
+### **12) Explain the `volatile` Keyword in Java**  
+- Ensures **visibility** of changes across threads.  
+- Prevents **instruction reordering**.  
+- Does **not** provide atomicity (use `synchronized` for that).  
+
+Example:  
+```java
+private volatile boolean running = true;
+```
+
+---
+
+### **13) What is the Use of the `transient` Keyword?**  
+- Prevents a field from being **serialized**.  
+- Useful for security (e.g., passwords).  
+
+Example:  
+```java
+private transient String password;
+```
+
+---
+
+### **14) Difference Between `final`, `finally`, and `finalize`**  
+| Keyword | Usage |
+|---------|-------|
+| `final` | Used for constants (`final int x = 10;`), methods (to prevent overriding), and classes (to prevent inheritance). |
+| `finally` | A block that always executes after `try-catch`, used for resource cleanup. |
+| `finalize()` | A method called by Garbage Collector before an object is destroyed (not guaranteed to run). |
+
+---
+
+### **15) What Are Checked and Unchecked Exceptions?**  
+| Type | Description | Examples |
+|------|------------|----------|
+| **Checked** | Checked at compile-time | `IOException`, `SQLException` |
+| **Unchecked** | Checked at runtime | `NullPointerException`, `ArrayIndexOutOfBoundsException` |
+
+---
+
+### **16) Can We Override a Static Method in Java?**  
+- No, **static methods are not overridden**, but **hidden**.  
+- If a subclass defines a static method with the same signature, it **hides** the parent’s static method.  
+
+Example:  
+```java
+class Parent { static void show() { System.out.println("Parent"); } }
+class Child extends Parent { static void show() { System.out.println("Child"); } }
+```
+
+---
+
+### **17) Difference Between Deep Copy and Shallow Copy**  
+- **Shallow Copy**: Copies **references** to objects, not actual data.  
+- **Deep Copy**: Creates a new object and **recursively copies** all nested objects.  
+
+Example:  
+```java
+Object clone() throws CloneNotSupportedException; // Shallow Copy
+```
+
+---
+
+### **18) How Does the `synchronized` Keyword Work?**  
+- Prevents **multiple threads** from accessing a block of code simultaneously.  
+- Can be applied to **methods** or **blocks**.  
+
+Example:  
+```java
+synchronized void myMethod() { ... }
+```
+
+---
+
+### **19) What is a ThreadPool, and Why is it Used?**  
+- A **ThreadPool** manages a fixed number of worker threads.  
+- Improves performance and avoids overhead of creating/destroying threads.  
+
+Example:  
+```java
+ExecutorService executor = Executors.newFixedThreadPool(5);
+```
+
+---
+
+### **20) How Do You Handle Deadlocks in Java?**  
+- **Avoid Nested Locks**: Always acquire locks in the same order.  
+- **Use Timeout**: Use `tryLock()` instead of `synchronized`.  
+- **Detect Deadlocks**: Use `ThreadMXBean` to detect deadlocks.  
+
+

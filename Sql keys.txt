@@ -1,0 +1,66 @@
+In the context of relational databases, keys are used to establish relationships and ensure data integrity within tables. 
+There are several types of keys in SQL:
+
+1. **Primary Key**: 
+A primary key uniquely identifies each record in a table. It must contain unique and non-null values. 
+There can only be one primary key in a table. Primary keys are used as reference points for foreign keys in 
+other tables to establish relationships. 
+For example:
+
+   ```sql
+   CREATE TABLE Students (
+       student_id INT PRIMARY KEY,
+       name VARCHAR(255),
+       age INT
+   );
+   ```
+
+2. **Foreign Key**: 
+A foreign key establishes a link between two tables by referencing the primary key of another table. 
+It ensures referential integrity, meaning values in the foreign key column must match values in the primary key column 
+of the referenced table. 
+For example:
+
+   ```sql
+   CREATE TABLE Enrollments (
+       enrollment_id INT PRIMARY KEY,
+       student_id INT,
+       course_id INT,
+       FOREIGN KEY (student_id) REFERENCES Students(student_id),
+       FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+   );
+   ```
+
+3. **Unique Key**: 
+A unique key ensures that the values in a column are unique across the table. Unlike the primary key, 
+a table can have multiple unique keys. Unique keys are used to enforce uniqueness but not necessarily to identify records uniquely. 
+For example:
+
+   ```sql
+   CREATE TABLE Employees (
+       employee_id INT PRIMARY KEY,
+       employee_code VARCHAR(10) UNIQUE,
+       email VARCHAR(255) UNIQUE
+   );
+   ```
+
+4. **Alternate Key**:
+ An alternate key is a candidate key that is not selected as the primary key. 
+ It could potentially serve as a primary key if the primary key wasn't available.
+ Alternate keys are unique keys that can be used to identify records uniquely. 
+ For instance, if a table has both a primary key and a unique key, the unique key is an alternate key.
+
+5. **Composite Key**: 
+A composite key is a key that consists of multiple columns. 
+It's used when a single column doesn't uniquely identify a record, but the combination of multiple columns does. 
+Composite keys are often used when establishing relationships between tables.
+
+6. **Super Key**: 
+A super key is a set of one or more columns that can be used to uniquely identify a record. 
+It may contain more columns than are required for a primary key. In other words, a primary key is a minimal super key.
+
+7. **Candidate Key**: 
+A candidate key is a minimal super key, meaning it's a set of columns that uniquely identify a record without any unnecessary columns. 
+From the candidate keys, one is chosen to be the primary key.
+
+These key concepts are fundamental to maintaining data integrity and relationships within a relational database system.

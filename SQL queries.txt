@@ -1,0 +1,103 @@
+
+
+
+
+
+
+Write a query to fetch values in table test_a table with id column that are and not in test_b table with id column without using the NOT keyword.
+
+SELECT a.*
+FROM test_a a
+LEFT JOIN test_b b ON a.id = b.id
+WHERE b.id IS NULL;
+
+
+ 
+ 
+ 
+ 
+for table  Emp(id, name, salary, department) , get Emp with Max Salary from each department
+ 
+ SELECT e1.*
+FROM Emp e1
+WHERE e1.salary = (
+    SELECT MAX(e2.salary)
+    FROM Emp e2
+    WHERE e2.department = e1.department
+);
+
+
+#################################################################
+
+Sql query to get all rows which contains any column value equal to "Yellow" without using OR keyword
+
+
+SELECT * FROM your_table WHERE column1 = 'Yellow'
+UNION
+SELECT * FROM your_table WHERE column2 = 'Yellow'
+UNION
+SELECT * FROM your_table WHERE column3 = 'Yellow'
+
+
+
+
+#############################################################
+
+Write a single query to calculate the sum of all positive values of x and he sum of all negative
+values of x.
+
+
+SELECT
+  SUM(CASE WHEN x > 0 THEN x ELSE 0 END) AS sum_positive_x,
+  SUM(CASE WHEN x < 0 THEN x ELSE 0 END) AS sum_negative_x
+FROM
+  your_table;
+
+
+
+
+#########################################################
+
+
+
+SQL query get 5th largest Salary from Employee table
+
+SELECT DISTINCT Salary
+FROM Employee
+ORDER BY Salary DESC
+LIMIT 1 OFFSET 4;
+
+
+
+In this query:
+
+ORDER BY Salary DESC arranges the salaries in descending order, so the highest salary will be at the top.
+LIMIT 1 restricts the result to only one row.
+OFFSET 4 skips the first 4 rows, effectively selecting the 5th row (since rows are zero-indexed).
+Please note that if there are duplicate salaries, this query will retrieve the 5th distinct salary, not the 5th highest distinct salary. If you need to handle duplicate salaries, you might need a more complex query involving subqueries.
+
+
+##################################################################################
+
+Rest Template
+
+Rest Template is used to create applications that consume RESTful Web Services. 
+You can use the exchange() method to consume the web services for all HTTP methods.
+@RestController
+public class ConsumeWebService {
+   @Autowired
+   RestTemplate restTemplate;
+
+   @RequestMapping(value = "/template/products")
+   public String getProductList() {
+      HttpHeaders headers = new HttpHeaders();
+      headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+      HttpEntity <String> entity = new HttpEntity<String>(headers);
+      
+      return restTemplate.exchange("
+         http://localhost:8080/products", HttpMethod.GET, entity, String.class).getBody();
+   }
+}
+
+
+##################################################################################

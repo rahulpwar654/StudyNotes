@@ -1,0 +1,78 @@
+ Java Features
+ 
+ 
+Java 8 features:
+
+
+Lambda expressions: Lambda expressions are anonymous functions that can be used to pass code as arguments to methods or constructors.
+They are a concise way to represent blocks of code, and they can help to make code more readable and maintainable.
+
+Functional interfaces: Functional interfaces are interfaces that have only one abstract method. 
+They are used in conjunction with lambda expressions, and they make it easier to write code that is declarative and functional.
+
+Stream API: The Stream API is a new library that provides a way to perform operations on collections of data in a sequential 
+or parallel manner. It is a powerful tool that can be used to simplify and improve the performance of data processing code.
+
+Default methods: Default methods are methods that are declared in an interface 
+but can also be overridden by implementations of the interface. 
+They provide a way to add new functionality to interfaces without breaking existing code.
+
+Optional class: The Optional class is a new class that represents a value that may be null. 
+It provides a way to handle null values in a safe 
+and concise manner.
+
+Date and time API: The Date and time API is a new library that provides a more modern and efficient way to represent dates and times in Java.
+
+
+
+
+
+
+Java 11 features: 
+
+
+HTTP Client API: A standard HTTP client API that supports both HTTP/1.1 and HTTP/2.
+
+Z Garbage Collector: A low-latency garbage collector that can be used to improve the performance of Java applications.
+
+Nest-based access control: A new access control mechanism that allows developers to control access to classes and methods based 
+on their nesting structure.
+
+Multi-release JAR files: A new type of JAR file that can contain multiple versions of class files, making it easier for library 
+developers to support multiple versions of Java.
+
+Support for Unicode 10: Support for the latest version of the Unicode standard, which includes new characters and symbols.
+
+Removal of the Java EE and CORBA modules: The Java EE and CORBA modules have been removed from Java 11, as they are no longer widely used.
+
+
+
+Java 17 features
+
+Restore Always-Strict Floating-Point Semantics: This feature restores the default floating-point semantics to be strict, which means that 
+all floating-point operations are checked for overflow and underflow. This can help to improve the accuracy of floating-point calculations.
+
+Enhanced Pseudo-Random Number Generators: This feature provides a new interface type and implementations for pseudorandom number generators
+ to make it easier to use various PRNG algorithms and to better support stream-based operations.
+ 
+New macOS Rendering Pipeline: This feature provides a new rendering pipeline for macOS that can improve the performance of Java applications on macOS.
+
+macOS/AArch64 Port: This feature provides a port of the Java Virtual Machine (JVM) to the Apple M1 chip, which is based on the ARM64 architecture.
+ This allows Java applications to run natively on Apple M1 Macs.
+ 
+Deprecate the Applet API for Removal: This feature deprecates the Applet API, which is a deprecated technology that is no longer widely used.
+
+Strongly Encapsulate JDK Internals: This feature makes it more difficult for developers to access JDK internals, 
+which can help to improve the security of Java applications.
+
+Pattern Matching for Switch (Preview): This feature introduces a preview of pattern matching for the switch statement,
+ which can make it more concise and expressive to write switch statements.
+ 
+Remove RMI Activation: This feature removes the RMI Activation mechanism, which is a deprecated technology that is no longer widely used.
+
+Sealed Classes: This feature introduces sealed classes, which are a new type of class that can be used to restrict the subclasses that 
+can be created from them. This can be used to improve the safety and security of Java code.
+
+
+Remove the Experimental AOT and JIT Compiler: This feature removes the experimental AOT and JIT compilers, 
+which are no longer under active development.

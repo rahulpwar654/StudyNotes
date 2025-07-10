@@ -1,0 +1,57 @@
+
+
+
+As a Reactjs developer,
+
+Please learn :
+
+1. Advanced State Management
+- Redux & Redux Toolkit
+- Context API
+- Recoil or Zustand
+
+2. React Performance Optimization
+- Memoization (React.memo, useMemo, useCallback)
+- Code Splitting
+- React Profiler
+
+3. Component Design Patterns
+- Higher-Order Components (HOCs)
+- Render Props
+- Custom Hooks
+
+4. Server-Side Rendering (SSR)
+- Next.js
+- Hydration
+
+5. TypeScript with React
+- Type Safety
+- Advanced Types and Generics
+
+6. Testing
+- React Testing Library
+- End-to-End Testing (Cypress, Playwright)
+- Mocking and Stubbing
+
+7. React Ecosystem and Tooling
+- Webpack and Babel
+- ESLint and Prettier
+
+8. API Integration
+- GraphQL (Apollo Client, Relay)
+- SWR and React Query
+- WebSockets and Real-Time Updates
+
+9. Authentication and Authorization
+- OAuth and JWT
+- Role-Based Access Control (RBAC)
+
+10. Code Architecture
+- Monorepos (Nx, Lerna)
+- Micro-Frontends
+- Atomic Design
+
+11. Web Performance Optimization
+- Lazy Loading
+- Progressive Web Apps (PWA)
+- Service Workers

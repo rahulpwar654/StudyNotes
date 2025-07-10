@@ -1,0 +1,296 @@
+Terminal Operations
+1. collect: The collect method is used to return the result of the intermediate operations performed on the stream.
+List number = Arrays.asList(2,3,4,5,3);
+Set square = number.stream().map(x->x*x).collect(Collectors.toSet());
+
+2. forEach: The forEach method is used to iterate through every element of the stream.
+List number = Arrays.asList(2,3,4,5);
+number.stream().map(x->x*x).forEach(y->System.out.println(y));
+
+3. reduce: The reduce method is used to reduce the elements of a stream to a single value. The reduce method takes a BinaryOperator as a parameter.
+List number = Arrays.asList(2,3,4,5);
+int even = number.stream().filter(x->x%2==0).reduce(0,(ans,i)-> ans+i);
+
+
+######################################################
+
+java 8 stream api intermediate and terminal operations
+
+1) The main difference between intermediate and terminal operations is that 
+intermediate operations return a stream as a result 
+and terminal operations return non-stream values like primitive or object or collection or may not return anything.
+
+2) As intermediate operations return another stream as a result, they can be chained together to form a pipeline of operations. 
+Terminal operations can not be chained together.
+
+3) Pipeline of operations may contain any number of intermediate operations, but there has to be only one terminal operation, 
+that too at the end of pipeline.
+
+
+
+6) Intermediate Operations :
+
+map(), filter(), distinct(), 
+sorted(), limit(), skip()
+
+
+Terminal Operations :
+
+forEach(), toArray(), reduce(), 
+collect(), min(), max(), count(), 
+anyMatch(), allMatch(), noneMatch(),
+ findFirst(), findAny()
+
+
+
+#################################################################
+sorted:
+
+
+List<Type> result = list
+                    .stream()
+                    .sorted(Comparator.comparing(Type::getValue))
+                    .collect(Collectors.toList());
+					
+				
+					
+#################################################################	
+
+How to count the number of occurrences of an element in a List
+
+Map<String, Long> counts = 
+       animals.stream()
+              .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+
+
+Methods that return the number of occurrence of a single element:
+
+Collections.frequency(animals, "bat");
+
+animals.stream().filter("bat"::equals).count();
+
+
+
+				
+#################################################################
+
+
+Reduce: 
+
+ // String array
+        String[] array = { "Geeks", "for", "Geeks" };
+ Optional<String> String_combine = Arrays.stream(array)
+                                           .reduce((str1, str2)
+                                           -> str1 + "-" + str2);
+  
+        // Displaying the combined String
+        if (String_combine.isPresent()) {
+            System.out.println(String_combine.get());
+        }	
+
+		
+			Geeks-for-Geeks		
+					
+#################################################################
+				
+
+    Optional<Employee> maxSalaryEmp = 
+            employeeList.stream()
+            .collect(Collectors.maxBy(Comparator.comparing(Employee::getSalary)));
+			
+			
+			
+			
+			Groupby using stream api
+
+ Map<String, Long> counted = list.stream()
+            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        System.out.println(counted);
+		
+		
+		
+	list<EMP> 
+
+list.stream().collect(Collector.groupingBy(Emp -> Emp.dept, Collector.max(Emp.salary)  )  )	
+		
+		
+		
+		Collectors.maxBy(Comparator.comparingDouble(emp -> emp.getSalary())
+		
+		
+####################################################################################
+
+In Java 8, the Stream API provides a powerful and expressive way to process sequences of elements, such as collections, arrays, or other data sources. Streams consist of two main types of operations: intermediate operations and terminal operations. Intermediate operations are used to transform or filter the elements of a stream and return a new stream. Here, I'll explain all the intermediate operations with examples:
+
+1. **`filter(Predicate<T> predicate)`**: This operation filters the elements of a stream based on a given condition and returns a new stream containing only the elements that satisfy the condition.
+
+   ```java
+   List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+   List<Integer> evenNumbers = numbers.stream()
+       .filter(n -> n % 2 == 0)
+       .collect(Collectors.toList()); // Collect the even numbers into a list
+   ```
+
+2. **`map(Function<T, R> mapper)`**: This operation transforms each element of the stream using the provided function and returns a new stream of transformed elements.
+
+   ```java
+   List<String> names = Arrays.asList("Alice", "Bob", "Charlie", "David");
+   List<Integer> nameLengths = names.stream()
+       .map(String::length) // Map names to their lengths
+       .collect(Collectors.toList()); // Collect the lengths into a list
+   ```
+
+3. **`flatMap(Function<T, Stream<R>> mapper)`**: This operation is used for flattening nested streams into a single stream. It applies a mapping function that returns a stream for each element and flattens these streams into one.
+
+   ```java
+   List<List<Integer>> nestedList = Arrays.asList(
+       Arrays.asList(1, 2, 3),
+       Arrays.asList(4, 5, 6),
+       Arrays.asList(7, 8, 9)
+   );
+
+   List<Integer> flatList = nestedList.stream()
+       .flatMap(List::stream) // Flatten the nested lists into one list
+       .collect(Collectors.toList());
+   ```
+
+4. **`distinct()`**: This operation returns a new stream with distinct elements (eliminates duplicates) based on the elements' `equals()` method.
+
+   ```java
+   List<Integer> numbersWithDuplicates = Arrays.asList(1, 2, 2, 3, 3, 4, 5, 5);
+   List<Integer> distinctNumbers = numbersWithDuplicates.stream()
+       .distinct()
+       .collect(Collectors.toList()); // Collect distinct numbers into a list
+   ```
+
+5. **`sorted()` and `sorted(Comparator<T> comparator)`**: These operations return a new stream with elements sorted in their natural order or according to a provided comparator.
+
+   ```java
+   List<Integer> numbers = Arrays.asList(3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5);
+   List<Integer> sortedNumbers = numbers.stream()
+       .sorted() // Sort numbers in natural order
+       .collect(Collectors.toList()); // Collect sorted numbers into a list
+
+   // Sorting in reverse order
+   List<Integer> reverseSortedNumbers = numbers.stream()
+       .sorted(Comparator.reverseOrder())
+       .collect(Collectors.toList());
+   ```
+
+6. **`peek(Consumer<T> action)`**: This operation is used for debugging and logging. It returns the same stream but allows you to perform an action on each element as it passes through the stream.
+
+   ```java
+   List<String> names = Arrays.asList("Alice", "Bob", "Charlie", "David");
+   List<String> upperCaseNames = names.stream()
+       .map(String::toUpperCase)
+       .peek(System.out::println) // Print each uppercase name
+       .collect(Collectors.toList());
+   ```
+
+These are the main intermediate operations available in Java 8's Stream API. They allow you to transform, filter, and process the elements of a stream before applying a terminal operation to produce a result.	
+
+##########################################################################################################
+
+In Java 8, the Stream API provides two categories of operations: intermediate operations and terminal operations. Terminal operations are the ones that produce a result or a side effect and mark the end of a stream pipeline. Here, I'll explain all the terminal operations with examples:
+
+1. **`forEach(Consumer<T> action)`**: This operation applies the given action to each element of the stream. It's useful for performing an action on each element without modifying the stream.
+
+   ```java
+   List<String> names = Arrays.asList("Alice", "Bob", "Charlie", "David");
+   names.stream()
+       .forEach(System.out::println); // Print each name
+   ```
+
+2. **`toArray()`**: This operation collects the elements of the stream into an array.
+
+   ```java
+   List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+   Integer[] numberArray = numbers.stream()
+       .toArray(Integer[]::new); // Convert stream elements to an array
+   ```
+
+3. **`collect(Collector<T, A, R> collector)`**: This operation accumulates the elements of the stream into a collection or another type of result.
+
+   ```java
+   List<String> names = Arrays.asList("Alice", "Bob", "Charlie", "David");
+   List<String> collectedNames = names.stream()
+       .collect(Collectors.toList()); // Collect names into a List
+
+   Set<String> nameSet = names.stream()
+       .collect(Collectors.toSet()); // Collect names into a Set
+   ```
+
+4. **`reduce(identity, accumulator)` and `reduce(identity, accumulator, combiner)`**: These operations reduce the stream to a single value by successively applying an accumulator function on the elements.
+
+   ```java
+   List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+   int sum = numbers.stream()
+       .reduce(0, (a, b) -> a + b); // Calculate the sum
+
+   Optional<Integer> max = numbers.stream()
+       .reduce(Integer::max); // Find the maximum value
+   ```
+
+5. **`min(Comparator<T> comparator)` and `max(Comparator<T> comparator)`**: These operations find the minimum and maximum elements in the stream based on the provided comparator.
+
+   ```java
+   List<String> names = Arrays.asList("Alice", "Bob", "Charlie", "David");
+   String shortestName = names.stream()
+       .min(Comparator.comparing(String::length))
+       .orElse(""); // Find the shortest name
+
+   String longestName = names.stream()
+       .max(Comparator.comparing(String::length))
+       .orElse(""); // Find the longest name
+   ```
+
+6. **`count()`**: This operation returns the count of elements in the stream.
+
+   ```java
+   List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+   long count = numbers.stream()
+       .count(); // Count the number of elements
+   ```
+
+7. **`anyMatch(Predicate<T> predicate)`, `allMatch(Predicate<T> predicate)`, and `noneMatch(Predicate<T> predicate)`**: These operations check if any, all, or none of the elements in the stream match a given predicate.
+
+   ```java
+   List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+   boolean anyEven = numbers.stream()
+       .anyMatch(n -> n % 2 == 0); // Check if any number is even
+
+   boolean allEven = numbers.stream()
+       .allMatch(n -> n % 2 == 0); // Check if all numbers are even
+
+   boolean noneNegative = numbers.stream()
+       .noneMatch(n -> n < 0); // Check if no number is negative
+   ```
+
+8. **`findFirst()` and `findAny()`**: These operations return the first or any element of the stream, respectively, as an `Optional`.
+
+   ```java
+   List<String> names = Arrays.asList("Alice", "Bob", "Charlie", "David");
+   Optional<String> firstName = names.stream()
+       .findFirst(); // Find the first name
+
+   Optional<String> anyName = names.stream()
+       .findAny(); // Find any name (non-deterministic)
+   ```
+
+These terminal operations allow you to process and summarize the elements of a stream. Once a terminal operation is invoked, the stream is consumed, and it can't be reused.
+
+
+
+
+
+ list.stream()
+  
+                // Count the frequency of each element
+                // and filter the elements
+                // with frequency > 1
+                .filter(i -> Collections.frequency(list, i) > 1)
+  
+                // And Collect them in a Set
+                .collect(Collectors.toSet());
