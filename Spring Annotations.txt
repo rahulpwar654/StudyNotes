@@ -3,7 +3,8 @@ Sure, here are some of the most important Spring Boot annotations:
 
 @SpringBootApplication : This annotation is used to mark a class as a Spring Boot application. It is a combination of the following annotations:
 @Configuration : This annotation indicates that the class contains Spring configuration.
-@EnableAutoConfiguration : This annotation tells Spring Boot to automatically configure the application based on the dependencies that are found on the classpath.
+@EnableAutoConfiguration : This annotation tells Spring Boot to automatically configure the application based on the dependencies 
+							that are found on the classpath.
 @ComponentScan : This annotation tells Spring Boot to scan the class for components, such as beans, services, and repositories.
 
 
@@ -18,3 +19,250 @@ For example, you can use @Value to inject the value of the spring.datasource.url
 
 
 @RestController : This annotation is used to mark a class as a REST controller. This means that the class can be used to expose RESTful APIs.
+
+
+
+
+Spring Boot provides a wide range of annotations that simplify the development of Spring applications. These annotations are categorized into various groups, such as configuration, dependency injection, web, data, testing, etc. Below is a comprehensive list of commonly used Spring Boot annotations, categorized for better understanding:
+
+---
+
+### **Core Spring Boot Annotations**
+1. **@SpringBootApplication**  
+   Combines `@Configuration`, `@EnableAutoConfiguration`, and `@ComponentScan`. It is the primary annotation used to bootstrap a Spring Boot application.
+
+2. **@EnableAutoConfiguration**  
+   Enables Spring Boot's auto-configuration mechanism.
+
+3. **@ComponentScan**  
+   Scans for components, configurations, and services in the specified package.
+
+4. **@Configuration**  
+   Indicates that a class is a configuration class that can define beans.
+
+5. **@Bean**  
+   Indicates a method produces a bean to be managed by the Spring container.
+
+6. **@ConditionalOnProperty**  
+   Configures a bean to be loaded conditionally based on a property.
+
+7. **@ConditionalOnMissingBean**  
+   Configures a bean to be loaded only if a specific bean is not already defined.
+
+8. **@ConditionalOnClass**  
+   Configures a bean to be loaded only if a specific class is present on the classpath.
+
+9. **@ConditionalOnMissingClass**  
+   Configures a bean to be loaded only if a specific class is not present on the classpath.
+
+10. **@Import**  
+    Imports additional configuration classes.
+
+---
+
+### **Dependency Injection and Component Annotations**
+1. **@Component**  
+   Marks a class as a Spring-managed component.
+
+2. **@Service**  
+   Specialization of `@Component` to indicate a service-layer component.
+
+3. **@Repository**  
+   Specialization of `@Component` to indicate a DAO or repository.
+
+4. **@Controller**  
+   Specialization of `@Component` to indicate a web controller.
+
+5. **@RestController**  
+   Combines `@Controller` and `@ResponseBody` to simplify web controller development.
+
+6. **@Autowired**  
+   Marks a field, constructor, or setter for dependency injection.
+
+7. **@Qualifier**  
+   Specifies which bean should be injected when multiple options are available.
+
+8. **@Primary**  
+   Marks a bean as the primary candidate when multiple beans of the same type exist.
+
+9. **@Lazy**  
+   Marks a bean to be lazily initialized.
+
+10. **@Scope**  
+    Defines the scope of a bean (e.g., singleton, prototype).
+
+11. **@Value**  
+    Injects values (e.g., from properties files) into fields, methods, or constructors.
+
+---
+
+### **Web Annotations**
+1. **@RequestMapping**  
+   Maps HTTP requests to handler methods or classes.
+
+2. **@GetMapping**  
+   Shortcut for `@RequestMapping` with the HTTP GET method.
+
+3. **@PostMapping**  
+   Shortcut for `@RequestMapping` with the HTTP POST method.
+
+4. **@PutMapping**  
+   Shortcut for `@RequestMapping` with the HTTP PUT method.
+
+5. **@DeleteMapping**  
+   Shortcut for `@RequestMapping` with the HTTP DELETE method.
+
+6. **@PatchMapping**  
+   Shortcut for `@RequestMapping` with the HTTP PATCH method.
+
+7. **@ResponseBody**  
+   Indicates that the return value of a method should be written directly to the HTTP response body.
+
+8. **@RequestBody**  
+   Maps the body of an HTTP request to a method parameter.
+
+9. **@RequestParam**  
+   Maps a request parameter to a method parameter.
+
+10. **@PathVariable**  
+    Maps a URI template variable to a method parameter.
+
+11. **@ModelAttribute**  
+    Binds a model attribute to a method or method parameter.
+
+12. **@SessionAttributes**  
+    Marks attributes to be stored in a web session.
+
+13. **@CrossOrigin**  
+    Enables Cross-Origin Resource Sharing (CORS) for a method or class.
+
+---
+
+### **Data Access and Persistence Annotations**
+1. **@Entity**  
+   Marks a class as a JPA entity.
+
+2. **@Table**  
+   Specifies the table associated with a JPA entity.
+
+3. **@Id**  
+   Marks a field as the primary key.
+
+4. **@GeneratedValue**  
+   Specifies the primary key generation strategy.
+
+5. **@Column**  
+   Specifies the mapping between a field and a database column.
+
+6. **@OneToOne**  
+   Specifies a one-to-one relationship between two entities.
+
+7. **@OneToMany**  
+   Specifies a one-to-many relationship between two entities.
+
+8. **@ManyToOne**  
+   Specifies a many-to-one relationship between two entities.
+
+9. **@ManyToMany**  
+   Specifies a many-to-many relationship between two entities.
+
+10. **@Transactional**  
+    Marks a method or class as transactional.
+
+11. **@Query**  
+    Defines a custom query for JPA repositories.
+
+12. **@Modifying**  
+    Indicates a modifying query for update/delete operations in JPA.
+
+13. **@EnableJpaRepositories**  
+    Enables JPA repositories.
+
+14. **@EnableMongoRepositories**  
+    Enables MongoDB repositories.
+
+15. **@EnableRedisRepositories**  
+    Enables Redis repositories.
+
+---
+
+### **Spring Security Annotations**
+1. **@EnableWebSecurity**  
+   Enables Spring Security's web security features.
+
+2. **@PreAuthorize**  
+   Specifies method-level security based on roles or permissions.
+
+3. **@PostAuthorize**  
+   Specifies method-level security after method execution.
+
+4. **@Secured**  
+   Specifies security constraints at the method level.
+
+5. **@RolesAllowed**  
+   Specifies security constraints based on allowed roles.
+
+6. **@WithMockUser**  
+   Used in testing to mock a user for Spring Security.
+
+---
+
+### **Validation Annotations**
+1. **@Valid**  
+   Marks a method parameter or field to trigger validation.
+
+2. **@NotNull**  
+   Ensures that a field is not null.
+
+3. **@NotEmpty**  
+   Ensures that a collection or string is not empty.
+
+4. **@NotBlank**  
+   Ensures that a string is not null and not blank.
+
+5. **@Min**  
+   Specifies the minimum value for a numeric field.
+
+6. **@Max**  
+   Specifies the maximum value for a numeric field.
+
+7. **@Size**  
+   Specifies the size constraints for a collection, array, or string.
+
+8. **@Pattern**  
+   Specifies a regular expression pattern for validating a string.
+
+9. **@Email**  
+   Validates that a string is a valid email address.
+
+---
+
+### **Testing Annotations**
+1. **@SpringBootTest**  
+   Loads the full application context for integration testing.
+
+2. **@WebMvcTest**  
+   Loads a subset of the application context for web layer testing.
+
+3. **@DataJpaTest**  
+   Configures an application context for JPA testing.
+
+4. **@MockBean**  
+   Creates a mock bean to replace a real bean during testing.
+
+5. **@SpyBean**  
+   Creates a spy bean for partial mocking.
+
+6. **@TestConfiguration**  
+   Defines additional configuration for testing.
+
+7. **@BeforeEach**  
+   Marks a method to run before each test.
+
+8. **@AfterEach**  
+   Marks a method to run after each test.
+
+---
+
+This list covers the most commonly used Spring Boot annotations, but there may be others specific to certain modules or use cases.
+ Always refer to the official Spring Boot documentation for the latest updates.

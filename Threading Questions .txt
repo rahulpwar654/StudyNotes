@@ -1,0 +1,108 @@
+
+
+
+What is the difference between a process and a thread?
+How do you create a thread in Java?
+Difference between Runnable and Thread class?
+Can you start a thread twice? Why or why not?
+What is the difference between start() and run() methods?
+What is thread priority? How does it affect scheduling?
+Explain the concept of daemon threads.
+What is a thread’s life cycle in Java?
+How do you make a thread sleep? What exceptions might occur?
+Difference between yield() and sleep()?
+
+11. How do you synchronize threads in Java?
+12. Difference between synchronized method and synchronized block?
+13. What is the significance of static synchronized?
+14. How does Java handle intrinsic locks?
+15. Can you synchronize a constructor? Why or why not?
+16. What is a monitor in Java?
+17. Difference between object-level lock and class-level lock?
+18. How does reentrant synchronization work?
+19. What is the performance impact of synchronization?
+20. What happens if a thread tries to access a synchronized method while holding a different object’s lock?
+
+21. What is a race condition?
+22. How do you avoid race conditions in Java?
+23. What is deadlock? Give an example.
+24. How can you detect and prevent deadlocks?
+25. What is livelock? How is it different from deadlock?
+26. What is thread starvation?
+27. How does fairness in locks affect thread scheduling?
+28. What is the difference between optimistic and pessimistic locking?
+29. Explain volatile keyword in multithreading.
+30. When should you use Atomic variables instead of synchronization?
+
+31. How does wait() differ from sleep()?
+32. Explain wait(), notify(), and notifyAll().
+33. What are ThreadLocal variables?
+34. How do you implement producer-consumer in Java?
+35. Difference between CyclicBarrier and CountDownLatch?
+36. How does Semaphore work?
+37. When should you use ReentrantLock over synchronized?
+38. What is ReadWriteLock and when is it useful?
+39. Explain the concept of Phaser in Java.
+40. How does StampedLock improve performance?
+41. What is a fork/join framework?
+42. Explain the work-stealing algorithm in Java’s ForkJoinPool.
+43. How is the join() method used in threading?
+44. What happens if join() is called without a timeout?
+45. Can a thread interrupt itself? How?
+46. Difference between isAlive() and isInterrupted()?
+47. What does Thread.interrupted() do?
+48. How to stop a thread safely?
+49. Why is stop() method deprecated?
+50. What is the difference between concurrency and parallelism?
+ 
+What is the Java Executor Framework?
+Difference between Executor and ExecutorService?
+How do you create a fixed thread pool?
+Difference between newCachedThreadPool() and newFixedThreadPool()?
+What is ScheduledExecutorService used for?
+How do you schedule tasks with a delay?
+Difference between scheduleAtFixedRate() and scheduleWithFixedDelay()?
+What is a ThreadFactory in Executor Framework?
+How do you gracefully shut down an ExecutorService?
+What is the difference between shutdown() and shutdownNow()?
+What is a RejectedExecutionHandler? Name built-in policies.
+How to handle task submission after executor shutdown?
+What is the difference between submit() and execute()?
+How does invokeAll() work?
+What is invokeAny() and when to use it?
+How does the thread pool size impact performance?
+Explain thread pool queuing strategies.
+What is the default thread factory behavior?
+How does the executor service handle uncaught exceptions?
+What is a work-stealing pool in Executors?
+How does ForkJoinPool differ from ThreadPoolExecutor?
+What is the role of BlockingQueue in Executor framework?
+How to create a custom thread pool in Java?
+When should you prefer Executors.newWorkStealingPool()?
+What happens if a submitted task throws an unchecked exception?
+ 
+What is the Future interface in Java?
+How do you retrieve a result from a Future?
+What happens if you call get() on a Future before completion?
+Difference between isDone() and isCancelled()?
+How do you cancel a Future task?
+Why is Future considered a blocking construct?
+How is CompletableFuture different from Future?
+What is supplyAsync() in CompletableFuture?
+How does runAsync() differ from supplyAsync()?
+What is the difference between thenApply() and thenAccept()?
+How do you chain multiple async tasks with CompletableFuture?
+How to handle exceptions in CompletableFuture? (exceptionally, handle)
+Difference between thenCompose() and thenCombine()?
+How to run multiple CompletableFutures in parallel and wait for all to finish? (allOf())
+How to get the first completed CompletableFuture? (anyOf())
+What is the role of Executor in CompletableFuture methods?
+How do you transform results asynchronously? (thenApplyAsync)
+What is the difference between synchronous and asynchronous callbacks?
+Can CompletableFuture be completed manually? (complete() method)
+How to complete a CompletableFuture exceptionally?
+How does join() differ from get() in CompletableFuture?
+How to timeout a CompletableFuture? (orTimeout(), completeOnTimeout())
+How to combine results from multiple futures?
+What is the difference between CompletableFuture and reactive programming (Mono/Flux)?
+In what scenarios is CompletableFuture preferred over ExecutorService?

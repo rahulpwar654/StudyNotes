@@ -1,0 +1,428 @@
+
+
+Here are SQL queries for **Insert**, **Update**, **Delete**, **LIMIT-OFFSET**, and
+ **Join** operations using the `Employee` and `Address` tables:
+
+---
+
+### **Schema**
+
+- `Employee` table:  
+  ```text
+  Employee (id, name, dept, address)
+  ```
+- `Address` table:  
+  ```text
+  Address (id, empid, street, lane, state, country)
+  ```
+
+---
+
+## **1. INSERT Queries**
+
+### **Insert into the `Employee` table**
+```sql
+INSERT INTO Employee (id, name, dept, address)
+VALUES (1, 'John Doe', 'IT', '123 Main St');
+```
+
+### **Insert into the `Address` table**
+```sql
+INSERT INTO Address (id, empid, street, lane, state, country)
+VALUES (1, 1, 'Main Street', 'Lane 5', 'California', 'USA');
+```
+
+---
+
+## **2. UPDATE Queries**
+
+### **Update `Employee` table**
+Update the department of an employee with ID `1`:
+```sql
+UPDATE Employee
+SET dept = 'HR'
+WHERE id = 1;
+```
+
+### **Update `Address` table**
+Update the state and country of an employee's address:
+```sql
+UPDATE Address
+SET state = 'Texas', country = 'USA'
+WHERE empid = 1;
+```
+
+---
+
+## **3. DELETE Queries**
+
+### **Delete from the `Employee` table**
+Remove an employee with ID `1`:
+```sql
+DELETE FROM Employee
+WHERE id = 1;
+```
+
+### **Delete from the `Address` table**
+Remove an address associated with employee ID `1`:
+```sql
+DELETE FROM Address
+WHERE empid = 1;
+```
+
+---
+
+## **4. LIMIT and OFFSET Queries**
+
+### **Fetch records from the `Employee` table with LIMIT and OFFSET**
+Fetch 5 employees starting from the 6th record (offset = 5):
+```sql
+SELECT * 
+FROM Employee
+LIMIT 5 OFFSET 5;
+```
+
+### **Fetch records from the `Address` table with LIMIT and OFFSET**
+Fetch 3 addresses starting from the 2nd record:
+```sql
+SELECT * 
+FROM Address
+LIMIT 3 OFFSET 1;
+```
+
+---
+
+## **5. JOIN Queries**
+
+### **INNER JOIN**: Fetch employee details along with their addresses
+Fetch the `name`, `dept`, and `street` of employees:
+```sql
+SELECT e.name, e.dept, a.street, a.state, a.country
+FROM Employee e
+INNER JOIN Address a
+ON e.id = a.empid;
+```
+
+### **LEFT JOIN**: Fetch all employees, even if they don't have an address
+```sql
+SELECT e.name, e.dept, a.street, a.state, a.country
+FROM Employee e
+LEFT JOIN Address a
+ON e.id = a.empid;
+```
+
+### **RIGHT JOIN**: Fetch all addresses, even if the associated employee is missing
+```sql
+SELECT e.name, e.dept, a.street, a.state, a.country
+FROM Employee e
+RIGHT JOIN Address a
+ON e.id = a.empid;
+```
+
+### **FULL OUTER JOIN** *(if supported by your database)*: Fetch all employees and addresses, including unmatched rows
+```sql
+SELECT e.name, e.dept, a.street, a.state, a.country
+FROM Employee e
+FULL OUTER JOIN Address a
+ON e.id = a.empid;
+```
+
+### **CROSS JOIN**: Generate a Cartesian product of `Employee` and `Address` tables
+```sql
+SELECT e.name, e.dept, a.street, a.state, a.country
+FROM Employee e
+CROSS JOIN Address a;
+```
+
+---
+
+## **Other Useful Queries**
+
+### **Find employees working in a specific department with their address**
+Example: Fetch employees in the "IT" department along with their `street` and `state`:
+```sql
+SELECT e.name, e.dept, a.street, a.state
+FROM Employee e
+INNER JOIN Address a
+ON e.id = a.empid
+WHERE e.dept = 'IT';
+```
+
+### **Find employees without an address**
+```sql
+SELECT e.name, e.dept
+FROM Employee e
+LEFT JOIN Address a
+ON e.id = a.empid
+WHERE a.id IS NULL;
+```
+
+### **Find addresses without a matching employee**
+```sql
+SELECT a.street, a.state, a.country
+FROM Address a
+LEFT JOIN Employee e
+ON a.empid = e.id
+WHERE e.id IS NULL;
+```
+
+---
+
+These queries demonstrate how to perform common SQL operations like `INSERT`, `UPDATE`, `DELETE`, `LIMIT-OFFSET`,
+ and `JOIN` using the `Employee` and `Address` tables. You can modify them based on your specific requirements!
+ 
+ 
+ 
+##########################################################################################################
+#####################################MONGODB##########################################################
+##########################################################################################################
+In **MongoDB**, the structure and query syntax differ from SQL, as it is a NoSQL database that stores data 
+in **JSON-like documents** rather than tables. Below, I'll rewrite the provided **`INSERT`, `UPDATE`, `DELETE`, 
+`LIMIT-OFFSET`, and `JOIN`** queries for MongoDB, assuming `Employee` and `Address` are 
+two separate collections (analogous to tables in SQL).
+
+---
+
+### **1. INSERT Queries**
+
+### **Insert into the `Employee` collection**
+```javascript
+db.Employee.insertOne({
+  id: 1,
+  name: "John Doe",
+  dept: "IT",
+  address: "123 Main St"
+});
+```
+
+### **Insert into the `Address` collection**
+```javascript
+db.Address.insertOne({
+  id: 1,
+  empid: 1,
+  street: "Main Street",
+  lane: "Lane 5",
+  state: "California",
+  country: "USA"
+});
+```
+
+---
+
+### **2. UPDATE Queries**
+
+### **Update an employee's department in the `Employee` collection**
+Update the `dept` field of the employee with `id: 1`:
+```javascript
+db.Employee.updateOne(
+  { id: 1 }, // Filter
+  { $set: { dept: "HR" } } // Update
+);
+```
+
+### **Update an address in the `Address` collection**
+Update the `state` and `country` fields for the address with `empid: 1`:
+```javascript
+db.Address.updateOne(
+  { empid: 1 }, // Filter
+  { $set: { state: "Texas", country: "USA" } } // Update
+);
+```
+
+---
+
+### **3. DELETE Queries**
+
+### **Delete an employee from the `Employee` collection**
+Remove the employee with `id: 1`:
+```javascript
+db.Employee.deleteOne({ id: 1 });
+```
+
+### **Delete an address from the `Address` collection**
+Remove the address associated with `empid: 1`:
+```javascript
+db.Address.deleteOne({ empid: 1 });
+```
+
+---
+
+### **4. LIMIT and OFFSET Queries**
+
+### **Fetch records from the `Employee` collection with LIMIT and SKIP**
+Fetch 5 employees starting from the 6th record:
+```javascript
+db.Employee.find()
+  .skip(5) // Offset
+  .limit(5); // Number of records to fetch
+```
+
+### **Fetch records from the `Address` collection with LIMIT and SKIP**
+Fetch 3 addresses starting from the 2nd record:
+```javascript
+db.Address.find()
+  .skip(1) // Offset
+  .limit(3); // Number of records to fetch
+```
+
+---
+
+### **5. JOIN Queries (Manual Joins in MongoDB)**
+
+MongoDB does not support direct `JOIN` operations like SQL. Instead, you must **manually join** 
+documents by querying multiple collections and combining the data in your application logic. Alternatively, you can use the **`$lookup`** aggregation stage for joins.
+
+---
+
+### **Using `$lookup` for JOINs**
+
+### **INNER JOIN**: Fetch employee details along with their addresses
+Assuming `empid` in the `Address` collection corresponds to `id` in the `Employee` collection:
+```javascript
+db.Employee.aggregate([
+  {
+    $lookup: {
+      from: "Address", // The name of the other collection
+      localField: "id", // Field in Employee
+      foreignField: "empid", // Field in Address
+      as: "addressDetails" // Output array field
+    }
+  }
+]);
+```
+
+---
+
+### **LEFT JOIN**: Fetch all employees, even if they don't have an address
+```javascript
+db.Employee.aggregate([
+  {
+    $lookup: {
+      from: "Address",
+      localField: "id",
+      foreignField: "empid",
+      as: "addressDetails"
+    }
+  }
+]);
+```
+
+---
+
+### **RIGHT JOIN** *(Can be simulated)*: Fetch all addresses, even if the associated employee is missing
+This can be achieved by **switching the collections** in the `$lookup`:
+```javascript
+db.Address.aggregate([
+  {
+    $lookup: {
+      from: "Employee",
+      localField: "empid",
+      foreignField: "id",
+      as: "employeeDetails"
+    }
+  }
+]);
+```
+
+---
+
+### **CROSS JOIN** *(Cartesian Product)*: Generate a Cartesian product of `Employee` and `Address`
+To achieve a Cartesian product, you must combine the documents programmatically after fetching them,
+ as MongoDB does not directly support Cartesian products.
+
+Fetch all employees and all addresses:
+```javascript
+const employees = db.Employee.find().toArray();
+const addresses = db.Address.find().toArray();
+
+// Use your application logic to create the Cartesian product
+const cartesianProduct = [];
+employees.forEach(emp => {
+  addresses.forEach(addr => {
+    cartesianProduct.push({ ...emp, ...addr });
+  });
+});
+```
+
+---
+
+## **Other Useful Queries**
+
+### **Find employees working in a specific department with their address**
+Find all employees in the "IT" department along with their address details:
+```javascript
+db.Employee.aggregate([
+  {
+    $match: { dept: "IT" } // Filter employees by department
+  },
+  {
+    $lookup: {
+      from: "Address",
+      localField: "id",
+      foreignField: "empid",
+      as: "addressDetails"
+    }
+  }
+]);
+```
+
+---
+
+### **Find employees without an address**
+Find employees who are not referenced in the `Address` collection:
+```javascript
+db.Employee.aggregate([
+  {
+    $lookup: {
+      from: "Address",
+      localField: "id",
+      foreignField: "empid",
+      as: "addressDetails"
+    }
+  },
+  {
+    $match: { addressDetails: { $size: 0 } } // Filter employees without addresses
+  }
+]);
+```
+
+---
+
+### **Find addresses without a matching employee**
+Find addresses for which no matching employee exists:
+```javascript
+db.Address.aggregate([
+  {
+    $lookup: {
+      from: "Employee",
+      localField: "empid",
+      foreignField: "id",
+      as: "employeeDetails"
+    }
+  },
+  {
+    $match: { employeeDetails: { $size: 0 } } // Filter addresses without employees
+  }
+]);
+```
+
+---
+
+### **Find employees and sort them with LIMIT and OFFSET**
+Find 5 employees sorted by `name`, starting from the 3rd record:
+```javascript
+db.Employee.find()
+  .sort({ name: 1 }) // Sort by name in ascending order
+  .skip(2) // Offset
+  .limit(5); // Limit
+```
+
+---
+
+### **Conclusion**
+MongoDB provides powerful aggregation capabilities (e.g., `$lookup`, `$match`, `$sort`, etc.) 
+to handle queries that are similar to SQL operations like `JOIN`, `LIMIT`, `OFFSET`, and more. 
+However, MongoDB queries often involve more manual work or application-side logic, especially for operations like Cartesian products. 
+
+By using **aggregation pipelines** and **embedded documents** (e.g., storing addresses directly 
+inside employee documents), MongoDB can efficiently handle complex relationships!

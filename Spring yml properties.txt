@@ -83,3 +83,149 @@ public JdbcTemplate todosJdbcTemplate(@Qualifier("todosDataSource") DataSource d
 public JdbcTemplate topicsJdbcTemplate(@Qualifier("topicsDataSource") DataSource dataSource) {
     return new JdbcTemplate(dataSource);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#########################################################################
+To handle **two data sources** in a Spring Boot application, you need to define separate configurations for each database. This is common in microservices, ETL pipelines, or multi-tenant systems. Here's a step-by-step guide:
+
+---
+
+## 🗂️ 1. Define Properties in `application.yml` or `application.properties`
+
+```yaml
+spring:
+  datasource:
+    primary:
+      url: jdbc:mysql://localhost:3306/db1
+      username: root
+      password: secret
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+  secondary:
+    url: jdbc:mysql://localhost:3306/db2
+    username: root
+    password: secret
+    driver-class-name: com.mysql.cj.jdbc.Driver
+```
+
+---
+
+## ⚙️ 2. Create Configuration Classes for Each Data Source
+
+### ✅ Primary Data Source
+
+```java
+@Configuration
+@EnableTransactionManagement
+@EnableJpaRepositories(
+    basePackages = "com.example.repo.primary",
+    entityManagerFactoryRef = "primaryEntityManagerFactory",
+    transactionManagerRef = "primaryTransactionManager"
+)
+public class PrimaryDataSourceConfig {
+
+    @Primary
+    @Bean
+    @ConfigurationProperties("spring.datasource.primary")
+    public DataSourceProperties primaryDataSourceProperties() {
+        return new DataSourceProperties();
+    }
+
+    @Primary
+    @Bean
+    public DataSource primaryDataSource() {
+        return primaryDataSourceProperties().initializeDataSourceBuilder().build();
+    }
+
+    @Primary
+    @Bean
+    public LocalContainerEntityManagerFactoryBean primaryEntityManagerFactory(
+        EntityManagerFactoryBuilder builder) {
+        return builder
+            .dataSource(primaryDataSource())
+            .packages("com.example.model.primary")
+            .persistenceUnit("primary")
+            .build();
+    }
+
+    @Primary
+    @Bean
+    public PlatformTransactionManager primaryTransactionManager(
+        @Qualifier("primaryEntityManagerFactory") EntityManagerFactory emf) {
+        return new JpaTransactionManager(emf);
+    }
+}
+```
+
+### ✅ Secondary Data Source
+
+```java
+@Configuration
+@EnableTransactionManagement
+@EnableJpaRepositories(
+    basePackages = "com.example.repo.secondary",
+    entityManagerFactoryRef = "secondaryEntityManagerFactory",
+    transactionManagerRef = "secondaryTransactionManager"
+)
+public class SecondaryDataSourceConfig {
+
+    @Bean
+    @ConfigurationProperties("spring.datasource.secondary")
+    public DataSourceProperties secondaryDataSourceProperties() {
+        return new DataSourceProperties();
+    }
+
+    @Bean
+    public DataSource secondaryDataSource() {
+        return secondaryDataSourceProperties().initializeDataSourceBuilder().build();
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean secondaryEntityManagerFactory(
+        EntityManagerFactoryBuilder builder) {
+        return builder
+            .dataSource(secondaryDataSource())
+            .packages("com.example.model.secondary")
+            .persistenceUnit("secondary")
+            .build();
+    }
+
+    @Bean
+    public PlatformTransactionManager secondaryTransactionManager(
+        @Qualifier("secondaryEntityManagerFactory") EntityManagerFactory emf) {
+        return new JpaTransactionManager(emf);
+    }
+}
+```
+
+---
+
+## 🧠 Key Points
+
+- Use `@Primary` to mark the default data source.
+- Use `@Qualifier` to inject the correct beans.
+- Keep entity classes and repositories in separate packages for each data source.
+- Each data source needs its own `EntityManagerFactory` and `TransactionManager`.
+
+---
+
+For a full working example, check out this [Baeldung guide on multiple data sources](https://www.baeldung.com/spring-boot-configure-multiple-datasources) or [GeeksforGeeks tutorial](https://www.geeksforgeeks.org/advance-java/configure-multiple-datasource-in-spring-boot-application/).
+
+Would you like help setting up a demo project or integrating this with Spring Data JDBC instead of JPA?

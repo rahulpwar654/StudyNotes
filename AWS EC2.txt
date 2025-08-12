@@ -1,0 +1,158 @@
+AWS EC2 (Elastic Compute Cloud) is one of the most popular services within the AWS ecosystem. It allows users to provision virtual servers (instances) in the cloud. Below is a list of **AWS EC2 interview questions**, ranging from basic to advanced, that might be asked during an interview:
+
+---
+
+### **Basic Questions**
+
+1. **What is Amazon EC2?**
+   - Amazon EC2 is a web service that provides resizable compute capacity in the cloud, allowing users to launch virtual servers (instances) as needed.
+
+2. **What are the key features of Amazon EC2?**
+   - On-demand compute capacity
+   - Scalability (Auto Scaling and Elastic Load Balancing)
+   - Wide variety of instance types
+   - Ability to choose operating systems (Linux, Windows, etc.)
+   - Security using security groups and key pairs
+   - Elastic IPs and multiple storage options (EBS, Instance Store)
+
+3. **What is the difference between EC2 and S3?**
+   - **EC2**: Compute service for running virtual machines.
+   - **S3**: Object storage service for storing files, backups, and data.
+
+4. **What are the types of EC2 instances?**
+   - General Purpose (e.g., t2, t3, m5)
+   - Compute Optimized (e.g., c5, c6g)
+   - Memory Optimized (e.g., r5, x1e)
+   - Storage Optimized (e.g., i3, d2)
+   - Accelerated Computing (e.g., p4, g4)
+
+5. **What is an AMI (Amazon Machine Image)?**
+   - An AMI is a template that contains the operating system, application server, and applications required to launch an EC2 instance.
+
+6. **What is the difference between a Public IP and an Elastic IP?**
+   - **Public IP**: Automatically assigned to an instance but changes if the instance is stopped and started.
+   - **Elastic IP**: A static, public IPv4 address that can be associated with an instance and remains constant.
+
+7. **What are EC2 pricing models?**
+   - On-Demand Instances
+   - Reserved Instances
+   - Spot Instances
+   - Savings Plans
+   - Dedicated Hosts
+   - Dedicated Instances
+
+8. **What is the purpose of Security Groups?**
+   - Security Groups are virtual firewalls used to control inbound and outbound traffic to EC2 instances.
+
+9. **What is an EBS (Elastic Block Store) volume?**
+   - EBS is a block storage device that can be attached to an EC2 instance, providing persistent storage that remains even after an instance is stopped or terminated.
+
+10. **What is the difference between stopping and terminating an EC2 instance?**
+    - **Stopping**: The instance shuts down, but data on the EBS volume is retained.
+    - **Terminating**: The instance is permanently deleted, and the associated EBS volumes may also be deleted if the delete-on-termination flag is set.
+
+---
+
+### **Intermediate Questions**
+
+11. **What is the difference between Instance Store and EBS?**
+    - **Instance Store**: Temporary storage tied to the lifecycle of the instance (data is lost if the instance is stopped or terminated).
+    - **EBS**: Persistent storage that remains intact even if the instance is stopped or terminated.
+
+12. **What are Placement Groups in EC2? What are the types?**
+    - Placement Groups allow you to control the physical placement of EC2 instances to optimize performance or reduce latency.
+    - Types:
+      1. **Cluster**: Instances are placed close together for high-performance computing.
+      2. **Spread**: Instances are placed across different hardware to reduce single points of failure.
+      3. **Partition**: Instances are divided into logical partitions across hardware.
+
+13. **What is Auto Scaling in EC2?**
+    - Auto Scaling automatically adjusts the number of EC2 instances in a group based on demand to ensure availability and cost efficiency.
+
+14. **What is the difference between Horizontal and Vertical Scaling in EC2?**
+    - **Horizontal Scaling**: Adding more instances (scaling out/in).
+    - **Vertical Scaling**: Increasing the resources (CPU, RAM) of an existing instance (scaling up/down).
+
+15. **What is the role of Key Pairs in EC2?**
+    - Key pairs are used for SSH access to EC2 instances. The private key is stored locally by the user, while the public key is stored in AWS.
+
+16. **What is the difference between a stateful and stateless application in the context of EC2?**
+    - **Stateful**: The application retains session data (e.g., a database server).
+    - **Stateless**: The application does not retain session data (e.g., load-balanced web servers).
+
+17. **What is Elastic Load Balancing (ELB)?**
+    - ELB distributes incoming traffic across multiple EC2 instances to improve fault tolerance and availability.
+
+18. **What are EC2 instance lifecycle states?**
+    - Pending
+    - Running
+    - Stopping
+    - Stopped
+    - Shutting-down
+    - Terminated
+
+19. **What is the difference between Spot Instances and On-Demand Instances?**
+    - **Spot Instances**: Allow users to bid on unused EC2 capacity at a lower price but can be terminated by AWS if the spot price rises.
+    - **On-Demand Instances**: Pay for compute capacity by the hour or second without upfront commitment.
+
+20. **How does an Elastic IP work with EC2?**
+    - Elastic IPs are static IPv4 addresses that can be assigned to EC2 instances. They allow you to mask the failure of an instance by quickly remapping the IP to another instance.
+
+---
+
+### **Advanced Questions**
+
+21. **How would you secure an EC2 instance?**
+    - Use Security Groups to restrict access.
+    - Use NACLs (Network Access Control Lists) for subnet-level security.
+    - Enable encryption for EBS volumes.
+    - Use IAM roles to grant permissions.
+    - Regularly patch the operating system.
+
+22. **How can you restrict SSH access to your EC2 instances?**
+    - Use Security Group rules to allow SSH access only from specific IP addresses.
+    - Use Bastion Hosts or VPNs for secure access.
+    - Disable password-based login and use key pairs (SSH keys).
+
+23. **How do you create a highly available architecture using EC2?**
+    - Place EC2 instances behind an Elastic Load Balancer (ELB).
+    - Deploy instances across multiple Availability Zones (AZs).
+    - Use Auto Scaling to handle demand changes.
+    - Use an RDS Multi-AZ database or DynamoDB for data persistence.
+
+24. **What are the differences between Dedicated Hosts and Dedicated Instances?**
+    - **Dedicated Hosts**: Physical servers fully dedicated to your use; allow greater control over instance placement and licensing.
+    - **Dedicated Instances**: Instances run on hardware dedicated to a single customer but do not provide control over server placement.
+
+25. **How would you troubleshoot an EC2 instance that is not reachable?**
+    - Check Security Group and NACL rules for inbound/outbound traffic.
+    - Verify the instance is running and has a valid public/private IP.
+    - Ensure the correct key pair is being used for SSH access.
+    - Check the instance’s system logs and network interface configuration.
+    - Use EC2 Instance Connect or a Bastion Host for debugging.
+
+26. **What is the purpose of the EC2 Instance Metadata Service?**
+    - The Instance Metadata Service provides information about the instance, such as instance ID, public IP, private IP, and IAM role details. It can be accessed via `http://169.254.169.254`.
+
+27. **How do you migrate an on-premise server to EC2?**
+    - Use the AWS Server Migration Service (SMS).
+    - Create an AMI from the on-premises server and use it to launch an EC2 instance.
+    - Use AWS Application Migration Service for lift-and-shift migrations.
+
+28. **How can you optimize the cost of EC2 instances?**
+    - Use Spot Instances for non-critical workloads.
+    - Purchase Reserved Instances or Savings Plans for predictable workloads.
+    - Use Auto Scaling to scale in during low demand.
+    - Terminate unused instances and clean up orphaned EBS volumes.
+
+29. **What is the difference between EBS-backed instances and Instance Store-backed instances?**
+    - **EBS-backed instances**: Use EBS volumes as root storage, and data persists after the instance is stopped.
+    - **Instance Store-backed instances**: Use ephemeral storage tied to the lifecycle of the instance, and data is lost when the instance stops.
+
+30. **How can you monitor EC2 instances?**
+    - Use Amazon CloudWatch to monitor metrics like CPU utilization, network I/O, disk I/O, and memory usage.
+    - Set up CloudWatch Alarms for notifications on performance thresholds.
+
+---
+
+These questions cover a broad range of EC2 topics, from beginner to advanced, and will help you prepare for an interview focused on AWS EC2. Let me know if you need answers to any of these or if you'd like more questions!

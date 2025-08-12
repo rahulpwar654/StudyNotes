@@ -8,13 +8,31 @@ https://miro.medium.com/v2/resize:fit:1400/format:webp/1*66qT-P8eO7psafi_t5jfcA.
 
 
 
-SecurityFilterChain : Spring Security maintains a filter chain internally where each of the filters is invoked in a specific order. Each filter will try to process the request and retrieve authentication information from it. For example, we have the UsernamePasswordAuthenticationFilter which is used in case of a POST request with username and password parameters (typically with a login page).
-the ordering of the filters is important as there are dependencies between them. You can read here if you want to know more about filters and ordering. Or, you can directly navigate to the FilterComparator class to see the implementation details.
+SecurityFilterChain :
 
-AuthenticationManager : This is an interface whose implementation (ProviderManager) has a list of configured AuthenticationProviders that are used for authenticating user requests.
+Spring Security maintains a filter chain internally where each of the filters is invoked in a specific order. 
+Each filter will try to process the request and retrieve authentication information from it. 
+For example, we have the UsernamePasswordAuthenticationFilter which is used in case of a POST request 
+with username and password parameters (typically with a login page).
+the ordering of the filters is important as there are dependencies between them. 
+You can read here if you want to know more about filters and ordering. Or, you can directly navigate to the 
+FilterComparator class to see the implementation details.
 
-AuthenticationProvider : An AuthenticationProvider is an abstraction for fetching user information from a specific repository (like a database, LDAP, custom third party source, etc.). It uses the fetched user information to validate the supplied credentials. (e.g: DaoAuthenticationProvider, LdapAuthenticationProvider, OpenIDAuthenticationProvider …)
-When talking about AuthenticationProvider, we usually come across the UserDetailsService. There is often a confusion between both, although they have different roles. AuthenticationProvider authenticates(compares) the request credentials against system credentials. UserDetailsService is purely a DAO for user data and performs no other function other than to supply that data that match with user provided Username. It does not tell the application whether authentication is successful or failed.
+AuthenticationManager : 
+This is an interface whose implementation (ProviderManager) has a list of configured AuthenticationProviders that are 
+used for authenticating user requests.
+
+AuthenticationProvider : 
+
+An AuthenticationProvider is an abstraction for fetching user information from a 
+specific repository (like a database, LDAP, custom third party source, etc.). 
+It uses the fetched user information to validate the supplied credentials. 
+(e.g: DaoAuthenticationProvider, LdapAuthenticationProvider, OpenIDAuthenticationProvider …)
+When talking about AuthenticationProvider, we usually come across the UserDetailsService. 
+There is often a confusion between both, although they have different roles. 
+AuthenticationProvider authenticates(compares) the request credentials against system credentials. 
+UserDetailsService is purely a DAO for user data and performs no other function other than to supply that 
+data that match with user provided Username. It does not tell the application whether authentication is successful or failed.
 
 
 
