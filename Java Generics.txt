@@ -1,0 +1,111 @@
+Java Generics
+
+Java Generics are like templates for your code—they let you write classes, interfaces, and methods that operate on **typed data** without committing to a specific type up front. This boosts **type safety**, **code reusability**, and **readability**, especially in collections and APIs.
+
+---
+
+### 🔍 What Are Generics?
+
+Generics allow you to define a class or method with **type parameters**. 
+Instead of hardcoding types like `int` or `String`, you use placeholders like `T`, `E`, `K`, or `V`.
+
+```java
+class Box<T> {
+    private T value;
+    public void set(T value) { this.value = value; }
+    public T get() { return value; }
+}
+```
+
+You can then create instances like:
+```java
+Box<Integer> intBox = new Box<>();
+Box<String> strBox = new Box<>();
+```
+
+---
+
+### ✅ Why Use Generics?
+
+- **Type Safety**: Errors are caught at compile time, not runtime.
+- **Code Reusability**: One class or method works with multiple types.
+- **No Type Casting**: You don’t need to cast objects when retrieving them.
+- **Cleaner Code**: More readable and maintainable.
+
+---
+
+### 🧠 Generic Methods
+
+You can also define methods that work with any type:
+
+```java
+public <T> void printArray(T[] array) {
+    for (T item : array) {
+        System.out.println(item);
+    }
+}
+```
+
+---
+
+### 📦 Generic Classes
+
+Classes like `ArrayList<T>` or `HashMap<K, V>` are built using generics. You can create your own:
+
+```java
+class Pair<K, V> {
+    private K key;
+    private V value;
+    // constructors, getters, setters
+}
+```
+
+---
+
+### 🔐 Bounded Types
+
+You can restrict the types generics accept using `extends`:
+
+```java
+class Stats<T extends Number> {
+    T[] nums;
+    double average() {
+        double sum = 0;
+        for (T num : nums) {
+            sum += num.doubleValue();
+        }
+        return sum / nums.length;
+    }
+}
+```
+
+---
+
+### ❓ Wildcards
+
+Wildcards let you work with unknown types:
+
+- `<?>` — any type
+- `<? extends T>` — T or its subclasses
+- `<? super T>` — T or its superclasses
+
+Example:
+```java
+void printList(List<?> list) {
+    for (Object item : list) {
+        System.out.println(item);
+    }
+}
+```
+
+---
+
+### ⚠️ Limitations
+
+- Cannot use **primitive types** directly (`int`, `char`, etc.)
+- Type info is erased at runtime (called **type erasure**)
+- No static fields of generic type
+
+---
+
+Want to dive deeper into wildcards, bounded types, or how generics play with collections? I can walk you through with examples tailored to your backend dev work.
