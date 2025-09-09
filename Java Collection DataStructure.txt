@@ -199,4 +199,58 @@ while (iterator.hasNext()) {
 
 Would you like help choosing the right collection type for a concurrent application or implementing a custom fail-safe iterator?
 #######################################################################
+#######################################################################
 
+Awesome! Here's a clear comparison of **HashMap**, **ConcurrentHashMap**, and **SynchronizedMap** using a table and a conceptual diagram to highlight their differences in thread safety, performance, and internal behavior.
+
+---
+
+## 📊 Comparison Table
+
+| Feature                  | `HashMap`                      | `ConcurrentHashMap`               | `SynchronizedMap` (`Collections.synchronizedMap`) |
+|--------------------------|--------------------------------|-----------------------------------|----------------------------------------------------|
+| Thread Safety            | ❌ Not thread-safe             | ✅ Thread-safe                    | ✅ Thread-safe                                     |
+| Synchronization          | None                           | Fine-grained (per bin)            | Coarse-grained (entire map)                        |
+| Performance (Concurrent) | High (single-threaded only)    | High (multi-threaded)             | Low (multi-threaded)                               |
+| Read Operations          | Unsafe                         | Non-blocking                      | Blocking                                           |
+| Write Operations         | Unsafe                         | Bin-level locking + CAS           | Entire map locked                                  |
+| Null Keys/Values         | ✅ Allowed                      | ❌ Not allowed                    | ✅ Allowed                                          |
+| Introduced In            | Java 1.2                        | Java 5 (updated in Java 8)        | Java 1.2                                           |
+| Use Case                 | Single-threaded apps           | High-concurrency environments     | Legacy thread-safe needs                          |
+
+---
+
+## 🧠 Conceptual Diagram
+
+```
++------------------+        +------------------------+        +------------------------+
+|    HashMap       |        |  ConcurrentHashMap     |        |  SynchronizedMap       |
+|------------------|        |------------------------|        |------------------------|
+| No locks         |        | Bin-level locking      |        | Whole-map locking      |
+| Unsafe in threads|        | CAS + sync per bin     |        | Synchronized wrapper   |
+| Fast (solo)      |        | Fast (multi-threaded)  |        | Slow (multi-threaded)  |
++------------------+        +------------------------+        +------------------------+
+```
+
+---
+
+## 🧪 Example Usage
+
+### ✅ ConcurrentHashMap
+```java
+ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
+map.put("apple", 1);
+map.compute("apple", (k, v) -> v + 1);
+```
+
+### ⚠️ SynchronizedMap
+```java
+Map<String, Integer> map = Collections.synchronizedMap(new HashMap<>());
+synchronized(map) {
+    map.put("apple", 1);
+}
+```
+
+---
+
+Would you like a code benchmark comparing their performance under multi-threaded load?

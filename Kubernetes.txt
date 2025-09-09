@@ -87,20 +87,24 @@ Kubernetes orchestrates containers by:
 ######################################################
 ### 1. **What is the difference between Deployment and StatefulSet?**
 
-**Deployment** and **StatefulSet** are both Kubernetes workload resources, but they serve different purposes and behave differently based on the use case:
+**Deployment** and **StatefulSet** are both Kubernetes workload resources, but they serve different purposes and 
+behave differently based on the use case:
 
 #### **Deployment**
 - **Purpose**: Used to manage stateless applications, such as web servers or API backends.
-- **Pod Identity**: Pods managed by a Deployment are interchangeable (stateless). They do not require a fixed identity. If a Pod is deleted, the new Pod created will not retain the same hostname or identity.
+- **Pod Identity**: Pods managed by a Deployment are interchangeable (stateless). They do not require a fixed identity.
+ If a Pod is deleted, the new Pod created will not retain the same hostname or identity.
 - **Scaling**: Scaling up or down adds or removes identical Pods without any requirement for ordering.
 - **Rolling Updates**: Ensures zero downtime during updates by gradually replacing old Pods with new ones.
 - **Persistent Storage**: Can use Persistent Volumes (PVs) but without guarantees that the same Pod will reattach to the same volume.
 
 #### **StatefulSet**
 - **Purpose**: Used to manage stateful applications, such as databases (e.g., MySQL, Cassandra) or distributed systems (e.g., Kafka).
-- **Pod Identity**: Pods have a unique, persistent identity (e.g., `pod-0`, `pod-1`, etc.), which persists across restarts. The Pod identity is tied to its hostname and ordinal index.
+- **Pod Identity**: Pods have a unique, persistent identity (e.g., `pod-0`, `pod-1`, etc.), which persists across restarts. 
+The Pod identity is tied to its hostname and ordinal index.
 - **Scaling**: Scaling is done in an ordered manner, ensuring that Pods are created or deleted one at a time, following a specific order.
-- **Rolling Updates**: Updates are performed in a controlled, sequential manner, with strict ordering (e.g., `pod-0` is updated first, followed by `pod-1`, etc.).
+- **Rolling Updates**: Updates are performed in a controlled, sequential manner, with strict ordering (e.g., `pod-0` is updated first, 
+followed by `pod-1`, etc.).
 - **Persistent Storage**: Each Pod can be associated with a dedicated Persistent Volume, ensuring data persistence tied to the Pod's identity.
 
 #### **Use Cases**
