@@ -76,3 +76,70 @@ can be created from them. This can be used to improve the safety and security of
 
 Remove the Experimental AOT and JIT Compiler: This feature removes the experimental AOT and JIT compilers, 
 which are no longer under active development.
+
+---
+
+## 🔍 Java 17 (LTS)
+- **Sealed Classes (JEP 409)**: Restrict which classes can extend or implement a class/interface.
+- **Pattern Matching for switch (JEP 406 - Preview)**: Enables type-safe, expressive switch statements.
+- **Foreign Function & Memory API (JEP 412 - Incubator)**: Interact with native code and memory.
+- **Vector API (JEP 414 - Incubator)**: SIMD-style vector computations.
+- **Enhanced PRNGs (JEP 356)**: New interfaces for random number generation.
+- **macOS Metal Rendering (JEP 382)**: Replaces deprecated OpenGL.
+
+---
+
+## 🔧 Java 18
+- **UTF-8 by Default (JEP 400)**: Standardizes charset across platforms.
+- **Simple Web Server (JEP 408)**: Lightweight HTTP server for static files.
+- **Code Snippets in Javadoc (JEP 413)**: Adds `@snippet` tag for better documentation.
+- **Internet-Address Resolution SPI (JEP 418)**: Custom DNS resolution.
+- **Pattern Matching for switch (JEP 420 - 2nd Preview)**: Improved exhaustiveness and dominance checks.
+
+---
+
+## 🚀 Java 19
+- **Virtual Threads (JEP 425 - Preview)**: Lightweight threads for scalable concurrency.
+- **Structured Concurrency (JEP 428 - Incubator)**: Treat concurrent tasks as a single unit.
+- **Record Patterns (JEP 405 - Preview)**: Destructure records in pattern matching.
+- **Foreign Function & Memory API (JEP 424 - Preview)**: Continued evolution.
+- **Vector API (JEP 426 - Incubator)**: More performance improvements.
+
+---
+
+## 🧪 Java 20
+- **Scoped Values (JEP 429 - Incubator)**: Safer alternative to `ThreadLocal`.
+- **Record Patterns (JEP 432 - 2nd Preview)**: Type inference, for-loop support.
+- **Pattern Matching for switch (JEP 433 - 4th Preview)**: MatchException introduced.
+- **Foreign Function & Memory API (JEP 434 - 2nd Preview)**: Unified memory abstractions.
+- **Virtual Threads (JEP 436 - 2nd Preview)**: More stable APIs.
+- **Structured Concurrency (JEP 437 - 2nd Incubator)**: Scoped value inheritance.
+- **Vector API (JEP 438 - 5th Incubator)**: Bug fixes and performance boosts.
+
+---
+
+## 🛡️ Java 21 (LTS)
+- **Finalized Virtual Threads (JEP 444)**: No longer preview.
+- **Sequenced Collections (JEP 431)**: Ordered collections with consistent traversal.
+- **String Templates (JEP 430 - Preview)**: Safer, expressive string interpolation.
+- **Pattern Matching for switch (JEP 441)**: Finalized.
+- **Record Patterns (JEP 440)**: Finalized.
+- **Unnamed Classes and Instance Main Methods (JEP 445 - Preview)**: Simplifies entry-point code.
+- **Scoped Values (JEP 446 - Preview)**: Continued from Java 20.
+
+---
+
+## 🧪 Java 22
+- **Classfile API (JEP 457 - Preview)**: Programmatic access to `.class` files.
+- **Stream Gatherers (JEP 461 - Preview)**: Custom stream terminal operations.
+- **Unnamed Classes (JEP 463 - Preview)**: Simplifies learning and scripting.
+
+---
+
+## 🔮 Java 23 & 24 (Expected)
+- Continued enhancements from **Project Amber** (language features) and **Project Loom** (concurrency).
+- Possible finalization of **String Templates**, **Unnamed Classes**, and **Scoped Values**.
+- More **performance optimizations**, **tooling improvements**, and **native interop APIs**.
+
+---
+

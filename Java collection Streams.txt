@@ -7,6 +7,8 @@ Collection streams offer a number of advantages over traditional for loops, incl
 Efficiency: Collection streams are more efficient than for loops because they do not iterate over the entire collection if they do not need to.
 Expressiveness: Collection streams can be used to express complex operations in a concise and readable way.
 Reusability: Collection streams can be reused to process different collections.
+
+
 What are the different types of collection streams?
 There are two types of collection streams:
 
@@ -14,6 +16,8 @@ Intermediate streams: Intermediate streams are streams that can be used to trans
 For example, you can use an intermediate stream to filter the elements of a collection or to map the elements of a collection to a new type.
 Terminal streams: Terminal streams are streams that produce a result from the elements of a collection. 
 For example, you can use a terminal stream to count the number of elements in a collection or to print the elements of a collection to the console.
+
+
 What are some of the most common collection stream operations?
 Some of the most common collection stream operations include:
 
@@ -21,18 +25,25 @@ filter: This operation filters the elements of a collection based on a predicate
 map: This operation maps the elements of a collection to a new type.
 reduce: This operation reduces the elements of a collection to a single value.
 forEach: This operation performs an action for each element of a collection.
+
+
 What are the differences between collection streams and iterators?
 Collection streams and iterators are both used to process the elements of a collection. However, there are some key differences between the two:
 
 Collection streams are lazy: Collection streams do not iterate over the elements of a collection until they are needed. This can make collection streams more efficient than iterators.
 Collection streams are more expressive: Collection streams can be used to express complex operations in a concise and readable way. Iterators are not as expressive.
 Collection streams can be reused: Collection streams can be reused to process different collections. Iterators cannot be reused.
+
+
+
 What are some of the challenges of using collection streams?
 Some of the challenges of using collection streams include:
 
 Complexity: Collection streams can be complex to understand and use.
 Performance: Collection streams can be slower than traditional for loops if they are not used carefully.
 Memory usage: Collection streams can use a lot of memory if they are not used carefully.
+
+
 What are some tips for using collection streams effectively?
 Here are some tips for using collection streams effectively:
 
@@ -40,6 +51,8 @@ Use intermediate streams to transform the elements of a collection before you us
 Use simple predicates and mappers in your intermediate streams. This can also make your code more efficient.
 Use terminal streams only when you need to produce a result. This can help you to reduce memory usage.
 Use collection streams in small batches. This can help you to reduce memory usage and improve performance.
+
+
 What are some of the best practices for using collection streams?
 Here are some of the best practices for using collection streams:
 

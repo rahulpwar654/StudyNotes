@@ -19,6 +19,7 @@ by allowing it to handle more requests simultaneously.
 What are the different states of a thread in Java?
 A thread can be in one of the following states:
 
+
 1.New: A new thread has been created but has not yet been started.
 2.Runnable: A runnable thread is ready to be executed by the operating system.
 3.Running: A running thread is currently being executed by the operating system.
@@ -37,7 +38,6 @@ The run() method is the entry point for the thread.
 When you implement the Runnable interface, you must provide an implementation for the run() method. 
 You can then create a Thread object and pass the Runnable object to the constructor.
 
-
 What are the different ways to start a thread in Java?
 There are two ways to start a thread in Java:
 1.By calling the start() method: The start() method tells the operating system to schedule the thread for execution.
@@ -48,7 +48,10 @@ What are the different ways to join a thread in Java?
 There are two ways to join a thread in Java:
 
 1.By calling the join() method: The join() method tells the current thread to wait until the specified thread terminates.
-2.By calling the join() method with a timeout: The join() method with a timeout tells the current thread to wait for the specified thread to terminate for a specified amount of time. If the specified thread does not terminate within the specified amount of time, the join() method will return.
+2.By calling the join() method with a timeout: The join() method with a timeout tells the current thread to wait 
+for the specified thread to terminate for a specified amount of time. 
+If the specified thread does not terminate within the specified amount of time, the join() method will return.
+
 
 
 What are the different ways to interrupt a thread in Java?
@@ -109,3 +112,317 @@ The java.util.concurrent.ThreadPoolExecutor is an implementation of the Executor
 The ThreadPoolExecutor executes the given task (Callable or Runnable) using one of its internally pooled threads.
 
 ##################################################
+
+### 🔄 Java Thread Lifecycle Explained
+
+In Java, a thread goes through several **distinct states** during its lifecycle. These states are defined in the `java.lang.Thread.State` enum and are managed by the **JVM and OS thread scheduler**. Understanding these states is essential for writing efficient multithreaded applications.
+
+---
+
+## 🧬 Thread Lifecycle States
+
+| State           | Description                                                                 |
+|------------------|-----------------------------------------------------------------------------|
+| **NEW**           | Thread is created but not yet started (`new Thread()`)                     |
+| **RUNNABLE**      | Thread is ready to run or running, depending on CPU availability           |
+| **BLOCKED**       | Thread is waiting to acquire a lock to enter a synchronized block/method   |
+| **WAITING**       | Thread is waiting indefinitely for another thread to perform an action     |
+| **TIMED_WAITING** | Thread is waiting for a specified time (e.g., `sleep`, `join(timeout)`)    |
+| **TERMINATED**    | Thread has completed execution or was terminated due to an error          
+
+Source: [GeeksforGeeks – Java Thread Lifecycle](https://www.geeksforgeeks.org/java/lifecycle-and-states-of-a-thread-in-java/)
+
+---
+
+## 🔁 State Transitions
+
+### 1. **NEW → RUNNABLE**
+```java
+Thread t = new Thread(() -> System.out.println("Running"));
+t.start(); // Moves to RUNNABLE
+```
+
+### 2. **RUNNABLE → BLOCKED**
+Occurs when trying to enter a synchronized block already locked by another thread.
+
+### 3. **RUNNABLE → WAITING**
+```java
+t.join(); // Current thread waits for t to finish
+```
+
+### 4. **RUNNABLE → TIMED_WAITING**
+```java
+Thread.sleep(1000); // Waits for 1 second
+```
+
+### 5. **Any → TERMINATED**
+Occurs when `run()` method completes or an exception is thrown.
+
+---
+
+## 🧠 JVM & OS Role
+
+- **JVM** manages thread states and transitions.
+- **OS thread scheduler** decides which thread gets CPU time.
+- Java abstracts the **RUNNING** state into **RUNNABLE**.
+
+---
+
+## 🧪 Example: Demonstrating Lifecycle
+
+```java
+public class ThreadLifecycleDemo {
+    public static void main(String[] args) throws InterruptedException {
+        Thread t = new Thread(() -> {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        System.out.println("State after creation: " + t.getState()); // NEW
+        t.start();
+        System.out.println("State after start: " + t.getState()); // RUNNABLE
+        Thread.sleep(100);
+        System.out.println("State during sleep: " + t.getState()); // TIMED_WAITING
+        t.join();
+        System.out.println("State after completion: " + t.getState()); // TERMINATED
+    }
+}
+```
+
+---
+
+Would you like help visualizing this with a state diagram or integrating thread lifecycle monitoring into a Spring Boot app?
+
+##################################################
+
+### 🔄 `wait()`, `notify()`, and `notifyAll()` in Java
+
+These methods are part of the **Object class** in Java and are used for **inter-thread communication**. They allow threads to **coordinate access to shared resources** by signaling each other about changes in state.
+
+---
+
+## 🧠 Overview of Each Method
+
+### 1. **`wait()`**
+- Causes the **current thread to pause** and release the lock on the object.
+- The thread enters the **waiting state** until another thread calls `notify()` or `notifyAll()` on the same object.
+- Must be called from within a **synchronized block or method**.
+
+```java
+synchronized (sharedObject) {
+    while (!condition) {
+        sharedObject.wait(); // releases lock and waits
+    }
+    // proceed when condition is met
+}
+```
+
+### 2. **`notify()`**
+- Wakes up **one** thread that is waiting on the object's monitor.
+- The awakened thread will not proceed until the **notifying thread releases the lock**.
+
+```java
+synchronized (sharedObject) {
+    // update condition
+    sharedObject.notify(); // wakes one waiting thread
+}
+```
+
+### 3. **`notifyAll()`**
+- Wakes up **all threads** waiting on the object's monitor.
+- All awakened threads compete for the lock.
+
+```java
+synchronized (sharedObject) {
+    // update condition
+    sharedObject.notifyAll(); // wakes all waiting threads
+}
+```
+
+---
+
+## 🔁 Thread Communication Example: Producer-Consumer
+
+```java
+class SharedQueue {
+    private final Queue<Integer> queue = new LinkedList<>();
+    private final int MAX_SIZE = 5;
+
+    public synchronized void produce(int item) throws InterruptedException {
+        while (queue.size() == MAX_SIZE) {
+            wait(); // wait if queue is full
+        }
+        queue.add(item);
+        System.out.println("Produced: " + item);
+        notifyAll(); // notify consumers
+    }
+
+    public synchronized int consume() throws InterruptedException {
+        while (queue.isEmpty()) {
+            wait(); // wait if queue is empty
+        }
+        int item = queue.remove();
+        System.out.println("Consumed: " + item);
+        notifyAll(); // notify producers
+        return item;
+    }
+}
+```
+
+---
+
+## ✅ Best Practices
+
+- Always call `wait()` inside a **loop**, not an `if` block, to guard against **spurious wakeups**.
+- Use `notify()` when only **one thread** needs to proceed.
+- Use `notifyAll()` when **multiple threads** may be waiting and are **interchangeable**.
+- Ensure the thread **owns the monitor** before calling these methods, or you'll get `IllegalMonitorStateException`.
+
+---
+
+## 📚 Learn More
+
+- [DigitalOcean: Java Thread wait, notify and notifyAll Example](https://www.digitalocean.com/community/tutorials/java-thread-wait-notify-and-notifyall-example)
+- [GeeksforGeeks: Difference Between notify() and notifyAll()](https://www.geeksforgeeks.org/java/difference-between-notify-and-notifyall-in-java/)
+- [Baeldung: wait and notify() Methods in Java](https://www.baeldung.com/java-wait-notify)
+
+---
+
+Would you like to see how this compares to using higher-level concurrency tools like `BlockingQueue` or `ReentrantLock`?
+
+####################################################################
+In Java, a thread goes through a lifecycle that consists of several states. These states represent the various stages a thread can be in during its execution. The thread lifecycle is managed by the Java Virtual Machine (JVM). The thread states are defined in the `Thread.State` enum in Java. Here's an explanation of the different states in the thread lifecycle:
+
+---
+
+### 1. **New (Created)**
+   - A thread is in the `NEW` state when it is created but not yet started.
+   - This happens when you create a `Thread` object using the `new` keyword but haven't called `start()` on it yet.
+
+   ```java
+   Thread thread = new Thread();
+   System.out.println(thread.getState()); // NEW
+   ```
+
+   - **Key Method:** `start()`  
+     Calling `start()` transitions the thread to the `RUNNABLE` state.
+
+---
+
+### 2. **Runnable**
+   - A thread is in the `RUNNABLE` state when it is ready to run but waiting for CPU time to actually execute.
+   - The thread may not be actively running, as the CPU scheduler determines which thread gets CPU time.
+
+   ```java
+   thread.start();
+   System.out.println(thread.getState()); // RUNNABLE (might not always print this due to scheduling)
+   ```
+
+   - **Important Note:**  
+     In Java, `RUNNABLE` includes both "ready to run" and "running" states (unlike some operating systems that separate these states).
+
+---
+
+### 3. **Blocked**
+   - A thread is in the `BLOCKED` state when it is waiting to acquire a monitor lock to enter a synchronized block or method.
+   - This happens when another thread is already holding the lock on the monitor that the current thread is trying to access.
+
+   ```java
+   synchronized(someObject) {
+       // Thread A acquires lock
+       // Thread B trying to acquire the same lock will move to BLOCKED state
+   }
+   ```
+
+   - **Transition:**  
+     Once the lock becomes available, the thread transitions back to `RUNNABLE`.
+
+---
+
+### 4. **Waiting**
+   - A thread is in the `WAITING` state when it is waiting indefinitely for another thread to perform a specific action.
+   - This happens when methods like `Object.wait()` or `Thread.join()` are called without a timeout.
+
+   ```java
+   synchronized (someObject) {
+       someObject.wait(); // Thread enters WAITING state
+   }
+   ```
+
+   - **Transition:**  
+     The thread transitions out of this state when it is notified (via `notify()` or `notifyAll()`) or when the waiting thread finishes.
+
+---
+
+### 5. **Timed Waiting**
+   - A thread is in the `TIMED_WAITING` state when it is waiting for another thread to perform a specific action within a specified time.
+   - This happens when methods like `Thread.sleep()`, `Object.wait(timeout)`, or `Thread.join(timeout)` are called.
+
+   ```java
+   Thread.sleep(1000); // Thread enters TIMED_WAITING state
+   ```
+
+   - **Transition:**  
+     The thread transitions out of this state when the specified time elapses or the condition it was waiting for is met.
+
+---
+
+### 6. **Terminated (Dead)**
+   - A thread is in the `TERMINATED` state when it has completed its execution or has been explicitly stopped.
+   - Once a thread reaches this state, it cannot be restarted.
+
+   ```java
+   public void run() {
+       System.out.println("Thread is running");
+   }
+   // After `run()` completes, the thread enters TERMINATED state
+   ```
+
+   - **Key Method:**  
+     None. A thread in this state cannot transition to any other state.
+
+---
+
+### Thread Lifecycle Diagram
+
+Here’s a simplified diagram representing the thread lifecycle:
+
+```
+                +-----------+
+                |   NEW     | 
+                +-----------+
+                     |
+                     v
+                +-----------+
+                | RUNNABLE  |
+                +-----------+
+                 /   |   \
+                v    v    v
+         +---------+ +---------+ +--------+
+         | BLOCKED | | WAITING | | TIMED  |
+         +---------+ +---------+ | WAITING|
+                                 +--------+
+                                    |
+                                    v
+                              +-----------+
+                              | TERMINATED|
+                              +-----------+
+```
+
+---
+
+### Summary of Key Methods
+
+| **State**       | **Transition Method**            |
+|------------------|----------------------------------|
+| `NEW`           | `start()`                        |
+| `RUNNABLE`      | Scheduled by CPU                |
+| `BLOCKED`       | Acquires a monitor lock         |
+| `WAITING`       | `notify()`, `notifyAll()`        |
+| `TIMED_WAITING` | Timeout expires or condition met |
+| `TERMINATED`    | Thread finishes execution        |
+
+Understanding the thread lifecycle is crucial for writing multi-threaded Java programs and avoiding common issues like deadlocks and race conditions.

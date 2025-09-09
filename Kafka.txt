@@ -380,3 +380,35 @@ producer.close();
 
 
 ###########################################################################
+
+**KRaft** (Kafka Raft) is a major architectural upgrade in Apache Kafka that replaces the need for **ZooKeeper**, 
+streamlining Kafka’s metadata management and cluster coordination.
+
+### 🧠 What Is KRaft?
+- **KRaft stands for Kafka Raft**—a consensus protocol inspired by the Raft algorithm.
+- It was introduced in **Apache Kafka 2.8.0** and became production-ready in **Kafka 3.3**.
+- KRaft eliminates Kafka’s dependency on **ZooKeeper**, which was previously used for tasks like controller election, 
+broker registration, and topic configuration.
+
+### 🏗️ How KRaft Simplifies Kafka
+| Feature                  | ZooKeeper Mode                          | KRaft Mode                              |
+|--------------------------|------------------------------------------|------------------------------------------|
+| Metadata Management      | Handled by ZooKeeper                     | Handled internally by Kafka              |
+| Consensus Protocol       | ZooKeeper Atomic Broadcast (ZAB)         | Kafka Raft Protocol (KRaft)              |
+| Architecture Complexity  | Requires separate ZooKeeper cluster      | Single Kafka process (broker + controller) |
+| Controller Failover      | Slower due to ZooKeeper state loading    | Near-instant due to in-memory metadata   |
+
+### ⚙️ How KRaft Works
+- Kafka nodes are assigned **roles**: `broker`, `controller`, or both.
+- A **quorum of controllers** maintains metadata using an **event-sourced log**.
+- One controller acts as **leader**, others follow by replaying events.
+- Metadata is stored in Kafka itself (in a special topic), not externally.
+- Snapshots are used to prevent the event log from growing indefinitely.
+
+### 🚀 Benefits of KRaft
+- **Simpler deployment**: No need to manage ZooKeeper.
+- **Improved scalability**: Kafka can scale to millions of partitions.
+- **Unified security and configuration model**.
+- **Faster recovery**: Controllers can catch up quickly after failures.
+
+

@@ -101,3 +101,118 @@ public class ConsumeWebService {
 
 
 ##################################################################################
+find 5th highest 
+Using subquery
+ SELECT DISTINCT salary
+FROM employees e1
+WHERE 4 = (
+    SELECT COUNT(DISTINCT salary)
+    FROM employees e2
+    WHERE e2.salary > e1.salary
+);
+Dense Rank
+SELECT salary
+FROM (
+    SELECT salary, DENSE_RANK() OVER (ORDER BY salary DESC) AS rank
+    FROM employees
+) ranked
+WHERE rank = 5;
+Limit, offset
+SELECT DISTINCT salary
+FROM employees
+ORDER BY salary DESC
+LIMIT 1 OFFSET 4;
+
+
+SQL query get 5th largest Salary from Employee table
+
+List departments with the highest-paid employee in each.
+
+1. **Salesperson and Customer in Same City**
+   - *Tables*: `salesman`, `customer`
+   - *Task*: Find all pairs of salespeople and customers who live in the same city.
+
+2. **Orders with Customer Details**
+   - *Tables*: `orders`, `customer`
+   - *Task*: List all orders along with customer names and cities.
+
+3. **Books and Their Authors**
+   - *Tables*: `book`, `author`
+   - *Task*: Show all books with their respective authors using an inner join.
+
+4. **Employees and Their Managers**
+   - *Tables*: `employee`, `manager`
+   - *Task*: Display each employee’s name along with their manager’s name using a self-join.
+
+5. **Products and Departments**
+   - *Tables*: `product`, `department`
+   - *Task*: List all products with their department names using a left join.
+
+6. **Students and Enrolled Courses**
+   - *Tables*: `student`, `enrollment`, `course`
+   - *Task*: Show each student’s name and the courses they are enrolled in using multiple joins.
+
+7. **Customers Without Orders**
+   - *Tables*: `customer`, `orders`
+   - *Task*: Find customers who haven’t placed any orders using a left join and `IS NULL`.
+
+8. **Books and Their Reviews**
+   - *Tables*: `book`, `review`
+   - *Task*: Show all books and their reviews (if any), including books without reviews.
+
+9. **Employees and Departments**
+   - *Tables*: `employee`, `department`
+   - *Task*: List all employees with their department names using an inner join.
+
+10. **Products with Producer and Nutrition Info**
+    - *Tables*: `product`, `producer`, `nutrition`
+    - *Task*: Show product name, producer name, and calorie count using joins across three tables.
+
+
+
+- Table: Employees (employee_id, employee_name, manager_id)
+- Task: List each employee along with the name of their manager.
+
+
+
+1. **Employee–Manager Relationship**
+   - *Table*: `Employees (employee_id, employee_name, manager_id)`
+   - *Task*: List each employee along with the name of their manager.
+
+2. **Customers in the Same City**
+   - *Table*: `Customers (customer_id, customer_name, city)`
+   - *Task*: Find all pairs of customers who live in the same city but have different IDs.
+
+3. **Compare Salaries Within Department**
+   - *Table*: `Employees (employee_id, name, department_id, salary)`
+   - *Task*: Find employees who earn more than others in the same department.
+
+4. **Find Duplicate Email Addresses**
+   - *Table*: `Users (user_id, email)`
+   - *Task*: Identify users who share the same email address.
+
+5. **Mentor–Mentee Mapping**
+   - *Table*: `Students (student_id, name, mentor_id)`
+   - *Task*: Show each student with their mentor’s name.
+
+6. **Find Friends in Social Network**
+   - *Table*: `Users (user_id, name, friend_id)`
+   - *Task*: List each user with the name of their friend using a self join.
+
+7. **Compare Product Prices**
+   - *Table*: `Products (product_id, name, price)`
+   - *Task*: Find pairs of products where one is more expensive than the other.
+
+8. **Find Employees with Same Manager**
+   - *Table*: `Employees (employee_id, name, manager_id)`
+   - *Task*: List pairs of employees who report to the same manager.
+
+9. **Identify Circular References**
+   - *Table*: `Tasks (task_id, depends_on_task_id)`
+   - *Task*: Find tasks that depend on each other (i.e., circular dependencies).
+
+10. **Sibling Relationships in Family Tree**
+    - *Table*: `Family (person_id, name, parent_id)`
+    - *Task*: Find people who share the same parent (i.e., siblings).
+
+

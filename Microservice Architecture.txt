@@ -8,13 +8,13 @@ That’s a great deep dive into **Spring Boot Microservices Architecture**! I’
 **Microservices** is an architectural style where applications are built as a collection of small, loosely coupled, independent services. Each service is responsible for a single business capability and communicates with other services using APIs.
 
 ### **Monolithic vs. Microservices**  
-| Feature | Monolithic Architecture | Microservices Architecture |
-|---------|-------------------------|---------------------------|
-| Deployment | Single deployment unit (WAR/JAR) | Multiple independent deployments |
-| Scalability | Harder to scale (entire app needs scaling) | Easily scalable at service level |
-| Technology | Single technology stack | Polyglot (different languages & databases) |
-| Maintainability | Harder to maintain as app grows | Easier to update and maintain |
-| Failure Isolation | A failure can crash the whole app | Failures are isolated per service |
+| Feature            | Monolithic Architecture                     | Microservices Architecture |
+|---------           |-------------------------                    |---------------------------|
+| Deployment         | Single deployment unit (WAR/JAR)            | Multiple independent deployments |
+| Scalability        | Harder to scale (entire app needs scaling)  | Easily scalable at service level |
+| Technology         | Single technology stack                     | Polyglot (different languages & databases) |
+| Maintainability    | Harder to maintain as app grows             | Easier to update and maintain |
+| Failure Isolation  | A failure can crash the whole app           | Failures are isolated per service |
 
 ---
 

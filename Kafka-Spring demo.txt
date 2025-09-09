@@ -1,0 +1,200 @@
+Kafka Springboot demo 
+
+Perfect! Here's a clean and complete example of how to integrate **Apache Kafka** with **Spring Boot**, 
+including both **Producer** and **Consumer** code for the topic `"user_message"`.
+
+---
+
+## ⚙️ Step 1: Add Dependencies
+
+In your `pom.xml`:
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>org.springframework.kafka</groupId>
+    <artifactId>spring-kafka</artifactId>
+  </dependency>
+</dependencies>
+```
+
+---
+
+## 🧪 Step 2: Kafka Configuration
+
+### `application.yml` or `application.properties`
+
+```yaml
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: user-message-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+```
+
+---
+
+## 🚀 Step 3: Kafka Producer
+
+### `KafkaProducerService.java`
+
+```java
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
+
+@Service
+public class KafkaProducerService {
+
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private static final String TOPIC = "user_message";
+
+    public KafkaProducerService(KafkaTemplate<String, String> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
+
+    public void sendMessage(String message) {
+        kafkaTemplate.send(TOPIC, message);
+        System.out.println("Sent message: " + message);
+    }
+}
+```
+
+---
+
+## 📥 Step 4: Kafka Consumer
+
+### `KafkaConsumerService.java`
+
+```java
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Service;
+
+@Service
+public class KafkaConsumerService {
+
+    @KafkaListener(topics = "user_message", groupId = "user-message-group")
+    public void consume(String message) {
+        System.out.println("Received message: " + message);
+    }
+}
+```
+
+---
+
+## 🧪 Step 5: Test Controller (Optional)
+
+### `MessageController.java`
+
+```java
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/messages")
+public class MessageController {
+
+    private final KafkaProducerService producerService;
+
+    public MessageController(KafkaProducerService producerService) {
+        this.producerService = producerService;
+    }
+
+    @PostMapping
+    public String sendMessage(@RequestBody String message) {
+        producerService.sendMessage(message);
+        return "Message sent!";
+    }
+}
+```
+
+---
+
+## ✅ Final Notes
+
+- Make sure Kafka is running locally or update `bootstrap-servers` accordingly.
+- You can use tools like [Kafka Tool](https://www.kafkatool.com/) or [Confluent Control Center](https://www.confluent.io/) to monitor messages.
+- For structured messages, consider using `KafkaTemplate<String, UserMessage>` with a custom serializer.
+
+Would you like to extend this with Avro serialization, schema registry, or Kafka Streams?
+
+
+
+
+When sending messages using Kafka in a Spring Boot application, it's important to handle exceptions gracefully to ensure reliability and observability. Here's how you can do it using `KafkaTemplate`:
+
+---
+
+## ✅ Exception Handling with `KafkaTemplate`
+
+### 🔧 Using `ListenableFuture` and `addCallback`
+
+```java
+import org.springframework.kafka.support.SendResult;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
+
+public void sendMessage(String message) {
+    ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send("user_message", message);
+
+    future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
+        @Override
+        public void onSuccess(SendResult<String, String> result) {
+            System.out.println("Message sent successfully with offset: " + result.getRecordMetadata().offset());
+        }
+
+        @Override
+        public void onFailure(Throwable ex) {
+            System.err.println("Failed to send message: " + message);
+            ex.printStackTrace();
+            // Optionally rethrow or log to monitoring system
+        }
+    });
+}
+```
+
+This is **non-blocking** and allows you to handle success and failure asynchronously.
+
+---
+
+### 🧱 Blocking with `Future.get()`
+
+If you need to block until the message is sent (e.g., for transactional logic):
+
+```java
+try {
+    kafkaTemplate.send("user_message", message).get(); // Optional timeout: get(10, TimeUnit.SECONDS)
+    System.out.println("Message sent successfully");
+} catch (Exception e) {
+    System.err.println("Error sending message: " + e.getMessage());
+    // Handle or rethrow
+}
+```
+
+This is **synchronous** and will throw exceptions like `ExecutionException`, `TimeoutException`, or `InterruptedException`.
+
+---
+
+## 🛡️ Common Exceptions to Handle
+
+| Exception Type                  | Cause                                                                 |
+|--------------------------------|------------------------------------------------------------------------|
+| `KafkaException`               | General Kafka error                                                    |
+| `SerializationException`       | Message serialization failure                                          |
+| `TimeoutException`             | Broker did not respond in time                                         |
+| `AuthorizationException`       | Missing permissions to publish to topic                                |
+| `NetworkException`             | Broker unreachable or network failure                                  |
+
+---
+
+## 📚 More Resources
+
+- [Exception Handling in Apache Kafka – GeeksforGeeks](https://www.geeksforgeeks.org/java/exception-handling-in-apache-kafka/)
+- [Spring Kafka Error Handling Documentation](https://docs.spring.io/spring-kafka/reference/kafka/annotation-error-handling.html)
+- [Stack Overflow Example with KafkaTemplate](https://stackoverflow.com/questions/60458161/exception-handling-on-sending-a-message-via-kafka-template)
+
+Would you like to add retry logic or dead-letter topic handling for failed messages?
