@@ -1,0 +1,107 @@
+
+
+Understanding the internal workings of `HashMap`, `HashSet`, and `ConcurrentHashMap` in Java 8 helps clarify how these 
+data structures operate under the hood. Let’s break it down step-by-step:
+
+---
+
+### **1. Internal Working of HashMap**
+A `HashMap` is a key-value pair data structure that allows efficient retrieval, insertion, and deletion based on hash codes.
+
+#### **Steps:**
+1. **Key Hashing:**
+   - When a key is inserted, its `hashCode()` is calculated. This hash code is used to determine the bucket where the key-value pair will be stored.
+   - In Java 8, the hash code is further processed using a hashing function to minimize collisions (`hash = (h = key.hashCode()) ^ (h >>> 16)`).
+
+2. **Bucket Array:**
+   - The underlying structure of a `HashMap` is an array of `Node` objects (buckets). Each bucket corresponds to an index in the array.
+   - A `Node` contains the key, value, hash, and a reference to the next node (in case of collisions).
+
+3. **Collision Handling:**
+   - If multiple keys hash to the same bucket (collision):
+      - **Pre-Java 8:** Collisions were resolved using a linked list inside the bucket.
+      - **Java 8:** When the number of collisions exceeds a threshold (`TREEIFY_THRESHOLD`, default 8), the linked list is converted into 
+	  a balanced binary search tree to improve lookup performance from O(n) to O(log n).
+
+4. **Resize Operation:**
+   - When the number of elements exceeds the load factor (`default = 0.75`), the `HashMap` resizes itself by doubling the bucket array size.
+   - During resizing, elements are rehashed and redistributed to new buckets.
+
+5. **Retrieval:**
+   - To retrieve a value, the hash code of the key is calculated, and the bucket index is determined.
+   - The `equals()` method is used to compare keys to find the correct entry in the bucket.
+
+---
+
+### **2. Internal Working of HashSet**
+A `HashSet` is a collection that uses a `HashMap` internally to store unique elements.
+
+#### **Steps:**
+1. **Underlying Data Structure:**
+   - A `HashSet` internally uses a `HashMap` to store elements. The elements of the set are stored as keys 
+   in the `HashMap`, with a dummy value (typically `Object` or `Boolean.TRUE`).
+
+2. **Insertion:**
+   - When an element is added to the `HashSet`, it is inserted as a key into the underlying `HashMap`.
+   - The hash code of the element is calculated to determine the bucket index in the `HashMap`.
+
+3. **Uniqueness:**
+   - Since `HashMap` does not allow duplicate keys, `HashSet` ensures that only unique elements are stored.
+
+4. **Operations:**
+   - All operations like add(), remove(), and contains() in `HashSet` are performed using the corresponding operations 
+   in the underlying `HashMap`.
+
+---
+
+### **3. Internal Working of ConcurrentHashMap**
+A `ConcurrentHashMap` is a thread-safe version of `HashMap` that allows concurrent access without locking the entire map.
+
+#### **Steps:**
+1. **Segmented Buckets:**
+   - In Java 8, `ConcurrentHashMap` uses bucket-level concurrency. Instead of locking the entire map, 
+   it locks individual buckets (or parts of the map) for updates.
+   - The internal structure is a combination of buckets and `Node` objects, similar to `HashMap`.
+
+2. **Key Hashing and Bucket Index:**
+   - The hash code of the key is calculated and processed using a hashing function to determine the bucket index.
+
+3. **Locking Mechanism:**
+   - Instead of locking the entire map, `ConcurrentHashMap` uses fine-grained locks at the bucket level.
+   - A `synchronized` block or CAS (Compare-And-Swap) mechanism is used for updates to ensure data consistency.
+
+4. **Collision Handling:**
+   - Similar to `HashMap`, collisions are handled using linked lists or trees (introduced in Java 8). 
+   If collisions exceed the `TREEIFY_THRESHOLD`, the bucket's linked list is converted into a tree structure.
+
+5. **Iterating Safely:**
+   - `ConcurrentHashMap` uses a fail-safe iterator that does not throw `ConcurrentModificationException`. 
+   Instead, it provides a snapshot of the map at the time of iteration.
+
+6. **Resize Operation:**
+   - Resizing is done dynamically and efficiently without blocking the map. Threads cooperate to redistribute elements across new buckets.
+
+7. **Thread-Safety:**
+   - Concurrent updates (put, remove, etc.) are thread-safe. Read operations do not require locks, 
+   allowing high performance in concurrent environments.
+
+---
+
+### **Key Differences Between HashMap, HashSet, and ConcurrentHashMap:**
+
+| **Feature**                  | **HashMap**                 | **HashSet**                  | **ConcurrentHashMap**       |
+|------------------------------|-----------------------------|------------------------------|-----------------------------|
+| **Thread Safety**            | Not thread-safe             | Not thread-safe              | Thread-safe                 |
+| **Collision Handling**       | Linked List / Tree          | Uses HashMap internally      | Linked List / Tree          |
+| **Synchronization**          | None                        | None                         | Bucket-level locking        |
+| **Fail-Safe Iterator**       | No                          | No                           | Yes                         |
+| **Performance in Concurrency** | Poor                       | Poor                         | High                        |
+
+---
+
+### **Conclusion:**
+- **HashMap** is ideal for single-threaded use cases where performance is critical.
+- **HashSet** is used for maintaining a collection of unique elements and is backed by `HashMap`.
+- **ConcurrentHashMap** is designed for high-performance, thread-safe operations in multi-threaded environments.
+
+Each of these data structures has been optimized in Java 8, with `HashMap` and `ConcurrentHashMap` benefiting from tree-based collision resolution.

@@ -1,0 +1,154 @@
+
+
+
+1. What are the key features introduced in Java 17 that can be utilized in real-world projects?  
+2. What is a Kafka Consumer Group, and how does it work?
+   - Can all consumers in the same group read the same message?  
+3. What configuration is required to deploy the same code across multiple environments (like dev, QA, and prod) simultaneously?
+4. What is the difference between encoding and encryption?
+   - In what scenarios would you use each one?  
+5. What is the use of @ConditionalOnProperty in Spring Boot applications?  
+6. How can we ensure atomicity in our code when performing a transaction?
+7. What are the different transaction isolation levels, and what problems does each one solve?
+8. What is Spring Security, and how does it help in securing applications? 
+9. What are the different HTTP methods used in REST APIs?
+   - Which methods are idempotent and which are not?  
+10. What does applyAsync() do in CompletableFuture, and when should we use it?
+11. What is the purpose of thenCombine() in CompletableFuture, and how does it work?
+
+
+
+/*
+We have a list of consumers and their total spending. Our goal is to:
+    1    Find the top 10 highest-spending consumers and give them a 10% discount.
+    2    Find the next 10 highest-spending consumers and give them a 5% discount.
+    3    Print the consumers along with their discounts.
+Considerations:
+- Use efficient data structure as per the problem.
+- Try to use latest java features wherever possible.
+- Keep it simple and limited as per requirement.
+*/
+
+
+Follow up questions on the implementations like,
+- Which other data structure seems to be suitable for this use case
+- Regarding Streams methods used in implementation
+- What's var and why use it.
+- Record class in Java 17
+
+Interview Questions:
+======================
+- Gave a scenario to fetch data from 2 tables and combine them in one POJO. What approach you would implement. Counter Questions bases on your response like:
+    - Virtual Threads with Java 21
+    - Executor Framework
+    - join(), wait(), notify() method 
+- Spring modules
+- What's Spring Data JPA and how it works
+- Scenario to fetch users form DB. How will you write the query in repository layer.
+- How you managed transaction in your application.
+- Transactional Annotation and its different uses.
+- How will you optimize response time of your application if are fetching bulk amount of data and fetching data from millions of records. Explain regarding optimization via Backend and via Database.
+- HTTP Verbs and idempotency
+- What's Https
+- Difference between Hashing, Encryption and Encoding.
+- How is your application secured. 
+- Questions related to Spring Security and OAUTH2. Basic implementation.
+- How to debug any incident reported for your application.
+- A challenging task you encountered while working in last 1 year.
+
+
+1.Why String immutable
+
+2.what is @JsonIgnore
+
+3.what is transient keyword
+
+4.Why we need transient if we have @JsonIgnore
+
+5.Write a controller for order service to get data from Product microservice
+
+6.Write Junit for controller and service class
+
+7.Employee class with id,name,dept.Get count of employees in each dept
+
+8.How to implement scheduler in java
+
+9.How to implement Retry pattern
+
+10.How to implement Circuit breaker pattern
+
+11.How to secure rest end points
+
+12.jpa lazy vs eger loading
+
+13.where do we use mapped superclass  in jpa
+
+14.How to do query optimization
+
+15.How to do database table partiotioning
+
+16.Deploment types and which one used in current project
+
+17.Serial_version_id and why we need
+
+18.Annotation for primary key and composite key in entity class
+
+19.How to handle transaction
+
+20.Different transaction propogation types
+
+
+
+
+Java
+ 
+explain your previous project and full architecture
+which java versions you worked
+features of java8
+difference between interface and abstract class
+functional interface 
+default methods in interface
+Suppose we have interface A and interface B have a default method print() and a class implementing both interface. if class call print() which method it will call.
+for reading a file which one will you use string, stringbuffer, stringbuilder and why with advantage
+memory management of string, stringbuffer, stringbuilder
+completable futures
+what is blocked queue
+what is a queue
+when to use callable and runnable
+what are exceptions how it works internally
+what serialversionid in exception
+why optional class introduced and what are their disadvantage
+different ways of creating an object in java
+ 
+ 
+springboot
+ 
+what is starter dependency how it works and how can we implement custom starter
+how @autoconfiguration works internally
+how to implement different properties for different env. what changes you will do in properties and beans
+@primary @qualifier when you will use give scenario
+difference between constructor and setter injection
+caching in spring(not external caching)
+exception handling in springboot. explain complete flow for controller advice
+distributed tracing in microservices
+how to manage transactions if multiple microservice try to update db row not by @transaction (pessimistic locking)
+what you will do if query is taking too much time from application
+ways of calling api's
+async way of calling api
+what all queues are available for async communication
+what is POM what are the use of this
+ 
+ 
+kafka
+ 
+how to do async call with kafka
+if we have a producer and a consumer that is producing lots of message but consumer is not able to process all of them(don't limit)
+suppose consumer is failed and not able to process but producer want atleast one read how you implement that(acknowledgement)
+ 
+ 
+postgres
+ 
+there is one table with lots of data and we have one query that is taking too much time what you will do to optimize this
+indexing
+partition
+how to do partition

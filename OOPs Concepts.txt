@@ -39,7 +39,20 @@ In Java, we use method overloading and method overriding to achieve polymorphism
 | **Static Methods**   | Can be overloaded                    | Cannot be overridden                |
 
 ---
+### 📜 Core Rules of Method Overriding
 
+| Rule | Description |
+|------|-------------|
+| **Same Method Signature** | The method name, return type, and parameter list must match exactly with the superclass method. |
+| **Inheritance Required** | Overriding only occurs between a subclass and its superclass. |
+| **Access Modifier** | The overriding method **cannot be more restrictive** than the method in the superclass. For example, if the superclass method is `protected`, the subclass method cannot be `private`. |
+| **Return Type** | Must be the same or a **covariant type** (i.e., a subclass of the original return type). |
+| **Cannot Override Static Methods** | Static methods belong to the class, not the instance, so they can't be overridden—only hidden. |
+| **Cannot Override Final Methods** | Methods declared `final` in the superclass cannot be overridden. |
+| **Cannot Override Constructors** | Constructors are not inherited, so they can't be overridden. |
+| **Use of @Override Annotation** | Optional but recommended—it helps catch errors at compile time if the method signature doesn’t match. |
+
+---
 
 Abstraction
 Hiding internal details and showing functionality is known as abstraction. 
@@ -51,5 +64,6 @@ Encapsulation
 Binding (or wrapping) code and data together into a single unit are known as encapsulation. 
 For example, a capsule, it is wrapped with different medicines.
 A java class is the example of encapsulation. Java bean is the fully encapsulated class because all the data members are private here.
+
 
 

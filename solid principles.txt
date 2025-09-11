@@ -49,3 +49,177 @@ For example, a class that needs to connect to a database could depend on an abst
 Here are some examples of how the SOLID principles can be applied:
 
 The SOLID principles are a valuable set of guidelines for object-oriented programming. By following these principles, developers can create well-designed and maintainable software.
+
+
+
+###
+Absolutely! The **SOLID principles** are five key object-oriented design guidelines that help make Java code more maintainable, scalable, and robust. Here's a breakdown with simple Java examples to illustrate each one:
+
+---
+
+### 🧱 1. Single Responsibility Principle (SRP)
+> A class should have only one reason to change.
+
+**Bad Example:**
+```java
+public class Employee {
+    public String getDetails() { /* ... */ }
+    public void calculateSalary() { /* ... */ }
+    public void sendEmail() { /* ... */ } // Violates SRP
+}
+```
+
+**Improved Design:**
+```java
+public class Employee {
+    public String getDetails() { /* ... */ }
+    public void calculateSalary() { /* ... */ }
+}
+
+public class EmailService {
+    public void sendEmail(String message) { /* ... */ }
+}
+```
+
+---
+
+### 🚪 2. Open/Closed Principle (OCP)
+> Software entities should be open for extension but closed for modification.
+
+**Bad Example:**
+```java
+public class AreaCalculator {
+    public double calculateArea(Object shape) {
+        if (shape instanceof Circle) { /* ... */ }
+        else if (shape instanceof Square) { /* ... */ }
+    }
+}
+```
+
+**Improved Design:**
+```java
+interface Shape {
+    double calculateArea();
+}
+
+class Circle implements Shape {
+    public double calculateArea() { return Math.PI * r * r; }
+}
+
+class Square implements Shape {
+    public double calculateArea() { return side * side; }
+}
+
+class AreaCalculator {
+    public double calculateArea(Shape shape) {
+        return shape.calculateArea();
+    }
+}
+```
+
+---
+
+### 🧬 3. Liskov Substitution Principle (LSP)
+> Subtypes must be substitutable for their base types.
+
+**Bad Example:**
+```java
+class Bird {
+    public void fly() { /* ... */ }
+}
+
+class Penguin extends Bird {
+    public void fly() { throw new UnsupportedOperationException(); } // Violates LSP
+}
+```
+
+**Improved Design:**
+```java
+interface Bird { }
+
+interface FlyingBird extends Bird {
+    void fly();
+}
+
+class Sparrow implements FlyingBird {
+    public void fly() { /* ... */ }
+}
+
+class Penguin implements Bird {
+    // No fly method, so no violation
+}
+```
+
+---
+
+### 🧩 4. Interface Segregation Principle (ISP)
+> Clients should not be forced to depend on interfaces they do not use.
+
+**Bad Example:**
+```java
+interface Vehicle {
+    void drive();
+    void fly(); // Not all vehicles fly
+}
+```
+
+**Improved Design:**
+```java
+interface Drivable {
+    void drive();
+}
+
+interface Flyable {
+    void fly();
+}
+
+class Car implements Drivable {
+    public void drive() { /* ... */ }
+}
+
+class Plane implements Drivable, Flyable {
+    public void drive() { /* ... */ }
+    public void fly() { /* ... */ }
+}
+```
+
+---
+
+### 🔌 5. Dependency Inversion Principle (DIP)
+> High-level modules should not depend on low-level modules. Both should depend on abstractions.
+
+**Bad Example:**
+```java
+class Engine { }
+
+class Car {
+    private Engine engine = new Engine(); // Tight coupling
+}
+```
+
+**Improved Design:**
+```java
+interface Engine {
+    void start();
+}
+
+class PetrolEngine implements Engine {
+    public void start() { /* ... */ }
+}
+
+class Car {
+    private Engine engine;
+
+    public Car(Engine engine) {
+        this.engine = engine;
+    }
+
+    public void startCar() {
+        engine.start();
+    }
+}
+```
+
+---
+
+If you'd like, I can help you refactor your own Java code using these principles. Or we could dive deeper into one of them—your pick!

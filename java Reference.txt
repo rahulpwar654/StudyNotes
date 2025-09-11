@@ -1,0 +1,55 @@
+Excellent question! In Java, `WeakReference`, `SoftReference`, and `PhantomReference` are part of the `java.lang.ref` package and 
+offer different levels of interaction with the garbage collector (GC). 
+They’re especially useful when managing memory-sensitive applications. 
+Here's a breakdown of how they differ:
+
+---
+
+### 🔹 **SoftReference**
+- **GC Behavior:** Cleared **only when memory is low**.
+- **Use Case:** Ideal for **caching**—objects are kept as long as memory allows.
+- **Example:**
+  ```java
+  SoftReference<MyObject> softRef = new SoftReference<>(new MyObject());
+  ```
+
+---
+
+### 🔸 **WeakReference**
+- **GC Behavior:** Cleared **as soon as no strong references exist**.
+- **Use Case:** Useful for **metadata**, listeners, or mappings that shouldn't prevent GC.
+- **Example:**
+  ```java
+  WeakReference<MyObject> weakRef = new WeakReference<>(new MyObject());
+  ```
+
+---
+
+### ⚫ **PhantomReference**
+- **GC Behavior:** Object is **already finalized and collected**, but reference is enqueued **after GC**.
+- **Use Case:** Used for **post-mortem cleanup**—like releasing native resources.
+- **Requires:** A `ReferenceQueue` to detect when object is enqueued.
+- **Example:**
+  ```java
+  ReferenceQueue<MyObject> queue = new ReferenceQueue<>();
+  PhantomReference<MyObject> phantomRef = new PhantomReference<>(new MyObject(), queue);
+  ```
+
+---
+
+### 🧠 Summary Table
+
+| Reference Type     | Cleared When?                     | Can Access Object? | Use Case                     |
+|--------------------|-----------------------------------|---------------------|------------------------------|
+| SoftReference      | JVM needs memory                  | ✅ Yes (`get()`)     | Caching                      |
+| WeakReference      | No strong references exist        | ✅ Yes (`get()`)     | Metadata, weak maps          |
+| PhantomReference   | After GC and finalization         | ❌ No (`get()` returns null) | Resource cleanup, monitoring |
+
+---
+
+These reference types give you fine-grained control over memory management. 
+If you're building a cache, go soft. 
+For non-blocking references, go weak. 
+And for cleanup after GC, phantom is your tool.
+
+Want to dive deeper into how `ReferenceQueue` works or explore real-world examples of each?

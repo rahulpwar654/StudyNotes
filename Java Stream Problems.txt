@@ -1,1 +1,690 @@
 Java Stream Problems
+
+
+Below are answers to your questions using Java's Stream API:
+
+
+Find duplicate elements in a list of integers.
+Count the frequency of each word in a list of strings.
+Find the first non-repeating character in a string using streams.
+Sort a list of employees by salary descending, then by name ascending.
+Group a list of students by grade and count how many are in each group.
+Flatten a list of lists of integers into a single list.
+Convert a list of strings to uppercase and filter those starting with ‘A’.
+Given a list of products, return the product with the highest price.
+Filter employees whose joining date is before 2020 and collect their names into a set.
+Create a comma-separated string from a list of integers (e.g., "1,2,3").
+Partition a list of numbers into even and odd using Collectors.partitioningBy().
+Convert a list of strings to a map with string length as the key and list of strings as values.
+Remove duplicate characters from a string while preserving order.
+Given a list of employees, group by department, then find the highest salary per department.
+Sum only the even numbers from a list of integers using reduce().
+Implement a custom collector to collect strings into a CSV format with a max line width.
+Process a large stream of numbers using parallelStream() to calculate statistical metrics (avg, min, max).
+Group orders by customer and then by order status (Map<Customer, Map<Status, List<Order>>>).
+Given a list of transactions, return a map of month to total transaction amount for that month.
+Find all palindromes in a list of strings using Stream API.
+Create a frequency map of characters in a string using only streams (not a loop).
+Given a stream of strings, group them by anagram keys (e.g., "abc" and "bca" grouped together).
+Write a stream-based solution to perform left outer join on two lists (e.g., students and subjects).
+Write a stream pipeline that finds the longest word in a sentence, excluding punctuation.
+Implement a stream pipeline to chunk a list of integers into sublists of size N.
+
+
+---
+
+### 1. **Find duplicate elements in a list of integers**
+```java
+List<Integer> integers = Arrays.asList(1, 2, 2, 3, 4, 5, 5, 6);
+
+Set<Integer> seen = new HashSet<>();
+Set<Integer> duplicates = integers.stream()
+        .filter(n -> !seen.add(n)) // `add` returns false if the element is already in the set
+        .collect(Collectors.toSet());
+
+System.out.println(duplicates); // Output: [2, 5]
+```
+
+---
+
+### 2. **Count the frequency of each word in a list of strings**
+```java
+List<String> words = Arrays.asList("apple", "banana", "apple", "orange", "banana", "apple");
+
+Map<String, Long> wordFrequencies = words.stream()
+        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+System.out.println(wordFrequencies); // Output: {orange=1, banana=2, apple=3}
+```
+
+---
+
+### 3. **Find the first non-repeating character in a string**
+```java
+String input = "swiss";
+
+Optional<Character> firstNonRepeating = input.chars()
+        .mapToObj(c -> (char) c)
+        .filter(c -> input.chars().filter(ch -> ch == c).count() == 1)
+        .findFirst();
+
+System.out.println(firstNonRepeating.orElse(null)); // Output: 'w'
+```
+
+---
+
+### 4. **Sort a list of employees by salary descending, then by name ascending**
+```java
+class Employee {
+    String name;
+    double salary;
+
+    // Constructor, getters, and toString() here
+}
+
+List<Employee> employees = Arrays.asList(
+        new Employee("John", 5000),
+        new Employee("Alice", 7000),
+        new Employee("Bob", 5000)
+);
+
+List<Employee> sortedEmployees = employees.stream()
+        .sorted(Comparator.comparingDouble(Employee::getSalary).reversed()
+                .thenComparing(Employee::getName))
+        .collect(Collectors.toList());
+
+sortedEmployees.forEach(System.out::println);
+```
+
+---
+
+### 5. **Group a list of students by grade and count how many are in each group**
+```java
+class Student {
+    String name;
+    String grade;
+
+    // Constructor, getters, and toString() here
+}
+
+List<Student> students = Arrays.asList(
+        new Student("Alice", "A"),
+        new Student("Bob", "B"),
+        new Student("Charlie", "A"),
+        new Student("David", "B"),
+        new Student("Eve", "A")
+);
+
+Map<String, Long> gradeCounts = students.stream()
+        .collect(Collectors.groupingBy(Student::getGrade, Collectors.counting()));
+
+System.out.println(gradeCounts); // Output: {A=3, B=2}
+```
+
+---
+
+### 6. **Flatten a list of lists of integers into a single list**
+```java
+List<List<Integer>> listOfLists = Arrays.asList(
+        Arrays.asList(1, 2, 3),
+        Arrays.asList(4, 5),
+        Arrays.asList(6, 7, 8)
+);
+
+List<Integer> flattenedList = listOfLists.stream()
+        .flatMap(List::stream)
+        .collect(Collectors.toList());
+
+System.out.println(flattenedList); // Output: [1, 2, 3, 4, 5, 6, 7, 8]
+```
+
+---
+
+### 7. **Convert a list of strings to uppercase and filter those starting with ‘A’**
+```java
+List<String> strings = Arrays.asList("apple", "banana", "apricot", "cherry");
+
+List<String> filteredUppercase = strings.stream()
+        .map(String::toUpperCase)
+        .filter(s -> s.startsWith("A"))
+        .collect(Collectors.toList());
+
+System.out.println(filteredUppercase); // Output: [APPLE, APRICOT]
+```
+
+---
+
+### 8. **Given a list of products, return the product with the highest price**
+```java
+class Product {
+    String name;
+    double price;
+
+    // Constructor, getters, and toString() here
+}
+
+List<Product> products = Arrays.asList(
+        new Product("Laptop", 1000),
+        new Product("Phone", 800),
+        new Product("Tablet", 600)
+);
+
+Product mostExpensiveProduct = products.stream()
+        .max(Comparator.comparingDouble(Product::getPrice))
+        .orElse(null);
+
+System.out.println(mostExpensiveProduct); // Output: Product{name='Laptop', price=1000.0}
+```
+
+---
+
+### 9. **Filter employees whose joining date is before 2020 and collect their names into a set**
+```java
+class Employee {
+    String name;
+    LocalDate joiningDate;
+
+    // Constructor, getters, and toString() here
+}
+
+List<Employee> employees = Arrays.asList(
+        new Employee("Alice", LocalDate.of(2019, 5, 15)),
+        new Employee("Bob", LocalDate.of(2020, 1, 10)),
+        new Employee("Charlie", LocalDate.of(2018, 3, 20))
+);
+
+Set<String> employeeNames = employees.stream()
+        .filter(e -> e.getJoiningDate().isBefore(LocalDate.of(2020, 1, 1)))
+        .map(Employee::getName)
+        .collect(Collectors.toSet());
+
+System.out.println(employeeNames); // Output: [Alice, Charlie]
+```
+
+---
+
+### 10. **Create a comma-separated string from a list of integers**
+```java
+List<Integer> integers = Arrays.asList(1, 2, 3, 4, 5);
+
+String commaSeparated = integers.stream()
+        .map(String::valueOf)
+        .collect(Collectors.joining(","));
+
+System.out.println(commaSeparated); // Output: "1,2,3,4,5"
+```
+
+---
+
+### 11. **Partition a list of numbers into even and odd**
+```java
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8);
+
+Map<Boolean, List<Integer>> partitioned = numbers.stream()
+        .collect(Collectors.partitioningBy(n -> n % 2 == 0));
+
+System.out.println(partitioned);
+// Output: {false=[1, 3, 5, 7], true=[2, 4, 6, 8]}
+```
+
+---
+Below are examples and explanations for each problem solved using Java Stream API.
+
+---
+
+### 1. **Convert a list of strings to a map with string length as the key and list of strings as values**
+```java
+List<String> strings = Arrays.asList("apple", "banana", "cherry", "date", "fig", "kiwi");
+
+Map<Integer, List<String>> lengthToStringsMap = strings.stream()
+        .collect(Collectors.groupingBy(String::length));
+
+System.out.println(lengthToStringsMap);
+// Output: {3=[fig], 4=[date, kiwi], 5=[apple], 6=[banana, cherry]}
+```
+
+---
+
+### 2. **Remove duplicate characters from a string while preserving order**
+```java
+String input = "banana";
+
+String result = input.chars()
+        .mapToObj(c -> (char) c)
+        .distinct()
+        .map(String::valueOf)
+        .collect(Collectors.joining());
+
+System.out.println(result); // Output: "ban"
+```
+
+---
+
+### 3. **Group employees by department, then find the highest salary per department**
+```java
+class Employee {
+    String name;
+    String department;
+    double salary;
+
+    // Constructor, getters, and toString() here
+}
+
+List<Employee> employees = Arrays.asList(
+        new Employee("Alice", "HR", 5000),
+        new Employee("Bob", "IT", 7000),
+        new Employee("Charlie", "HR", 6000),
+        new Employee("David", "IT", 8000)
+);
+
+Map<String, Optional<Employee>> highestSalaryByDept = employees.stream()
+        .collect(Collectors.groupingBy(Employee::getDepartment,
+                Collectors.maxBy(Comparator.comparingDouble(Employee::getSalary))));
+
+System.out.println(highestSalaryByDept);
+// Output: {HR=Optional[Employee{name='Charlie', ...}], IT=Optional[Employee{name='David', ...}]}
+```
+
+---
+
+### 4. **Sum only the even numbers from a list of integers using `reduce()`**
+```java
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6);
+
+int evenSum = numbers.stream()
+        .filter(n -> n % 2 == 0)
+        .reduce(0, Integer::sum);
+
+System.out.println(evenSum); // Output: 12
+```
+
+---
+
+### 5. **Custom collector to collect strings into a CSV format with a max line width**
+```java
+class CsvCollector implements Collector<String, StringBuilder, String> {
+    private final int maxLineWidth;
+
+    public CsvCollector(int maxLineWidth) {
+        this.maxLineWidth = maxLineWidth;
+    }
+
+    @Override
+    public Supplier<StringBuilder> supplier() {
+        return StringBuilder::new;
+    }
+
+    @Override
+    public BiConsumer<StringBuilder, String> accumulator() {
+        return (sb, s) -> {
+            if (sb.length() > 0 && sb.length() + s.length() + 1 > maxLineWidth) {
+                sb.append("\n");
+            } else if (sb.length() > 0) {
+                sb.append(",");
+            }
+            sb.append(s);
+        };
+    }
+
+    @Override
+    public BinaryOperator<StringBuilder> combiner() {
+        return (sb1, sb2) -> {
+            if (sb1.length() > 0 && sb2.length() > 0) {
+                sb1.append("\n");
+            }
+            sb1.append(sb2);
+            return sb1;
+        };
+    }
+
+    @Override
+    public Function<StringBuilder, String> finisher() {
+        return StringBuilder::toString;
+    }
+
+    @Override
+    public Set<Characteristics> characteristics() {
+        return Collections.emptySet();
+    }
+}
+
+// Usage
+List<String> strings = Arrays.asList("apple", "banana", "cherry", "date", "fig", "kiwi");
+String csv = strings.stream().collect(new CsvCollector(15));
+System.out.println(csv);
+// Output:
+// apple,banana
+// cherry,date
+// fig,kiwi
+```
+
+---
+
+### 6. **Process a large stream of numbers using `parallelStream()` to calculate statistical metrics**
+```java
+List<Integer> numbers = IntStream.rangeClosed(1, 1000000).boxed().collect(Collectors.toList());
+
+IntSummaryStatistics stats = numbers.parallelStream()
+        .mapToInt(Integer::intValue)
+        .summaryStatistics();
+
+System.out.println(stats);
+// Output: IntSummaryStatistics{count=1000000, sum=500000500000, min=1, average=500000.5, max=1000000}
+```
+
+---
+
+### 7. **Group orders by customer and then by order status**
+```java
+class Order {
+    String customer;
+    String status;
+
+    // Constructor, getters, and toString() here
+}
+
+List<Order> orders = Arrays.asList(
+        new Order("Alice", "Pending"),
+        new Order("Bob", "Completed"),
+        new Order("Alice", "Completed"),
+        new Order("Charlie", "Pending")
+);
+
+Map<String, Map<String, List<Order>>> groupedOrders = orders.stream()
+        .collect(Collectors.groupingBy(Order::getCustomer,
+                Collectors.groupingBy(Order::getStatus)));
+
+System.out.println(groupedOrders);
+// Output: {Alice={Pending=[...], Completed=[...]}, Bob={Completed=[...]}, Charlie={Pending=[...]}}
+```
+
+---
+
+### 8. **Map of month to total transaction amount**
+```java
+class Transaction {
+    LocalDate date;
+    double amount;
+
+    // Constructor, getters, and toString() here
+}
+
+List<Transaction> transactions = Arrays.asList(
+        new Transaction(LocalDate.of(2023, 1, 10), 100.0),
+        new Transaction(LocalDate.of(2023, 1, 20), 200.0),
+        new Transaction(LocalDate.of(2023, 2, 5), 300.0)
+);
+
+Map<Month, Double> monthlyTotals = transactions.stream()
+        .collect(Collectors.groupingBy(t -> t.getDate().getMonth(),
+                Collectors.summingDouble(Transaction::getAmount)));
+
+System.out.println(monthlyTotals);
+// Output: {JANUARY=300.0, FEBRUARY=300.0}
+```
+
+---
+
+### 9. **Find all palindromes in a list of strings**
+```java
+List<String> strings = Arrays.asList("madam", "apple", "level", "banana");
+
+List<String> palindromes = strings.stream()
+        .filter(s -> s.equals(new StringBuilder(s).reverse().toString()))
+        .collect(Collectors.toList());
+
+System.out.println(palindromes); // Output: [madam, level]
+```
+
+---
+
+### 10. **Frequency map of characters in a string**
+```java
+String input = "apple";
+
+Map<Character, Long> charFrequency = input.chars()
+        .mapToObj(c -> (char) c)
+        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+System.out.println(charFrequency); // Output: {a=1, p=2, l=1, e=1}
+```
+
+---
+
+### 11. **Group strings by anagram keys**
+```java
+List<String> strings = Arrays.asList("abc", "bca", "bat", "tab", "cat");
+
+Map<String, List<String>> groupedAnagrams = strings.stream()
+        .collect(Collectors.groupingBy(s -> s.chars().sorted()
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString()));
+
+System.out.println(groupedAnagrams);
+// Output: {abc=[abc, bca], abt=[bat, tab], act=[cat]}
+```
+
+---
+
+### 12. **Left outer join on two lists**
+```java
+class Student {
+    String name;
+
+    // Constructor, getters, and toString() here
+}
+
+class Subject {
+    String studentName;
+    String subject;
+
+    // Constructor, getters, and toString() here
+}
+
+List<Student> students = Arrays.asList(new Student("Alice"), new Student("Bob"));
+List<Subject> subjects = Arrays.asList(new Subject("Alice", "Math"), new Subject("Alice", "Science"));
+
+Map<String, List<String>> leftJoin = students.stream()
+        .collect(Collectors.toMap(Student::getName,
+                s -> subjects.stream()
+                        .filter(sub -> sub.getStudentName().equals(s.getName()))
+                        .map(Subject::getSubject)
+                        .collect(Collectors.toList())));
+
+System.out.println(leftJoin);
+// Output: {Alice=[Math, Science], Bob=[]}
+```
+
+---
+
+### 13. **Longest word in a sentence excluding punctuation**
+```java
+String sentence = "The quick, brown fox jumps over the lazy dog.";
+
+String longestWord = Arrays.stream(sentence.split("\\W+"))
+        .max(Comparator.comparingInt(String::length))
+        .orElse("");
+
+System.out.println(longestWord); // Output: "jumps"
+```
+
+---
+
+### 14. **Chunk a list into sublists of size N**
+```java
+List<Integer> numbers = IntStream.rangeClosed(1, 10).boxed().collect(Collectors.toList());
+int chunkSize = 3;
+
+List<List<Integer>> chunks = IntStream.range(0, (numbers.size() + chunkSize - 1) / chunkSize)
+        .mapToObj(i -> numbers.subList(i * chunkSize, Math.min((i + 1) * chunkSize, numbers.size())))
+        .collect(Collectors.toList());
+
+System.out.println(chunks);
+// Output: [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10]]
+```
+
+---
+
+Let me know if you need further clarifications!
+
+
+Here’s the full extracted text from the image you uploaded, organized for clarity. These are Java 8 interview sample coding questions with their corresponding solutions using streams and lambda expressions:
+
+---
+
+### 💡 Java 8 Interview Sample Coding Questions
+
+#### 1. Separate Odd And Even Numbers
+```java
+List<Integer> list = Arrays.asList(10, 15, 8, 49, 25, 98, 32);
+Map<Boolean, List<Integer>> oddEvenMap = list.stream().collect(Collectors.partitioningBy(i -> i % 2 == 0));
+```
+
+#### 2. Remove Duplicate Elements From List
+```java
+List<Integer> list = Arrays.asList(10, 15, 8, 49, 25, 98, 98, 32, 15);
+List<Integer> listWithoutDuplicates = list.stream().distinct().collect(Collectors.toList());
+```
+
+#### 3. Frequency Of Each Character In String
+```java
+String inputString = "Java Concept Of The Day";
+Map<String, Long> charFreqMap = Arrays.stream(inputString.split(""))
+    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+```
+
+#### 4. Frequency Of Each Element In Array
+```java
+String[] inputArray = new String[] {"Java", "JavaScript", "Python", "C", "Ruby", "Java"};
+Map<String, Long> elementFreqMap = Arrays.stream(inputArray)
+    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+```
+
+#### 5. Sort The List In Reverse Order
+```java
+List<Integer> list = Arrays.asList(10, 15, 8, 49, 25, 98, 32);
+list.stream().sorted(Comparator.reverseOrder()).forEach(System.out::println);
+```
+
+#### 6. Join List Of Strings With Prefix, Suffix And Delimiter
+```java
+List<String> list = Arrays.asList("Java", "Python", "JavaScript");
+String resultString = list.stream().collect(Collectors.joining(", ", "[", "]"));
+```
+
+#### 7. Print Multiples Of 5 From The List
+```java
+List<Integer> list = Arrays.asList(10, 15, 8, 49, 25, 98, 32);
+list.stream().filter(i -> i % 5 == 0).forEach(System.out::println);
+```
+
+#### 8. Convert List Of String Into Single Sorted String
+```java
+List<String> list = Arrays.asList("Java", "Python", "JavaScript");
+String sortedString = list.stream().sorted().collect(Collectors.joining(", "));
+```
+
+#### 9. Convert Array Of String Into Single Sorted Array Without Duplicates
+```java
+String[] inputArray = new String[] {"Java", "Python", "JavaScript", "JAVA"};
+String[] sortedArray = Arrays.stream(inputArray).map(String::toLowerCase).distinct().sorted().toArray(String[]::new);
+```
+
+#### 10. Merge Two Unsorted Arrays Into Single Sorted Array Without Duplicates
+```java
+String[] array1 = new String[] {"Java", "Python", "JavaScript", "JAVA"};
+String[] array2 = new String[] {"C", "Ruby", "Python", "C++"};
+String[] sortedArray = Stream.concat(Arrays.stream(array1), Arrays.stream(array2))
+    .map(String::toLowerCase).distinct().sorted().toArray(String[]::new);
+```
+
+#### 11. Find Max & Min From The List
+```java
+List<Integer> list = Arrays.asList(10, 15, 8, 49, 25, 98, 32);
+int max = list.stream().max(Integer::compare).get();
+int min = list.stream().min(Integer::compare).get();
+```
+
+#### 12. Find First Non-Repeated Character In String
+```java
+String inputString = "Java Concept Of The Day";
+String firstNonRepeatedChar = Arrays.stream(inputString.split(""))
+    .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
+    .entrySet().stream().filter(entry -> entry.getValue() == 1L).findFirst().get().getKey();
+```
+
+#### 13. Find First Repeated Character In String
+```java
+String inputString = "Java Concept Of The Day";
+String firstRepeatedChar = Arrays.stream(inputString.split(""))
+    .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
+    .entrySet().stream().filter(entry -> entry.getValue() > 1L).findFirst().get().getKey();
+```
+
+#### 14. Find Duplicate Elements In List
+```java
+List<Integer> list = Arrays.asList(10, 15, 8, 49, 25, 98, 98, 32, 15);
+Set<Integer> set = new HashSet<>();
+list.stream().filter(n -> !set.add(n)).forEach(System.out::println);
+```
+
+#### 15. Find Frequency Of Each Word In String
+```java
+String inputString = "Java Concept Of The Day";
+Map<String, Long> wordFreqMap = Arrays.stream(inputString.split(" "))
+    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+```
+
+#### 16. Sort List Of Strings In Ascending Order
+```java
+List<String> list = Arrays.asList("Java", "Python", "JavaScript");
+list.stream().sorted().forEach(System.out::println);
+```
+
+#### 17. Sort List Of Strings In Descending Order
+```java
+List<String> list = Arrays.asList("Java", "Python", "JavaScript");
+list.stream().sorted(Comparator.reverseOrder()).forEach(System.out::println);
+```
+
+#### 18. Sort List Of Integers In Ascending Order
+```java
+List<Integer> list = Arrays.asList(10, 15, 8, 49, 25, 98, 32);
+list.stream().sorted().forEach(System.out::println);
+```
+
+#### 19. Sort List Of Integers In Descending Order
+```java
+List<Integer> list = Arrays.asList(10, 15, 8, 49, 25, 98, 32);
+list.stream().sorted(Comparator.reverseOrder()).forEach(System.out::println);
+```
+
+#### 20. Print Current Date And Time In Java 8
+```java
+System.out.println(LocalDate.now());
+System.out.println(LocalTime.now());
+System.out.println(LocalDateTime.now());
+System.out.println(ZonedDateTime.now());
+System.out.println(Instant.now());
+```
+
+#### 21. Print Date After 10 Days From Today
+```java
+System.out.println(LocalDate.now().plusDays(10));
+```
+
+#### 22. Print Date Before 10 Days From Today
+```java
+System.out.println(LocalDate.now().minusDays(10));
+```
+
+#### 23. Print All Dates Of Current Week
+```java
+LocalDate now = LocalDate.now();
+DayOfWeek firstDayOfWeek = WeekFields.of(Locale.getDefault()).getFirstDayOfWeek();
+LocalDate startOfWeek = now.with(TemporalAdjusters.previousOrSame(firstDayOfWeek));
+Stream.iterate(startOfWeek, date -> date.plusDays(1)).limit(7).forEach(System.out::println);
+```
+
+---
+
+Would you like me to turn these into flashcards, a quiz, or a study guide?

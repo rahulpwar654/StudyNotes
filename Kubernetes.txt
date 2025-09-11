@@ -156,7 +156,8 @@ kubectl rollout undo deployment/my-deployment
 ### 3. **What is a DaemonSet and when would you use it?**
 
 #### **DaemonSet**
-A **DaemonSet** is a Kubernetes resource that ensures a specific Pod runs on all (or a subset of) nodes in a cluster. It is typically used for deploying system-level or node-specific services.
+A **DaemonSet** is a Kubernetes resource that ensures a specific Pod runs on all (or a subset of) nodes in a cluster. 
+It is typically used for deploying system-level or node-specific services.
 
 #### **Key Characteristics**
 - A DaemonSet ensures that exactly one copy of the Pod runs on each eligible node.
@@ -354,7 +355,8 @@ spec:
    - By default, all Pods in Kubernetes can communicate freely unless a Network Policy is applied.
 
 2. **Selectors**:
-   - Network Policies use label selectors to target specific Pods. For example, you can apply rules to Pods with a specific label (e.g., `app=frontend`).
+   - Network Policies use label selectors to target specific Pods. 
+   For example, you can apply rules to Pods with a specific label (e.g., `app=frontend`).
 
 3. **Rules**:
    - You can define rules to allow or deny traffic based on:
@@ -1332,3 +1334,109 @@ spec:
 ---
 
 Would you like help creating a **Helm chart** to package all this for easier deployment? Or maybe a guide to containerize your Spring Boot and AngularJS apps?
+
+
+######################################################
+
+Kubernetes is a powerful container orchestration platform, and its architecture is built around a set of **core components** that work together to manage containerized applications at scale. Here's a breakdown of the **key components** you should know:
+
+---
+
+### 🧠 Control Plane Components
+These manage the overall state of the cluster and make global decisions.
+
+- **kube-apiserver**:  
+  The front door to your cluster. It exposes the Kubernetes API and handles all REST operations. Every interaction—whether from `kubectl`, the dashboard, or other services—goes through this.
+
+- **etcd**:  
+  A distributed key-value store that holds the cluster’s state. Think of it as Kubernetes’ brain—it stores configuration, secrets, and metadata.
+
+- **kube-scheduler**:  
+  Assigns newly created pods to nodes based on resource availability, affinity rules, and other constraints.
+
+- **kube-controller-manager**:  
+  Runs various controllers (like the replication controller, node controller, etc.) that continuously regulate the cluster state to match the desired configuration.
+
+- **cloud-controller-manager** *(optional)*:  
+  Integrates Kubernetes with your cloud provider (e.g., AWS, Azure, GCP) to manage resources like load balancers and storage.
+
+---
+
+### ⚙️ Node Components
+These run on every worker node and are responsible for maintaining pods and containers.
+
+- **kubelet**:  
+  The agent that runs on each node. It ensures containers are running in pods and communicates with the control plane.
+
+- **kube-proxy**:  
+  Manages network rules and enables communication between services across nodes.
+
+- **Container Runtime**:  
+  The software that actually runs containers (e.g., Docker, containerd, CRI-O).
+
+---
+
+### 🧩 Add-ons (Optional but Common)
+These extend Kubernetes functionality:
+
+- **CoreDNS**: Cluster-wide DNS for service discovery.
+- **Dashboard**: Web-based UI for managing the cluster.
+- **Metrics Server**: Collects resource usage data.
+- **Logging Stack**: Centralized logging using tools like Fluentd, Elasticsearch, and Kibana.
+
+---
+
+You can explore a detailed breakdown on [GeeksforGeeks’ Kubernetes architecture guide](https://www.geeksforgeeks.org/devops/kubernetes-architecture/) or check out the official [Kubernetes documentation](https://kubernetes.io/docs/concepts/overview/components/) for deeper insights.
+
+Want help visualizing how these components interact or setting up a cluster from scratch?
+Kubernetes is a powerful container orchestration platform, and its architecture is built around a set of **core components** that work together to manage containerized applications at scale. Here's a breakdown of the **key components** you should know:
+
+---
+
+### 🧠 Control Plane Components
+These manage the overall state of the cluster and make global decisions.
+
+- **kube-apiserver**:  
+  The front door to your cluster. It exposes the Kubernetes API and handles all REST operations. Every interaction—whether from `kubectl`, the dashboard, or other services—goes through this.
+
+- **etcd**:  
+  A distributed key-value store that holds the cluster’s state. Think of it as Kubernetes’ brain—it stores configuration, secrets, and metadata.
+
+- **kube-scheduler**:  
+  Assigns newly created pods to nodes based on resource availability, affinity rules, and other constraints.
+
+- **kube-controller-manager**:  
+  Runs various controllers (like the replication controller, node controller, etc.) that continuously regulate the cluster state to match the desired configuration.
+
+- **cloud-controller-manager** *(optional)*:  
+  Integrates Kubernetes with your cloud provider (e.g., AWS, Azure, GCP) to manage resources like load balancers and storage.
+
+---
+
+### ⚙️ Node Components
+These run on every worker node and are responsible for maintaining pods and containers.
+
+- **kubelet**:  
+  The agent that runs on each node. It ensures containers are running in pods and communicates with the control plane.
+
+- **kube-proxy**:  
+  Manages network rules and enables communication between services across nodes.
+
+- **Container Runtime**:  
+  The software that actually runs containers (e.g., Docker, containerd, CRI-O).
+
+---
+
+### 🧩 Add-ons (Optional but Common)
+These extend Kubernetes functionality:
+
+- **CoreDNS**: Cluster-wide DNS for service discovery.
+- **Dashboard**: Web-based UI for managing the cluster.
+- **Metrics Server**: Collects resource usage data.
+- **Logging Stack**: Centralized logging using tools like Fluentd, Elasticsearch, and Kibana.
+
+---
+
+You can explore a detailed breakdown on [GeeksforGeeks’ Kubernetes architecture guide](https://www.geeksforgeeks.org/devops/kubernetes-architecture/) or check out the official [Kubernetes documentation](https://kubernetes.io/docs/concepts/overview/components/) for deeper insights.
+
+Want help visualizing how these components interact or setting up a cluster from scratch?
