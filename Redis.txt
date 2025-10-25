@@ -1,0 +1,46 @@
+
+
+Redis 
+
+Redis uses several **eviction algorithms** to manage memory when the cache reaches its limit. These are configured using the `maxmemory-policy` directive. Here's a breakdown of the main strategies Redis supports:
+
+---
+
+### 🧹 Redis Eviction Algorithms
+
+| **Policy**         | **Description**                                                                 |
+|--------------------|----------------------------------------------------------------------------------|
+| `noeviction`       | ❌ No keys are evicted. Writes fail when memory is full.                         |
+| `allkeys-lru`      | 🔁 Evicts the **Least Recently Used** key from all keys.                         |
+| `volatile-lru`     | 🔁 Evicts the LRU key **only among keys with an expiration (TTL)**.              |
+| `allkeys-lfu`      | 📉 Evicts the **Least Frequently Used** key from all keys.                       |
+| `volatile-lfu`     | 📉 Evicts LFU key **only among keys with TTL**.                                  |
+| `volatile-ttl`     | ⏳ Evicts the key with the **shortest remaining TTL**.                           |
+| `volatile-random`  | 🎲 Randomly evicts a key **with TTL**.                                           |
+| `allkeys-random`   | 🎲 Randomly evicts a key **regardless of TTL**.                                  |
+
+---
+
+### 🧠 How It Works
+
+- Redis checks memory usage when a new write command is issued.
+- If usage exceeds the `maxmemory` limit, it evicts keys based on the selected policy.
+- You can set this in `redis.conf` or dynamically via CLI:
+
+```bash
+CONFIG SET maxmemory 100mb
+CONFIG SET maxmemory-policy allkeys-lru
+```
+
+---
+
+### 🔍 Choosing the Right Policy
+
+- **LRU** is great for general caching (most popular).
+- **LFU** is better for keeping frequently accessed data.
+- **TTL-based** policies are useful when expiration is critical.
+- **Random** policies are lightweight but less predictable.
+
+You can explore more details in [Redis’ official eviction policy guide](https://redis.io/docs/latest/develop/reference/eviction/) or [AWS’s caching whitepaper](https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/evictions.html).
+
+Want help tuning Redis for a specific workload or integrating eviction logic into your app?

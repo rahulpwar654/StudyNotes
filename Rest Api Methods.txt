@@ -115,3 +115,53 @@ places and work with the data fetched. It allows you to make an HTTP request,
 i.e., either a GET request (for getting data) or POST request (for posting data).
 
 
+HTTP status codes are three-digit responses sent by a server to indicate the result of a client's request. They're grouped into five categories, each serving a distinct purpose:
+
+---
+
+## 📊 Categories of HTTP Status Codes
+
+| Category | Range     | Description                                      |
+|----------|-----------|--------------------------------------------------|
+| 1xx      | 100–199   | **Informational** – Request received, continuing |
+| 2xx      | 200–299   | **Success** – Request was successfully received  |
+| 3xx      | 300–399   | **Redirection** – Further action needed          |
+| 4xx      | 400–499   | **Client Error** – Request has issues            |
+| 5xx      | 500–599   | **Server Error** – Server failed to fulfill      |
+
+---
+
+## ✅ Common HTTP Status Codes
+
+### 🔹 1xx – Informational
+- **100 Continue**: Client should continue with request.
+- **101 Switching Protocols**: Server is switching protocols.
+
+### 🔹 2xx – Success
+- **200 OK**: Request succeeded.
+- **201 Created**: Resource successfully created.
+- **204 No Content**: No content to return, but request succeeded.
+
+### 🔹 3xx – Redirection
+- **301 Moved Permanently**: Resource has a new permanent URL.
+- **302 Found**: Temporary redirect.
+- **304 Not Modified**: Cached version is still valid.
+
+### 🔹 4xx – Client Errors
+- **400 Bad Request**: Malformed request.
+- **401 Unauthorized**: Authentication required.
+- **403 Forbidden**: Access denied.
+- **404 Not Found**: Resource not found.
+- **429 Too Many Requests**: Rate limit exceeded.
+
+### 🔹 5xx – Server Errors
+- **500 Internal Server Error**: Generic server failure.
+- **502 Bad Gateway**: Invalid response from upstream server.
+- **503 Service Unavailable**: Server is overloaded or down.
+- **504 Gateway Timeout**: Upstream server didn’t respond in time.
+
+Sources: [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status), [REST API Tutorial](https://restfulapi.net/http-status-codes/), [Wikipedia](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
+
+---
+
+Would you like a downloadable cheat sheet or a quiz to test your knowledge of these codes?

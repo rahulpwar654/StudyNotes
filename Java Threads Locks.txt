@@ -1,0 +1,31 @@
+Java provides several types of **locks** to manage thread synchronization and ensure safe access to shared resources. Here's a concise breakdown:
+
+---
+
+### 🔐 Types of Locks in Java Threads
+
+| Lock Type | Description |
+|-----------|-------------|
+| **Intrinsic Lock (Monitor Lock)** | Used with `synchronized` blocks/methods; every object has one. |
+| **ReentrantLock** | Explicit lock from `java.util.concurrent.locks`; allows more control than `synchronized`. |
+| **ReadWriteLock** | Separates read and write access; multiple readers allowed, only one writer. |
+| **StampedLock** | Advanced lock introduced in Java 8; supports optimistic reads and better performance under contention. |
+| **Semaphore** | Controls access based on permits; useful for limiting concurrent access to resources. |
+| **CountDownLatch** | Allows threads to wait until a set of operations completes. |
+| **CyclicBarrier** | Synchronizes threads at a common barrier point. |
+| **LockSupport** | Low-level tool for building custom synchronization utilities.
+
+---
+
+### 🧠 Quick Use Case Guide
+
+- Use `synchronized` for **simple mutual exclusion**.
+- Use `ReentrantLock` when you need **try-lock**, **timeout**, or **interruptible locks**.
+- Use `ReadWriteLock` for **read-heavy** scenarios.
+- Use `StampedLock` for **high-performance** concurrent reads.
+- Use `Semaphore` to **limit access** to a resource pool.
+- Use `CountDownLatch` or `CyclicBarrier` for **thread coordination**.
+
+---
+
+Would you like a code example comparing `synchronized` vs `ReentrantLock` in action?

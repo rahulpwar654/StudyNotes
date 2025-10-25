@@ -3,7 +3,64 @@ Kubernets
 
 Here are detailed answers to the Kubernetes interview questions you asked:
 
+
 ---
+
+### 🚀 Essential Kubernetes Commands
+
+| Command | Explanation |
+|--------|-------------|
+| `kubectl get pods` | Lists all pods in the current namespace. |
+| `kubectl get services` | Shows all services running in the cluster. |
+| `kubectl get deployments` | Displays all deployment configurations. |
+| `kubectl describe pod <pod-name>` | Gives detailed info about a specific pod. |
+| `kubectl logs <pod-name>` | Fetches logs from a running pod. |
+| `kubectl exec -it <pod-name> -- /bin/bash` | Opens an interactive shell inside the pod. |
+| `kubectl apply -f <file>.yaml` | Creates or updates resources from a YAML file. |
+| `kubectl delete pod <pod-name>` | Deletes a specific pod. |
+| `kubectl scale deployment <name> --replicas=3` | Changes the number of pod replicas in a deployment. |
+| `kubectl rollout restart deployment <name>` | Restarts all pods in a deployment. |
+| `kubectl get nodes` | Lists all nodes in the cluster. |
+| `kubectl top pod` | Shows resource usage (CPU/memory) of pods. |
+| `kubectl config view` | Displays your current kubeconfig settings. |
+| `kubectl get namespaces` | Lists all namespaces in the cluster. |
+| `kubectl create namespace <name>` | Creates a new namespace. |
+| `kubectl port-forward pod/<pod-name> 8080:80` | Forwards local port to a pod’s port. |
+
+######################################################
+Here’s a concise list of key **Kubernetes components** with one-line descriptions for each:
+
+---
+
+### 🧩 Core Components of Kubernetes
+
+| Component           | Description                                                                 |
+|---------------------|-----------------------------------------------------------------------------|
+| **Pod**             | The smallest deployable unit that holds one or more containers.             |
+| **Node**            | A physical or virtual machine that runs pods and is managed by the control plane. |
+| **Cluster**         | A set of nodes grouped together to run containerized applications.          |
+| **Kubelet**         | An agent on each node that ensures containers are running in a pod.         |
+| **Kube-Proxy**      | Maintains network rules for communication between pods and services.        |
+| **Container Runtime** | Software responsible for running containers (e.g., Docker, containerd).     |
+| **Control Plane**   | Manages the Kubernetes cluster and makes global decisions.                  |
+| **API Server**      | Frontend for the Kubernetes control plane, handling REST requests.          |
+| **Scheduler**       | Assigns pods to nodes based on resource availability and constraints.       |
+| **Controller Manager** | Runs controllers that handle routine tasks like replication and node monitoring. |
+| **etcd**            | A distributed key-value store used for storing cluster state and configuration. |
+| **Service**         | An abstraction that defines a logical set of pods and a policy to access them. |
+| **Ingress**         | Manages external access to services, typically HTTP/HTTPS routes.           |
+| **ConfigMap**       | Stores configuration data as key-value pairs for use in pods.               |
+| **Secret**          | Stores sensitive data like passwords and tokens securely.                   |
+| **Deployment**      | Manages stateless applications and ensures desired pod count and updates.   |
+| **StatefulSet**     | Manages stateful applications with persistent identity and storage.         |
+| **DaemonSet**       | Ensures a pod runs on all (or selected) nodes in the cluster.               |
+| **Job**             | Creates pods to run tasks that terminate once completed.                    |
+| **CronJob**         | Schedules jobs to run periodically at fixed times.                          |
+
+---
+
+
+######################
 
 ### 🌐 What is Kubernetes and Why Is It Used?
 Kubernetes (often abbreviated as **K8s**) is an **open-source container orchestration platform** that automates the deployment, 

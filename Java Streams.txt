@@ -294,3 +294,32 @@ These terminal operations allow you to process and summarize the elements of a s
   
                 // And Collect them in a Set
                 .collect(Collectors.toSet());
+				
+####################################################
+
+Stream API question
+Find duplicate elements in a list of integers.
+Count the frequency of each word in a list of strings.
+Find the first non-repeating character in a string using streams.
+Sort a list of employees by salary descending, then by name ascending.
+Group a list of students by grade and count how many are in each group.
+Flatten a list of lists of integers into a single list.
+Convert a list of strings to uppercase and filter those starting with ‘A’.
+Given a list of products, return the product with the highest price.
+Filter employees whose joining date is before 2020 and collect their names into a set.
+Create a comma-separated string from a list of integers (e.g., "1,2,3").
+Partition a list of numbers into even and odd using Collectors.partitioningBy().
+Convert a list of strings to a map with string length as the key and list of strings as values.
+Remove duplicate characters from a string while preserving order.
+Given a list of employees, group by department, then find the highest salary per department.
+Sum only the even numbers from a list of integers using reduce().
+Implement a custom collector to collect strings into a CSV format with a max line width.
+Process a large stream of numbers using parallelStream() to calculate statistical metrics (avg, min, max).
+Group orders by customer and then by order status (Map<Customer, Map<Status, List<Order>>>).
+Given a list of transactions, return a map of month to total transaction amount for that month.
+Find all palindromes in a list of strings using Stream API.
+Create a frequency map of characters in a string using only streams (not a loop).
+Given a stream of strings, group them by anagram keys (e.g., "abc" and "bca" grouped together).
+Write a stream-based solution to perform left outer join on two lists (e.g., students and subjects).
+Write a stream pipeline that finds the longest word in a sentence, excluding punctuation.
+Implement a stream pipeline to chunk a list of integers into sublists of size N.

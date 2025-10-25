@@ -1,0 +1,75 @@
+
+Here’s a concise list of commonly used methods from Java’s `Object` class, each with a one-line explanation:
+
+---
+
+### 🧱 **Java Object Class Methods**
+
+| **Method**         | **One-Line Explanation**                                                                 |
+|--------------------|------------------------------------------------------------------------------------------|
+| `toString()`       | Returns a string representation of the object.                                           |
+| `equals(Object o)` | Compares this object with another for equality.                                          |
+| `hashCode()`       | Returns an integer hash code for the object.                                             |
+| `getClass()`       | Returns the runtime class of the object.                                                 |
+| `clone()`          | Creates and returns a copy of the object (requires `Cloneable` interface).               |
+| `finalize()`       | Called by the garbage collector before object destruction (deprecated in Java 9+).       |
+| `notify()`         | Wakes up a single thread waiting on this object's monitor.                               |
+| `notifyAll()`      | Wakes up all threads waiting on this object's monitor.                                   |
+| `wait()`           | Causes the current thread to wait until notified.                                        |
+| `wait(long timeout)` | Causes the current thread to wait for a specified time or until notified.             |
+| `wait(long timeout, int nanos)` | Causes the current thread to wait for a specified time with nanosecond precision. |
+
+Sources: [GeeksforGeeks](https://www.geeksforgeeks.org/java/object-class-in-java/), [JavaGuides](https://www.javaguides.net/2024/06/java-object-class-methods.html)
+
+---
+###################################################################################################
+
+
+
+Great question! Understanding the **`hashCode()` and `equals()` contract** is crucial for writing correct and efficient Java code,
+ especially when working with collections like `HashMap`, `HashSet`, or `Hashtable`.
+
+---
+
+## 🔗 `equals()` and `hashCode()` Contract
+
+Java's contract between `equals()` and `hashCode()` is defined as follows:
+
+### 1. **Consistency Between `equals()` and `hashCode()`**
+- If **two objects are equal** according to `equals()`, then their `hashCode()` **must be the same**.
+- If two objects have the **same `hashCode()`**, they **might** be equal — but not necessarily.
+
+### 2. **`equals()` Contract**
+- **Reflexive**: `x.equals(x)` must be `true`.
+- **Symmetric**: `x.equals(y)` must be the same as `y.equals(x)`.
+- **Transitive**: If `x.equals(y)` and `y.equals(z)`, then `x.equals(z)` must be `true`.
+- **Consistent**: Multiple invocations of `x.equals(y)` must consistently return the same result.
+- **Non-null**: `x.equals(null)` must return `false`.
+
+### 3. **`hashCode()` Contract**
+- Must return the same integer result **every time** it's called on the same object, provided no fields used in `equals()` have changed.
+- If `x.equals(y)` is `true`, then `x.hashCode() == y.hashCode()` must also be `true`.
+
+---
+
+## ⚠️ What Happens If One Is Not Implemented?
+
+### ❌ Only `equals()` Implemented
+- If `hashCode()` is not overridden, the default implementation from `Object` is used.
+- This means two equal objects (via `equals()`) may have **different hash codes**, violating the contract.
+- **Impact**: Collections like `HashSet` or `HashMap` may behave incorrectly — e.g., duplicates may not be detected.
+
+### ❌ Only `hashCode()` Implemented
+- If `equals()` is not overridden, equality is based on reference (i.e., `==`).
+- Even if two objects have the same hash code, they won't be considered equal unless they are the same instance.
+- **Impact**: Logical equality fails, leading to unexpected behavior in collections.
+
+---
+
+## ✅ Best Practice
+Always **override both `equals()` and `hashCode()` together** when creating custom classes that will be used in hash-based collections.
+
+Would you like a code example showing the right way to implement both?
+
+
+###################################################################

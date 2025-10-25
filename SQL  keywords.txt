@@ -12,3 +12,45 @@ JOIN: This keyword is used to combine data from two or more tables.
 LIKE: This keyword is used to match data based on a pattern.
 IN: This keyword is used to match data against a list of values.
 BETWEEN: This keyword is used to match data within a range of values.
+
+
+
+Here’s a quick reference list of commonly used **JPA annotations** with concise one-line explanations:
+
+---
+
+### 📘 Entity and Table Mapping
+- `@Entity` – Marks a class as a JPA entity.
+- `@Table(name = "table_name")` – Specifies the database table name for the entity.
+
+### 🔑 Primary Key
+- `@Id` – Marks the primary key field.
+- `@GeneratedValue(strategy = GenerationType.X)` – Defines how the primary key is generated (e.g., AUTO, IDENTITY).
+
+### 📦 Column Mapping
+- `@Column(name = "column_name")` – Maps a field to a specific column in the table.
+- `@Transient` – Excludes a field from persistence (not stored in DB).
+- `@Lob` – Maps a large object (e.g., text or binary).
+
+### 📅 Temporal Types
+- `@Temporal(TemporalType.DATE)` – Specifies the temporal precision for date/time fields.
+
+### 🔗 Relationships
+- `@OneToOne` – Defines a one-to-one relationship.
+- `@OneToMany` – Defines a one-to-many relationship.
+- `@ManyToOne` – Defines a many-to-one relationship.
+- `@ManyToMany` – Defines a many-to-many relationship.
+- `@JoinColumn(name = "column_name")` – Specifies the foreign key column.
+- `@JoinTable` – Defines a join table for many-to-many relationships.
+
+### 📐 Embedded and Inheritance
+- `@Embedded` – Embeds another class's fields into the entity.
+- `@Embeddable` – Marks a class whose fields can be embedded.
+- `@Inheritance(strategy = InheritanceType.X)` – Specifies inheritance strategy (e.g., SINGLE_TABLE).
+
+### 🧠 Entity Lifecycle
+- `@PrePersist`, `@PostPersist`, `@PreUpdate`, `@PostUpdate`, `@PreRemove`, `@PostRemove` – Lifecycle callbacks for entity events.
+
+---
+
+Let me know if you’d like examples or a cheat sheet for these annotations!

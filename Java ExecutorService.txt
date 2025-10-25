@@ -1,0 +1,103 @@
+The **Java ExecutorService** is part of the `java.util.concurrent` package and provides a powerful framework for managing
+ and executing asynchronous tasks using thread pools. It abstracts away manual thread creation and simplifies concurrent programming.
+
+---
+
+### ⚙️ What is ExecutorService?
+- It is an interface that extends `Executor` and provides methods to manage task execution, lifecycle, and shutdown.
+- It allows submitting tasks (`Runnable` or `Callable`) and returns a `Future` object to track progress or results.
+
+---
+
+### 🧵 Types of ExecutorService
+
+| **Executor Type**         | **Description**                                                                 |
+|---------------------------|---------------------------------------------------------------------------------|
+| `newSingleThreadExecutor()` | Creates a single-threaded executor; tasks are executed sequentially.           |
+| `newFixedThreadPool(n)`     | Creates a pool with a fixed number of threads; useful for limiting concurrency.|
+| `newCachedThreadPool()`     | Creates a pool with dynamic threads; ideal for short-lived, many small tasks.  |
+| `newScheduledThreadPool(n)` | Supports delayed and periodic task execution.                                 |
+| `newWorkStealingPool()`     | Uses multiple queues and work-stealing for parallelism (Java 8+).              |
+
+---
+
+### 🧪 Example Usage
+
+```java
+ExecutorService executor = Executors.newFixedThreadPool(3);
+executor.submit(() -> {
+    System.out.println("Task executed by: " + Thread.currentThread().getName());
+});
+executor.shutdown();
+```
+
+---
+
+##############################################################################
+
+
+In Java, the comparison you're likely referring to is between **`Future`** and **`CompletableFuture`** (not `ConcurrentFuture`, which isn't a standard class). Here's a clear breakdown:
+
+---
+
+### 🔮 **Future vs CompletableFuture**
+
+| Feature                  | `Future` (Java 5)                              | `CompletableFuture` (Java 8)                          |
+|--------------------------|-----------------------------------------------|--------------------------------------------------------|
+| **Basic Purpose**        | Represents the result of an asynchronous task | Enhances `Future` with functional and async features   |
+| **Blocking**             | Requires `get()` which blocks until complete  | Supports non-blocking callbacks with `thenApply()`, etc. |
+| **Cancellation**         | Can cancel with `cancel()`                    | Also supports cancellation                            |
+| **Chaining**             | Not supported                                 | Supports chaining and composition of tasks            |
+| **Exception Handling**   | Manual try-catch around `get()`               | Built-in methods like `handle()` and `exceptionally()` |
+| **Async Execution**      | Needs `ExecutorService`                       | Can run tasks asynchronously via `supplyAsync()`      |
+| **Combining Futures**    | Not supported                                 | Can combine multiple futures with `thenCombine()`     |
+| **Reactive Style**       | No                                             | Yes – supports reactive programming patterns          |
+
+Sources: [Java Code Geeks](https://www.javacodegeeks.com/2024/12/completablefuture-vs-future-in-java.html), [Baeldung](https://www.baeldung.com/java-future-completablefuture-rxjavas-observable), [GeeksforGeeks](https://www.geeksforgeeks.org/java/completablefuture-in-java/)
+
+---
+
+### 🧪 Example
+
+```java
+// Future
+Future<String> future = executor.submit(() -> "Hello");
+String result = future.get(); // blocks
+
+// CompletableFuture
+CompletableFuture<String> cf = CompletableFuture.supplyAsync(() -> "Hello");
+cf.thenAccept(System.out::println); // non-blocking
+```
+
+######################################################################################
+
+In Java's `ExecutorService`, both `submit()` and `execute()` are used to run tasks asynchronously, but they differ in functionality and return behavior. Here's a quick comparison:
+
+---
+
+### ⚔️ `submit()` vs `execute()`
+
+| Feature              | `submit()`                                             | `execute()`                          |
+|----------------------|--------------------------------------------------------|--------------------------------------|
+| **Return Type**      | Returns a `Future` object                              | Returns `void`                       |
+| **Result Handling**  | You can retrieve the result or exception via `Future`  | No way to get result or exception    |
+| **Overloads**        | Accepts `Runnable` or `Callable`                       | Accepts only `Runnable`              |
+| **Exception Handling** | Exceptions are captured in the `Future`              | Exceptions are thrown to the caller  |
+| **Use Case**         | When you need a result or want to monitor the task     | When you just want to run a task     |
+
+---
+
+### 🧪 Example
+
+```java
+// Using submit()
+Future<Integer> future = executor.submit(() -> 42);
+System.out.println("Result: " + future.get()); // prints 42
+
+// Using execute()
+executor.execute(() -> System.out.println("Task executed"));
+```
+
+---
+
+Use `submit()` when you need feedback from the task, and `execute()` when you just want to fire and forget. Want help choosing which one fits your project better?

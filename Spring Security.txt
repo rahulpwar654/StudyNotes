@@ -49,3 +49,36 @@ the AuthenticationManager is invoked to authenticate the request. via its implem
 each of the provided AuthenticationProvider(s) and try to authenticate the user based on the passed Authentication Object. 
 when the Authentication is successful, and a matching user is found, an Authentication Object containing the 
 user Authorities (which will be used to manage the user access to the system’s resources) is returned and set into the SecurityContext.
+
+
+
+##############
+
+Here’s a quick list of key **Spring Security components** with one-line descriptions:
+
+---
+
+### 🔐 Core Components of Spring Security
+
+| Component                  | Description                                                                 |
+|----------------------------|-----------------------------------------------------------------------------|
+| **SecurityContext**        | Holds the security information (like authentication) of the current user.  |
+| **Authentication**         | Represents the principal and credentials of a user trying to access the system. |
+| **AuthenticationManager**  | Validates user credentials and returns an authenticated `Authentication` object. |
+| **UserDetailsService**     | Loads user-specific data during authentication.                            |
+| **UserDetails**            | Interface representing user information like username, password, roles.    |
+| **GrantedAuthority**       | Represents a permission or role assigned to the user.                      |
+| **SecurityFilterChain**    | Defines the sequence of filters applied to incoming requests.              |
+| **UsernamePasswordAuthenticationFilter** | Handles login requests with username and password.             |
+| **BasicAuthenticationFilter** | Processes HTTP Basic authentication headers.                          |
+| **ExceptionTranslationFilter** | Converts security exceptions into HTTP responses.                   |
+| **AccessDecisionManager**  | Determines if a user has access to a secured resource.                     |
+| **HttpSecurity**           | Configures web-based security for specific HTTP requests.                  |
+| **WebSecurityConfigurerAdapter** | Customizes security settings (deprecated in newer versions).         |
+| **SecurityConfigurerAdapter** | Base class for configuring security filters and settings.              |
+| **FilterSecurityInterceptor** | Enforces access control on secured URLs.                              |
+| **AuthenticationProvider** | Performs actual authentication logic (e.g., database, LDAP).              |
+
+---
+
+Let me know if you’d like a diagram or code examples to see how these components interact in a real Spring Boot app.

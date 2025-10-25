@@ -225,3 +225,53 @@ If you're using **HTTP APIs** (not REST APIs), API Gateway supports **native OAu
 ---
 
 Let me know which OAuth provider you're using—I can tailor the setup for Google, Okta, Auth0, or even a custom identity server.
+
+
+- What is AWS Lambda and how does it work?
+- What are the key benefits of using AWS Lambda?
+- How is AWS Lambda different from EC2 or ECS?
+- What languages does AWS Lambda support?
+- What is the maximum execution timeout for a Lambda function?
+
+⚙️ Intermediate-Level Questions
+- How do you trigger a Lambda function?
+- Examples: API Gateway, S3 events, DynamoDB streams
+- What is the AWS Lambda execution environment?
+- How do you manage dependencies in Lambda?
+- What is the role of IAM in Lambda?
+- How do you monitor and debug Lambda functions?
+
+🚀 Advanced and Scenario-Based Questions
+- How do you handle cold starts in Lambda?
+- How would you design a serverless application using Lambda?
+- How do you optimize performance and cost in Lambda?
+- What are Lambda Layers and how do you use them?
+- How do you version and alias Lambda functions?
+
+🧪 Hands-On and Practical Questions
+- Write a Lambda function that processes an S3 event.
+- How do you integrate Lambda with Step Functions?
+- How do you deploy Lambda using AWS SAM or Serverless Framework?
+- How do you handle retries and failures in Lambda?
+- How do you secure sensitive data in Lambda functions?
+
+
+
+
+
+
+
+-Explain your previous project and architecture(it has aws lambda, cognito, rds, api gateways,)
+
+-How to create aws lambda functions, explain steps.
+- How to write lambda using springboot, which  webserver it uses for execution.
+- before deploying lambda to prod what are the steps you have taken to optimize performance
+- when to use Lambda and when to go with EC2 instance?
+-If we have lambda is getting high traffic , how we can handle it?
+-how debug AWS Lambda timeouts under high traffic
+-in lambda  explain Provisioned Concurrency vs Reserved Concurrency,
+- what is max timeout of API Gateway?
+- If we have to call lambda without going through API gateways,what are other ways to trigger a Lambda function?
+- Explain amazon cognito , how did you handled security in your lambda?
+- What is the role of IAM in Lambda?
+- when will you go with java based lambda and when to go with Python based lambda
